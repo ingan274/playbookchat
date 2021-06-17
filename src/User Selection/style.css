@@ -1,0 +1,34 @@
+.userSelectDiv {
+    height: 100vh;
+    width: 100vw;
+}
+
+.userLink {
+    text-decoration: none;
+    color: black;
+}
+
+.userContainer {
+    height: 8em;
+    width: 8em;
+    border-radius: 1em;
+    text-align: center;
+    padding: 3em;
+    margin: 3em;
+    background-size: cover;
+
+    background-color: #FC3D21;
+}
+
+.userContainer:hover {
+    font-weight: bold;
+}
+
+.nameText{
+    font-size: 1.5em;
+}
+
+.roleText{
+    font-weight: 400;
+    color: grey;
+}
