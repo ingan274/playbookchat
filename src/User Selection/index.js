@@ -11,8 +11,8 @@ class Playbook extends Component {
 
         const mcc = {
             id: "mcc",
-            name: "Capcom",
-            role: "Mission Control Center",
+            name: "Mission Control Center",
+            role: "Ground",
             imageURL: "",
             location: "earth"
         }
@@ -51,7 +51,7 @@ class Playbook extends Component {
 
         const crew5 = {
             id: "crew5",
-            name: "Louis",
+            name: "Norah",
             role: "Astronaut 5",
             imageURL: "",
             location: "mars"
