@@ -9,6 +9,8 @@ import OtherNew from "../Components/MCC-Other-New";
 import OtherReply from "../Components/MCC-Other-Reply-1";
 import OtherReplyThread from "../Components/MCC-Other-Reply-Thread";
 
+import API from "../APIcalls";
+
 class Playbook extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +22,9 @@ class Playbook extends Component {
             location: userObj.location,
             id: userObj.id
         }
+
+        let mcccrewChat = API.getMCCCrew(userObj.location);
+        
     }
 
     render = () => {

@@ -6,9 +6,6 @@ const controller = require("../controller/messageController");
 // Drafts (/drafts)
 router.route("/:userID")
     .get(controller.allDrafts)
-    .post(controller.saveToDrafts)
-    .put(controller.editDraft)
-    .delete(controller.deleteDraft)
 
 router.route("/")
     .post(controller.saveToDrafts)
