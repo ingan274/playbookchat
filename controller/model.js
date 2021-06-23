@@ -64,8 +64,8 @@ if (collections.length === 0) {
                                 description: "must be a bool and is required"
                             },
                             parentID: {
-                                bsonType: "int",
-                                description: "must be a int and is needed if parent is yes"
+                                bsonType: "string",
+                                description: "this needs to be an objectID"
                             },
                         }
                     },
@@ -78,18 +78,8 @@ if (collections.length === 0) {
                         description: "must be a bool - timer will change with timer after sending"
                     },
                     sender: {
-                        bsonType: "object",
-                        required: ["current", "previous"],
-                        properties: {
-                            current: {
-                                enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
-                                description: "must be a profile and is required"
-                            },
-                            previous: {
-                                enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
-                                description: "must be a profile and is required"
-                            },
-                        }
+                        enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
+                        description: "must be a profile and is required"
                     },
                     timeCreated: {
                         bsonType: "date",
@@ -124,25 +114,12 @@ if (collections.length === 0) {
                         bsonType: "object",
                         properties: {
                             isSet: {
-                                bsonType: "array",
-                                description: "array of pinned"
+                                bsonType: "bool",
+                                description: "is there any reminder for any user"
                             },
                             userPinned: {
                                 bsonType: "array",
                                 description: "array of users who pinned"
-                            },
-                            time: {
-                                bsonType: "object",
-                                properties: {
-                                    startTime: {
-                                        bsonType: "array",
-                                        description: "array of pinned"
-                                    },
-                                    endTime: {
-                                        bsonType: "array",
-                                        description: "array of users who pinned"
-                                    }
-                                }
                             }
                         }
                     },
@@ -231,8 +208,8 @@ if (collections.length === 0) {
                                 description: "must be a bool and is required"
                             },
                             parentID: {
-                                bsonType: "int",
-                                description: "must be a int and is needed if parent is yes"
+                                bsonType: "string",
+                                description: "this needs to be an objectID"
                             },
                         }
                     },
@@ -245,18 +222,8 @@ if (collections.length === 0) {
                         description: "must be a bool - timer will change with timer after sending"
                     },
                     sender: {
-                        bsonType: "object",
-                        required: ["current", "previous"],
-                        properties: {
-                            current: {
-                                enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
-                                description: "must be a profile and is required"
-                            },
-                            previous: {
-                                enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
-                                description: "must be a profile and is required"
-                            },
-                        }
+                        enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
+                        description: "must be a profile and is required"
                     },
                     timeCreated: {
                         bsonType: "date",
@@ -291,25 +258,12 @@ if (collections.length === 0) {
                         bsonType: "object",
                         properties: {
                             isSet: {
-                                bsonType: "array",
-                                description: "array of pinned"
+                                bsonType: "bool",
+                                description: "is there any reminder for any user"
                             },
                             userPinned: {
                                 bsonType: "array",
                                 description: "array of users who pinned"
-                            },
-                            time: {
-                                bsonType: "object",
-                                properties: {
-                                    startTime: {
-                                        bsonType: "array",
-                                        description: "array of pinned"
-                                    },
-                                    endTime: {
-                                        bsonType: "array",
-                                        description: "array of users who pinned"
-                                    }
-                                }
                             }
                         }
                     },
@@ -398,8 +352,8 @@ if (collections.length === 0) {
                                 description: "must be a bool and is required"
                             },
                             parentID: {
-                                bsonType: "int",
-                                description: "must be a int and is needed if parent is yes"
+                                bsonType: "string",
+                                description: "this needs to be an objectID"
                             },
                         }
                     },
@@ -412,18 +366,8 @@ if (collections.length === 0) {
                         description: "must be a bool - timer will change with timer after sending"
                     },
                     sender: {
-                        bsonType: "object",
-                        required: ["current"],
-                        properties: {
-                            current: {
-                                enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
-                                description: "must be a profile and is required"
-                            },
-                            previous: {
-                                enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
-                                description: "must be a profile and is required"
-                            },
-                        }
+                        enum: ["mcc", "crew1", "crew2", "crew3", "crew4", "crew5"],
+                        description: "must be a profile and is required"
                     },
                     timeCreated: {
                         bsonType: "date",
@@ -461,25 +405,9 @@ if (collections.length === 0) {
                                 bsonType: "bool",
                                 description: "is there any reminder for any user"
                             },
-                            reminder: {
-                                bsonType: "object",
-                                userPinned: {
-                                    bsonType: "array",
-                                    description: "array of users who pinned"
-                                },
-                                time: {
-                                    bsonType: "object",
-                                    properties: {
-                                        startTime: {
-                                            bsonType: "array",
-                                            description: "array of pinned"
-                                        },
-                                        endTime: {
-                                            bsonType: "array",
-                                            description: "array of users who pinned"
-                                        }
-                                    }
-                                }
+                            userPinned: {
+                                bsonType: "array",
+                                description: "array of users who pinned"
                             }
                         }
                     },
@@ -541,4 +469,5 @@ module.exports = {
     mcccrew: mcccrew,
     crew: crew,
     drafts: drafts,
+    client:client
 };

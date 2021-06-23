@@ -9,9 +9,18 @@ const client = new MongoClient(MONGO_URI, { useNewUrlParser: true, useUnifiedTop
 
 
 // Connect to MongoDB
-client.connect().then(() => {
-    console.log("Connection to database is made.")
-});
+
+new Promise((resolve, reject) => {
+    client.connect().then(() => {
+        console.log("Connection to database is made.")
+        resolve()
+    })
+    .catch(err => {
+        console.log(err);
+        reject()
+    });
+})
+
 
 
 module.exports = {
