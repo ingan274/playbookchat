@@ -8,7 +8,6 @@ import New from "../Components/New";
 // import OtherReply from "../Components/MCC-Other-Reply";
 
 import API from "../API-Calls";
-import { Timestamp } from "bson";
 
 class Playbook extends Component {
     constructor(props) {
@@ -16,7 +15,6 @@ class Playbook extends Component {
 
         let userObj = JSON.parse(localStorage.getItem("User"));
         let profileArray = JSON.parse(localStorage.getItem("Profiles"));
-        let chatMessages;
 
         this.state = {
             userName: userObj.name,
@@ -25,47 +23,58 @@ class Playbook extends Component {
             userId: userObj.id,
             userImageURL: userObj.imageURL,
             profiles: profileArray,
+            chat: [],
         }
-
-        API.getMCCCrew((this.state.userLocation), (this.state.userId)).then((res) => {
-            this.state = {
-                chatMessages: res.data
-            }
-        })
-
-        console.log(this.state.chatMessages)
 
     }
 
-    messages = () => {
-        if (this.chatMessages) {
-            return (
-                <Box className="ChatBox">
-                    {this.chatMessages.map((item, index) => {
+    componentDidMount = () => {
+        this.getMessages();
+    }
 
-                        return (
-                            <New
-                                key={index.toString()}
-                                messageID={item._id}
-                                location={item.location}
-                                sending={item.sending}
-                                expected_res={item.expected_res}
-                                messageSubject={item.message.subject}
-                                messageMessageBody={item.message.messageBody}
-                                userName=""
-                                userRole=""
-                                userId={item.sender}
-                                userImageURL=""
-                                timeSent={item.timeSent}
-                                timeDelivered={item.timeDelivered}
-                            />
-                        )
-                    })}
-                </Box>
-            )
-        } else {
-            <Box className="ChatBox"></Box>
-        }
+    getMessages = () => {
+        API.getMCCCrew((this.state.userLocation), (this.state.userId)).then((res) => {
+            
+            this.setState({
+                chat: res.data
+            })
+
+        })
+
+    }
+
+    getTime = (time) => {
+
+        let timestamp = time.slice(11,)
+
+        return timestamp
+    }
+
+    renderMessages = () => {
+        return (
+            <Box className="ChatBox">
+                {this.state.chat.map((item, index) => {
+
+                    return (
+                        <New
+                            key={index.toString()}
+                            messageID={item._id}
+                            location={item.location}
+                            sending={item.sending}
+                            expected_res={item.expected_res}
+                            messageSubject={item.message.subject}
+                            messageMessageBody={item.message.messageBody}
+                            userName=""
+                            userRole=""
+                            userId={item.sender}
+                            userImageURL=""
+                            timeSent={this.getTime(item.timeSent)}
+                            timeDelivered={this.getTime(item.timeDelivered)}
+                        />
+                    )
+                })}
+            </Box>
+        )
     }
 
     render = () => {
@@ -91,7 +100,7 @@ class Playbook extends Component {
                         <Box className="chatPanelL">
 
                         </Box>
-                        {this.messages()}
+                        {this.renderMessages()}
                     </Grid>
                 </Box>
             </Grid>
