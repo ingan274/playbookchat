@@ -9,15 +9,13 @@
 }
 
 .userContainer {
-    height: 8em;
-    width: 8em;
+    height: 5em;
+    width: 5em;
     border-radius: 1em;
     text-align: center;
     padding: 3em;
     margin: 3em;
     background-size: cover;
-
-    background-color: #FC3D21;
 }
 
 .userContainer:hover {

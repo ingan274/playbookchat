@@ -3,8 +3,8 @@ const router = express.Router();
 const controller = require("../controller/messageController");
 
 
-// MCC Crew Chat  (/mcccrew)
-router.route("/:location")
+// MCC Crew Chat  (/mcccrew/:location/:userID)
+router.route("/:location/:userID")
     .get(controller.chatMCCCrew)
 
 router.route("/")

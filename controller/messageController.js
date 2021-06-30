@@ -6,11 +6,6 @@ const mcccrew = collections.mcccrew;
 const crew = collections.crew;
 const drafts = collections.drafts;
 
-// // Delay in Minutes
-const timedelay = 5;
-const time = new Date();
-const delayedTimeStamp = new Date(time.getTime() + timedelay * 60000);
-
 // console.log("time", time)
 // console.log("delayed", delayedTimeStamp)
 
@@ -45,8 +40,6 @@ const organizingMessages = (myTimeMessages, otherTimeMessages = null) => {
     // // Sorting Message based on Time
     allChatMessages.sort((item1, item2) => item1.time > item2.time ? 1 : -1);
 
-    console.log(allChatMessages)
-
     // console.log(allChatMessages)
 
     return allChatMessages;
@@ -77,17 +70,25 @@ module.exports = {
     // // Get Messages
     // Find all messages for MCC and Crew Chat and organize by as received
     chatMCCCrew: async (req, res) => {
-
+        let userID = req.params.userID
         let location = req.params.location;
         let organizedMesObj;
 
         if (location === "mars") {
             // Crew Perspective
-            let crewMessages = await mcccrew.find({ location: true })
-                .sort({ timeSent: 1 })
+            let crewMessages = await mcccrew.find({ location: true, sending: false })
+                .sort({ timeDelivered: 1 })
                 .toArray();
 
-            let mccMessages = await mcccrew.find({ location: false })
+            // User sending messages
+            let userSendingMesage = await mcccrew.find({ location: true, sending: true, sender: userID })
+                .sort({ timeDelivered: 1 })
+                .toArray();
+
+            crewMessages = crewMessages.concat(userSendingMesage)
+            // console.log(crewMessages)
+
+            let mccMessages = await mcccrew.find({ location: false, sending: false })
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
@@ -101,12 +102,12 @@ module.exports = {
 
         } else if (location === "earth") {
             // MCC Perspective
-            let crewMessages = await mcccrew.find({ location: true })
+            let crewMessages = await mcccrew.find({ location: true, sending: false })
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
             let mccMessages = await mcccrew.find({ location: false })
-                .sort({ timeSent: 1 })
+                .sort({ timeDelivered: 1 })
                 .toArray();
 
             // organizingMessages(myTimeMessages, otherTimeMessages);
@@ -125,25 +126,12 @@ module.exports = {
 
     // Find all messages for Just Crew Chat and organize by as received
     chatCrew: async (req, res) => {
-
-        let crewMessages = await crew.find({ location: true })
+        // Crew Sent Messages
+        let crewMessages = await crew.find()
             .sort({ timeSent: 1 })
             .toArray();
-        // let allMessagesArray = organizingMessages(crewMessages, mccMessages);
-        let organizedMessages = organizingMessages(crewMessages);
-        let organizedMesObj = [];
 
-        for (let message of organizedMessages) {
-            const id = message.id;
-
-            for (let crewObj of crewMessages) {
-                if (crewObj._id === id) {
-                    organizedMesObj.push(crewObj);
-                }
-            }
-        }
-
-        res.send(organizedMesObj);
+        res.send(crewMessages);
         return
     },
 
@@ -221,12 +209,12 @@ module.exports = {
                 .sort({ timeSent: 1 })
                 .toArray();
 
-            console.log(repliesYou)
+            // console.log(repliesYou)
 
             let repliesOther = await mcccrew.find({ location: otherLocation, "parent.hasParent": true, "parent.parentID": parentThreadID })
                 .sort({ timeDelivered: 1 })
                 .toArray();
-            console.log(repliesOther)
+            // console.log(repliesOther)
 
             // organizingMessages(myTimeMessages, otherTimeMessages);
             let organizedReplyArray = organizingMessages(repliesYou, repliesOther);
@@ -290,8 +278,8 @@ module.exports = {
             sending: true,
             expected_resp: false,
             sender: req.body.sender,
-            timeSent: time,
-            timeDelivered: delayedTimeStamp,
+            timeSent: req.body.time,
+            timeDelivered: req.body.timeDelay,
             location: req.body.location
         }
 
@@ -306,11 +294,13 @@ module.exports = {
 
         await mcccrew.insertOne(message)
             .then(result => {
+                res.json(result.ops[0])
                 res.send(200)
                 console.log("Chat has been submitted to MCC Crew Chat")
             })
             .catch((err) => {
                 console.log(err)
+                res.send(404)
             });
     },
 
@@ -327,8 +317,8 @@ module.exports = {
             sending: true,
             expected_resp: false,
             sender: req.body.userID,
-            timeSent: time,
-            timeDelivered: delayedTimeStamp,
+            timeSent: req.body.time,
+            timeDelivered: req.body.timeDelay,
             location: req.body.location
         }
 
@@ -342,10 +332,12 @@ module.exports = {
         }
 
         await crew.insertOne(message)
+            .then(response => res.json(response.ops[0]))
             .then(console.log("Chat has been submitted to Crew Chat"))
             .then(res.send(200))
             .catch((err) => {
                 console.log(err)
+                res.send(404)
             });
     },
 
@@ -379,6 +371,7 @@ module.exports = {
             .then(res.send(200))
             .catch((err) => {
                 console.log(err)
+                res.send(404)
             });
     },
 
@@ -397,8 +390,8 @@ module.exports = {
             sending: true,
             expected_resp: false,
             sender: req.body.userID,
-            timeSent: time,
-            timeDelivered: delayedTimeStamp,
+            timeSent: req.body.time,
+            timeDelivered: req.body.timeDelay,
             location: req.body.deliveryTime
         }
 
@@ -413,10 +406,12 @@ module.exports = {
         }
 
         await mcccrew.insertOne(reply)
+            .then(response => res.json(response.ops[0]))
             .then(console.log("Reply has been submitted to MCC Crew Chat"))
             .then(res.send(200))
             .catch((err) => {
                 console.log(err)
+                res.send(404)
             });
     },
 
@@ -437,8 +432,8 @@ module.exports = {
             sending: true,
             expected_resp: false,
             sender: req.body.userID,
-            timeSent: time,
-            timeDelivered: delayedTimeStamp,
+            timeSent: req.body.time,
+            timeDelivered: req.body.timeDelay,
             location: req.body.deliveryTime
         }
 
@@ -453,10 +448,12 @@ module.exports = {
         }
 
         await crew.insertOne(reply)
+            .then(response => res.json(response.ops[0]))
             .then(console.log("Reply has been submitted to Crew Chat"))
             .then(res.send(200))
             .catch((err) => {
                 console.log(err)
+                res.send(404)
             });
     },
 
@@ -477,12 +474,18 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageID) }, changeToSent)
                 .then(console.log("Draft Message", messageID, " (Message): has beeen SENT"))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         } else if (groupChat === "crew-chat") {
             await crew.updateOne({ _id: ObjectID(messageID) }, changeToSent)
                 .then(console.log("Draft Message", messageID, " (Message): has beeen SENT"))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         }
 
     },
@@ -501,12 +504,18 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageID) }, changeToEAR)
                 .then(console.log("Draft Message", messageID, " (Message): could get a response"))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         } else if (groupChat === "crew-chat") {
             await crew.updateOne({ _id: ObjectID(messageID) }, changeToEAR)
                 .then(console.log("Draft Message", messageID, " (Message): could get a response"))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         }
     },
 
@@ -546,7 +555,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, updatedReaction)
                 .then(console.log("Message", messageReactingTo, "has beeen reacted to"))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
 
         } else if (chatGroup === "crew-chat") {
             let message = await crew.findOne({ _id: ObjectID(messageReactingTo) });
@@ -574,7 +586,10 @@ module.exports = {
             await crew.updateOne({ _id: ObjectID(messageReactingTo) }, updatedReaction)
                 .then(console.log("Mesage", messageReactingTo, "has beeen reacted to"))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         }
     },
 
@@ -596,7 +611,10 @@ module.exports = {
             await drafts.updateOne({ _id: ObjectID(messageID) }, messageUpdate)
                 .then(console.log("Draft Message", messageID, " (Message): has beeen updated"))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         };
 
         if (setReminder) {
@@ -621,7 +639,10 @@ module.exports = {
         await drafts.findOne({ _id: ObjectID(messageID) })
             .then(console.log("Draft Message is updated"))
             .then(res.send(200))
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
 
     },
 
@@ -635,15 +656,18 @@ module.exports = {
 
         const timeUpdate = {
             $set: {
-                timeSent: time,
-                timeDelivered: delayedTimeStamp,
+                timeSent: req.body.time,
+                timeDelivered: req.body.timeDelay,
             }
         }
 
         await drafts.updateOne({ _id: ObjectID(messageID) }, timeUpdate)
             .then(console.log("Draft Message", messageID, " (Message): has beeen updated"))
             .then(res.send(200))
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
 
         if (updatedMessage) {
             let messageUpdate = {
@@ -679,18 +703,27 @@ module.exports = {
 
         await drafts.findOne({ _id: ObjectID(messageID) })
             .then(console.log("Draft Message is updated"))
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
 
         if (sendTo === "mcc-crew-chat") {
             mcccrew.insertOne(drafts.findOne({ _id: ObjectID(messageID) }))
                 .then(drafts.deleteOne({ _id: ObjectID(messageID) }))
                 .then(res.send(200))
-                .catch(err => console.log(err))
-        } else if (sentTo === "crew-chat") {
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
+        } else if (sendTo === "crew-chat") {
             crew.insertOne(drafts.findOne({ _id: ObjectID(messageID) }))
                 .then(drafts.deleteOne({ _id: ObjectID(messageID) }))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         }
 
     },
@@ -723,7 +756,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, addPin)
                 .then(console.log("Message", messageReactingTo, "has beeen Pinned for", personPinning))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
 
         } else if (chatGroup === "crew-chat") {
             let message = await mcccrew.findOne({ _id: ObjectID(messageReactingTo) });
@@ -746,7 +782,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, addPin)
                 .then(console.log("Message", messageReactingTo, "has beeen Pinned for", personPinning))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         }
     },
 
@@ -778,7 +817,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, addReminder)
                 .then(console.log("Message", messageReactingTo, "has beeen Pinned for", personReminder))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
 
         } else if (chatGroup === "crew-chat") {
             let message = await mcccrew.findOne({ _id: ObjectID(messageReactingTo) });
@@ -801,7 +843,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, addReminder)
                 .then(console.log("Message", messageReactingTo, "has beeen Pinned for", personReminder))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         }
 
     },
@@ -850,7 +895,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, updatedPin)
                 .then(console.log("Message", messageReactingTo, "has beeen UNpinned for", personRemovingPinning))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         } else if (chatGroup === "crew-chat") {
             const personRemovingPinning = req.body.userID;
             const messageReactingTo = req.body.messsageID;
@@ -895,7 +943,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, updatedPin)
                 .then(console.log("Message", messageReactingTo, "has beeen UNpinned for", personRemovingPinning))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         }
     },
 
@@ -941,7 +992,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, updatedObject)
                 .then(console.log("Message", messageReactingTo, "has a reminder Removed for", personReminder))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         } else if (chatGroup === "crew-chat") {
             let message = await mcccrew.findOne({ _id: ObjectID(messageReactingTo) });
 
@@ -976,7 +1030,10 @@ module.exports = {
             await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, updatedObject)
                 .then(console.log("Message", messageReactingTo, "has a reminder Removed for", personReminder))
                 .then(res.send(200))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                    res.send(404)
+                })
         }
 
     },
@@ -986,6 +1043,9 @@ module.exports = {
         const messageID = req.body.messsageID;
         drafts.deleteOne({ _id: ObjectID(messageID) })
             .then(res.send(200))
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
     }
 }
