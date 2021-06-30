@@ -28,13 +28,14 @@ class Playbook extends Component {
 
     }
 
+    // getting data functions
     componentDidMount = () => {
         this.getMessages();
     }
 
     getMessages = () => {
         API.getMCCCrew((this.state.userLocation), (this.state.userId)).then((res) => {
-            
+
             this.setState({
                 chat: res.data
             })
@@ -50,9 +51,31 @@ class Playbook extends Component {
         return timestamp
     }
 
+    getUserInfo = (thisUser) => {
+
+        for (let user of this.state.profiles) {
+            if (user.id === thisUser) {
+                return {
+                    name: user.name,
+                    imageURL: user.imageURL,
+                    role: user.role
+                }
+            }
+        }
+
+    }
+
+    // input functions
+    handleInputChange = event => {
+        const { name, value } = event.target;
+        this.setState({
+            [name]: value
+        })
+    }
+
     renderMessages = () => {
         return (
-            <Box className="ChatBox">
+            <Box className="ChatBox" item="true">
                 {this.state.chat.map((item, index) => {
 
                     return (
@@ -61,15 +84,16 @@ class Playbook extends Component {
                             messageID={item._id}
                             location={item.location}
                             sending={item.sending}
-                            expected_res={item.expected_res}
+                            expresp={item.expected_resp}
                             messageSubject={item.message.subject}
                             messageMessageBody={item.message.messageBody}
-                            userName=""
-                            userRole=""
+                            userName={this.getUserInfo(item.sender).name}
+                            userRole={this.getUserInfo(item.sender).role}
                             userId={item.sender}
-                            userImageURL=""
+                            userImageURL={this.getUserInfo(item.sender).imageURL}
                             timeSent={this.getTime(item.timeSent)}
                             timeDelivered={this.getTime(item.timeDelivered)}
+                            eta={item.timeDelivered}
                         />
                     )
                 })}
@@ -82,26 +106,30 @@ class Playbook extends Component {
             <Grid
                 container
                 direction="row"
-                justify="flex-end"
+                justify="flex-start"
                 alignItems="center"
             >
                 <Box
                     item="true"
                     className="timeline splitScreen">
                     Timeline Here
-            </Box>
+                </Box>
                 <Box
                     item="true"
                     className="clDiv splitScreen">
-                    <Grid
-                        container item
-                        direction="row"
-                    >
-                        <Box className="chatPanelL">
 
-                        </Box>
-                        {this.renderMessages()}
-                    </Grid>
+                    <Box className="chatPanelL">
+                        <Box className="buttons">ML</Box>
+                        <Box className="buttons current">MCC & Crew</Box>
+                        <Box className="buttons">Crew</Box>
+                        <Box className="buttons task1">Task 1</Box>
+                    </Box>
+                    <Box>
+                    {this.renderMessages()}
+
+                    </Box>
+                   
+
                 </Box>
             </Grid>
         )

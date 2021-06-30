@@ -10,32 +10,16 @@ const drafts = collections.drafts;
 // console.log("delayed", delayedTimeStamp)
 
 
-const organizingMessages = (myTimeMessages, otherTimeMessages = null) => {
-    let allChatMessages;
+const organizingMessages = (myTimeMessages) => {
 
     // Pushing Crew Message ID and Time Sent to Array
-    let userTimeArray = myTimeMessages.map((message, i) => {
+    let allChatMessages = myTimeMessages.map((message, i) => {
         return {
             "id": message._id,
-            "time": message.timeSent,
+            "time": message.timeDelivered,
             "location": message.location
         }
     })
-
-    if (otherTimeMessages !== null) {
-        // // Pushing MCC Message ID and Time Delivered to Array
-        let otherTimeArray = otherTimeMessages.map((message, i) => {
-            return {
-                "id": message._id,
-                "time": message.timeDelivered,
-                "location": message.location
-            }
-        })
-
-        allChatMessages = userTimeArray.concat(otherTimeArray);
-    } else {
-        allChatMessages = userTimeArray;
-    }
 
     // // Sorting Message based on Time
     allChatMessages.sort((item1, item2) => item1.time > item2.time ? 1 : -1);
@@ -45,20 +29,15 @@ const organizingMessages = (myTimeMessages, otherTimeMessages = null) => {
     return allChatMessages;
 }
 
-const organizedFullObjectMessages = (organizedMessage, yourMessagesObject, otherMessagesObject) => {
+const organizedFullObjectMessages = (organizedMessage, allMessagesObject) => {
     let organizedMesObj = [];
 
     for (let message of organizedMessage) {
         const id = message.id;
 
-        for (let yourMessage of yourMessagesObject) {
-            if (yourMessage._id === id) {
-                organizedMesObj.push(yourMessage);
-            }
-        }
-        for (let otherMessage of otherMessagesObject) {
-            if (otherMessage._id === id) {
-                organizedMesObj.push(otherMessage);
+        for (let message of allMessagesObject) {
+            if (message._id === id) {
+                organizedMesObj.push(message);
             }
         }
     }
@@ -76,7 +55,7 @@ module.exports = {
 
         if (location === "mars") {
             // Crew Perspective
-            let crewMessages = await mcccrew.find({ location: true, sending: false })
+            let deliveredMessages = await mcccrew.find({ sending: false })
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
@@ -85,35 +64,33 @@ module.exports = {
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
-            crewMessages = crewMessages.concat(userSendingMesage)
+            let allMessages = userSendingMesage.concat(deliveredMessages)
             // console.log(crewMessages)
 
-            let mccMessages = await mcccrew.find({ location: false, sending: false })
-                .sort({ timeDelivered: 1 })
-                .toArray();
-
             // organizingMessages(myTimeMessages, otherTimeMessages);
-            let organizedMessages = organizingMessages(crewMessages, mccMessages);
+            let organizedMessages = organizingMessages(allMessages);
 
-            organizedMesObj = organizedFullObjectMessages(organizedMessages, crewMessages, mccMessages)
+            organizedMesObj = organizedFullObjectMessages(organizedMessages, allMessages)
 
             // Sending MCC-Crew Chat from Crew Perspective
             res.send(organizedMesObj);
 
         } else if (location === "earth") {
             // MCC Perspective
-            let crewMessages = await mcccrew.find({ location: true, sending: false })
+            let deliveredMessages = await mcccrew.find({ sending: false })
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
-            let mccMessages = await mcccrew.find({ location: false })
+            let userSendingMesage = await mcccrew.find({ location: false, sending: true })
                 .sort({ timeDelivered: 1 })
                 .toArray();
+
+            let allMessages = userSendingMesage.concat(deliveredMessages)
 
             // organizingMessages(myTimeMessages, otherTimeMessages);
-            let organizedMessages = organizingMessages(mccMessages, crewMessages);
+            let organizedMessages = organizingMessages(allMessages);
 
-            organizedMesObj = organizedFullObjectMessages(organizedMessages, mccMessages, crewMessages)
+            organizedMesObj = organizedFullObjectMessages(organizedMessages, allMessages)
 
 
             // Sending MCC-Crew Chat from MCC Perspective

@@ -11,7 +11,7 @@ class Playbook extends Component {
 
         const mcc = {
             id: "mcc",
-            name: "Mission Control Center",
+            name: "MCC",
             role: "Ground",
             imageURL: "https://www.gazettenet.com/getattachment/c2db69d5-0338-444c-a4a7-2b58027e66cd/b6-nasa-logo-biz-072219-ph1",
             location: "earth"
@@ -20,7 +20,7 @@ class Playbook extends Component {
         const crew1 = {
             id: "crew1",
             name: "Kell",
-            role: "Astronaut 1",
+            role: "Astro 1",
             imageURL: "https://scitechdaily.com/images/NASA-Astronaut-Kjell-Lindgren.jpg",
             location: "mars"
         }
@@ -28,7 +28,7 @@ class Playbook extends Component {
         const crew2 = {
             id: "crew2",
             name: "Jessica",
-            role: "Astronaut 2",
+            role: "Astro 2",
             imageURL: "https://www.browndailyherald.com/wp-content/uploads/2019/04/Ryan_Jessica-Meir_CO_NASA.jpg",
             location: "mars"
         }
@@ -36,7 +36,7 @@ class Playbook extends Component {
         const crew3 = {
             id: "crew3",
             name: "Chris",
-            role: "Astronaut 3",
+            role: "Astro 3",
             imageURL: "https://www.nasa.gov/sites/default/files/thumbnails/image/1alt_jsc2018e095073_alt.png",
             location: "mars"
         }
@@ -44,7 +44,7 @@ class Playbook extends Component {
         const crew4 = {
             id: "crew4",
             name: "Alvin",
-            role: "Astronaut 4",
+            role: "Astro 4",
             imageURL: "https://www.space-boosters.co.uk/ekmps/shops/spaceboosters/images/nasa-astronaut-alvin-drew-8-x10-full-colour-portrait-1727-p.jpg",
             location: "mars"
         }
