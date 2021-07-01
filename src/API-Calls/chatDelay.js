@@ -1,9 +1,9 @@
 import moment from "moment";
 
 // Delay in Minutes
-const delay = {minutes: 1};
-const minuteDelay = 1
-const timerDelay = minuteDelay * 60000;
+const delay = {minutes: .5};
+const minuteDelay = .5
+const timerDelay = minuteDelay * 60 * 1000;
 
 // Sent Time
 let time = moment().utc().format()

@@ -38,10 +38,10 @@ class Playbook extends Component {
         this.getMessages();
 
         let delay = dateTime.delay;
-        // Get Messages every 30 seconds
+        // Get Messages every 2 seconds
         setInterval(()=> {
             this.getMessages();
-        }, 10000);
+        }, 2000);
 
 
     // Update time every second

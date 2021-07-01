@@ -28,27 +28,10 @@ class YourSide extends Component {
 
     countdown = () => {
         let currentTime = moment();
-        let deliveryTime = moment(this.props.eta)
-        let remainingMilliSeconds = deliveryTime.from(currentTime)
-
-
-        console.log(remainingMilliSeconds)
-
-        let timeRemaining = setInterval(function () {
-
-            if (remainingMilliSeconds <= 0) {
-                clearInterval(timeRemaining)
-                return
-            }
-
-            let remainingSeconds = (remainingMilliSeconds) / 1000
-            let minutesRemain = Math.floor(remainingSeconds / 60)
-            let secondsRemain = remainingSeconds % 60
-
-            let dislayTime = minutesRemain + ":" + secondsRemain;
-
-            return dislayTime
-        }, 1000)
+        let deliveryTime = moment(this.props.eta);
+        let remainingMilliSeconds = deliveryTime.diff(currentTime)
+        let display = moment(remainingMilliSeconds).format('mm:ss')
+        return display
     }
 
     sendingandDeliveryRender = () => {
@@ -112,8 +95,8 @@ class YourSide extends Component {
                             <Grid item container direction="row" justify="space-between" alignItems="flex-end">
                                 <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 
-                                <Box style={{position:"relative"}}>
-                                <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "25px", height: "25px", position:"absolute", bottom:"100%", right:"100%" }} />
+                                <Box style={{ position: "relative" }}>
+                                    <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "25px", height: "25px", position: "absolute", bottom: "100%", right: "100%" }} />
                                 </Box>
                             </Grid>
 

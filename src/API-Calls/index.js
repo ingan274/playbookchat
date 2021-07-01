@@ -3,7 +3,7 @@ import axios from "axios";
 import delay from "./chatDelay";
 
 const timerDelay = delay.timerDelay
-const timerDelayResponse = delay.timerDelay * 2
+const secondDelay = delay.timerDelay*2
 
 // Timed Updates
 
@@ -22,7 +22,7 @@ const timedUpdates = (response) => {
     let cycle = 2
     // updated Message to Sent
     let sent = setInterval(function () {
-        if (cycle === 1) {
+        if (cycle <= 1) {
             clearInterval(sent);
             return;
         }
@@ -31,13 +31,15 @@ const timedUpdates = (response) => {
     }, timerDelay);
 
     let responseExpected = setInterval(function () {
-        if (cycle === 0) {
+        if (cycle <= 0) {
             clearInterval(responseExpected);
             return;
         }
         updateRespAvail(messageUpdate)
         cycle--;
-    }, timerDelayResponse);
+    }, secondDelay);
+
+
 }
 
 
