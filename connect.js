@@ -1,9 +1,9 @@
 const { MongoClient } = require("mongodb");
 // // Connect to MongoDB
 // Connecting to Local Mongo URI
-const MONGO_URI = 'mongodb://localhost:27017';
+// const MONGO_URI = 'mongodb://localhost:27017';
 // Updated Mongo URI for Atlas
-// const MONGO_URI = 'mongodb+srv://mhcinasa2021:Nasa2021Mhci@playbook.iamit.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const MONGO_URI = 'mongodb+srv://mhcinasa2021:Nasa2021Mhci@playbook.iamit.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 const client = new MongoClient(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
