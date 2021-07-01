@@ -59,12 +59,15 @@ class New extends Component {
                         direction="row"
                         justify="flex-end"
                         alignItems="center">
-                        <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "40px", height: "40px" }} />
-
 
                         <Box item="true">
                             <Grid item container direction="column" alignItems="flex-start">
-                                <Box item="true" className="userNameRole">{this.props.userName}  <Box component="span" className="userRole">{this.props.userRole}</Box></Box>
+                                <Grid item container direction="row" justify="space-between" alignItems="flex-end">
+                                    <Box style={{ position: "relative" }}>
+                                        <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "25px", height: "25px", position: "absolute", bottom: "100%", left: "100%" }} />
+                                    </Box>
+                                    <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
+                                </Grid>
                                 <Box item="true"
                                     className="chatBubble otherChatBbl"
                                     justify="center"

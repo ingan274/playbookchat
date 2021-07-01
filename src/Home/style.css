@@ -5,6 +5,7 @@
 
 .clDiv {
     margin-left: 50vw;
+    position: relative;
 }
 
 /* Timline Side */
@@ -17,20 +18,25 @@
 
 /* Chat Side */
 .chatPanelL {
-    width: 6%;
+    width: 6vw;
     background-color: rgba(202, 202, 202, .5);
     position: fixed;
     padding-top: 1%;
     height: 100vh;
 }
 
+.currentDT {
+    font-size: 10px;
+}
+
 .buttons {
-    width: 60px;
-    height: 60px;
-    border-radius: 10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 5px;
     background-color: white;
     margin: 7px auto;
     text-align: center;
+    font-size: 12px;
 }
 
 .task1 {
@@ -43,8 +49,12 @@
 }
 
 .ChatBox {
-    margin-left: 12%;
+    margin-left: 6vw;
     margin-right: 2%
+}
+
+.chatMessDiv {
+    padding-bottom: 80px;
 }
 
 .otherMessage {
@@ -62,7 +72,7 @@
 
 /* Chat Bubble */
 .chatBubble {
-    font-size: 12px;
+    font-size: 13px;
     padding: 10px;
     border-radius: 5px;
     margin: 3px;
@@ -83,6 +93,10 @@
 .userRole {
     color: gray;
 }
+
+.userNameRole {
+    font-size: 10px;
+}
 /* Message Details */
 .messageDetails {
     position: absolute;
@@ -100,4 +114,26 @@
 
 .timeDetails {
     margin: 5px 0px;
+}
+
+/* Form Information */
+
+.form-control {
+    margin: 5px;
+    width: 80%;
+}
+
+.chatBoxInput {
+    background-color: white;
+    padding: 5px;
+    position: fixed;
+    z-index: 10;
+    bottom: 0px;
+    width: 43vw;
+    margin-left: 6vw;
+}
+
+.inputArea {
+    width: 100%;
+    margin-bottom: 3px;
 }

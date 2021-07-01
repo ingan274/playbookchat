@@ -105,7 +105,14 @@ class YourSide extends Component {
 
                     <Box item="true">
                         <Grid item container direction="column" alignItems="flex-start">
-                            <Box item="true" className="userNameRole">{this.props.userName}  <Box component="span" className="userRole">{this.props.userRole}</Box></Box>
+                            <Grid item container direction="row" justify="space-between" alignItems="flex-end">
+                                <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
+
+                                <Box style={{position:"relative"}}>
+                                <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "25px", height: "25px", position:"absolute", bottom:"100%", right:"100%" }} />
+                                </Box>
+                            </Grid>
+
                             <Box item="true"
                                 className="chatBubble"
                                 justify="center"
@@ -115,6 +122,7 @@ class YourSide extends Component {
                                 <Box className="messageSubject">{this.props.messageSubject}</Box>
                                 <Box className="messageText">{this.props.messageMessageBody}</Box>
                                 <Box>
+
                                     {this.messageStatus()}
                                     {this.sendingandDeliveryRender()}
                                 </Box>
@@ -122,8 +130,6 @@ class YourSide extends Component {
                             </Box>
                         </Grid>
                     </Box>
-
-                    <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "40px", height: "40px", margin: "10px" }} />
                 </Grid>
             </Box>
         )
