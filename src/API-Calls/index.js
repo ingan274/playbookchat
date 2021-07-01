@@ -4,18 +4,20 @@ import delay from "./chatDelay";
 
 const timerDelay = delay.timerDelay
 const timerDelayResponse = delay.timerDelay * 2
-let sentTime = delay.sentTime;
-let deliveredTime = delay.delTime;
 
 // Timed Updates
 
 // const updateToSent = message => axios.put("/api/timed", message)
-// const updateRespAvail = (message) => axios.put("/api/timed", message)
+// const updateRespAvail = (message) => axios.put("/api/timedtoEAR", message)
 const updateToSent = message => axios.put("http://localhost:3002/api/timed", message)
-const updateRespAvail = (message) => axios.put("http://localhost:3002/api/timed", message)
+const updateRespAvail = (message) => axios.put("http://localhost:3002/api/timed/toert", message)
 
 const timedUpdates = (response) => {
-    const messageID = response._id;
+
+    let messageUpdate = {
+        messageID: response.data._id,
+        groupChat: response.data.groupChat
+    }
 
     let cycle = 2
     // updated Message to Sent
@@ -24,8 +26,8 @@ const timedUpdates = (response) => {
             clearInterval(sent);
             return;
         }
-        updateToSent(messageID)
-        cycle = - 1;
+        updateToSent(messageUpdate)
+        cycle--;
     }, timerDelay);
 
     let responseExpected = setInterval(function () {
@@ -33,8 +35,8 @@ const timedUpdates = (response) => {
             clearInterval(responseExpected);
             return;
         }
-        updateRespAvail(messageID)
-        cycle = - 1;
+        updateRespAvail(messageUpdate)
+        cycle--;
     }, timerDelayResponse);
 }
 
@@ -145,8 +147,6 @@ const APICall = {
     getMCCCrew: (location, userID) => axios.get(`http://localhost:3002/api/mcccrew/${location}/${userID}`),
 
     newMCCCrew: (newMessage) => {
-        newMessage.timeSent = sentTime;
-        newMessage.timeDelivered = deliveredTime;
         axios.post("http://localhost:3002/api/mcccrew/", newMessage)
             .then(response => {
                 timedUpdates(response)
@@ -166,8 +166,6 @@ const APICall = {
     },
 
     replyMCCCrew: (replyMessage) => {
-        replyMessage.timeSent = sentTime;
-        replyMessage.timeDelivered = deliveredTime;
         axios.post("http://localhost:3002/api/mcccrew/reply", replyMessage)
             .then(response => {
                 timedUpdates(response)
@@ -178,8 +176,6 @@ const APICall = {
     getCrew: () => axios.get("http://localhost:3002/api/crew/"),
 
     newCrew: (newMessage) => {
-        newMessage.timeSent = sentTime;
-        newMessage.timeDelivered = deliveredTime;
         axios.post("/api/crew/", newMessage)
             .then(response => {
                 timedUpdates(response)
@@ -199,8 +195,6 @@ const APICall = {
     },
 
     replyCrew: (replyMessage) => {
-        replyMessage.timeSent = sentTime;
-        replyMessage.timeDelivered = deliveredTime;
         axios.post("http://localhost:3002/api/crew/reply", replyMessage)
             .then(response => {
                 timedUpdates(response)
@@ -213,8 +207,6 @@ const APICall = {
     newDraft: (newMessage) => axios.post("http://localhost:3002/api/draft/", newMessage),
 
     sendDraft: (sendMessage) => {
-        sendMessage.timeSent = sentTime;
-        sendMessage.timeDelivered = deliveredTime;
         axios.post("http://localhost:3002/api/draft/send", sendMessage)
             .then(response => {
                 timedUpdates(response)

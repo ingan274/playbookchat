@@ -6,8 +6,8 @@ const controller = require("../controller/messageController");
 router.route("/")
     .put(controller.updateToSent)
 
-// Chat Update (/toEAR)
-router.route("/toEAR")
+// Chat Update (api/timed/toert)
+router.route("/toert")
     .put(controller.updateToPossibleReply)
 
 module.exports = router;

@@ -1,17 +1,23 @@
+import moment from "moment";
+
 // Delay in Minutes
-const delay = .5;
-const timerDelay = delay * 60000;
+const delay = {minutes: 1};
+const minuteDelay = 1
+const timerDelay = minuteDelay * 60000;
 
 // Sent Time
-const time = new Date();
+let time = moment().utc().format()
 // console.log(time)
 
 // Delivered Time
-const delayedTimeStamp = new Date(time.getTime() + delay * 60000);
+let delayedTimeStamp = moment().add(delay).utc().format()
 // console.log(delayedTimeStamp)
 
-module.exports = {
+let timeObject = {
     sentTime: time,
     deliveredTime: delayedTimeStamp,
-    timerDelay: timerDelay
+    timerDelay: timerDelay,
+    delay: delay
 }
+
+export default timeObject;

@@ -1,6 +1,11 @@
+.timeHeader {
+    width: 100vw;
+    height: 3vh;
+    z-index: 8;
+}
 .splitScreen {
     width: 50vw;
-    height: 100vh;
+    height: 97vh;
 }
 
 .clDiv {
@@ -26,7 +31,8 @@
 }
 
 .currentDT {
-    font-size: 10px;
+    font-size: 12px;
+    position: fixed;
 }
 
 .buttons {

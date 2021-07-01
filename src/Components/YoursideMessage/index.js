@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./style.css";
 import { Grid, Box, Avatar } from '@material-ui/core';
 import MessageStatus from "../mesageStatusIcons"
+import moment from "moment";
 
 
 class YourSide extends Component {
@@ -17,18 +18,21 @@ class YourSide extends Component {
             )
         } else if (!this.props.sending && this.props.expresp) {
             // send, and response if avail
-            return <MessageStatus sent="rgba(112 , 210 , 122)" ert="rgba(78, 167, 87)" />
+            return <MessageStatus sent="rgba(112 , 210 , 122)" ert="rgba(112 , 210 , 122)" />
         } else {
             // sent, but time hasnt been reached for response
-            return <MessageStatus sent="rgba(112 , 210 , 122)" ert="rgba(245, 245, 245)" />
+            return <MessageStatus sent="rgba(112 , 210 , 122)" ert="rgba(245, 245, 245, .8)" />
         }
 
     }
 
     countdown = () => {
-        let currentTime = Date.now()
-        let deliveryTime = new Date(this.props.eta)
-        let remainingMilliSeconds = (currentTime - deliveryTime)
+        let currentTime = moment();
+        let deliveryTime = moment(this.props.eta)
+        let remainingMilliSeconds = deliveryTime.from(currentTime)
+
+
+        console.log(remainingMilliSeconds)
 
         let timeRemaining = setInterval(function () {
 

@@ -6,6 +6,7 @@ import API from "../API-Calls";
 import New from "../Components/New";
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
+import moment from "moment";
 
 class Playbook extends Component {
     constructor(props) {
@@ -26,34 +27,38 @@ class Playbook extends Component {
             messageBody: "",
             nextDeliveryTime: "",
             currentTime: "",
-            currentDate: ""
+            currentDate: "",
+            deliveryBSON: "",
+            currentBSON: "",
         }
-
     }
 
     // getting data functions
     componentDidMount = async () => {
         this.getMessages();
 
-        let delay = dateTime.timerDelay
+        let delay = dateTime.delay;
+        // Get Messages every 30 seconds
+        setInterval(()=> {
+            this.getMessages();
+        }, 10000);
 
 
+    // Update time every second
         setInterval(() => {
 
-            let now = Date.now()
-            let timeNOw = new Date(now)
-            let nowDateTime = timeNOw.toISOString()
-            let nowTimestamp=(this.getTime(nowDateTime).slice(0, 8))
-            let nowDate = nowDateTime.slice(0,10)
+            let time = moment().utc().format()
+            let nowTimestamp = (this.getTime(time))
+            let nowDate = time.slice(0, 10)
 
-            const deltime = Date.now() + delay
-            let delayedTimeStamp = new Date(deltime)
-            delayedTimeStamp = delayedTimeStamp.toISOString()
-            let deliveryTime = (this.getTime(delayedTimeStamp).slice(0, 8))
+            let delayedTimeStamp = moment().add(delay).utc().format()
+            let deliveryTime = (this.getTime(delayedTimeStamp))
             this.setState({
-                nextDeliveryTime: deliveryTime, 
+                nextDeliveryTime: deliveryTime,
                 currentTime: nowTimestamp,
-                currentDate: nowDate
+                currentDate: nowDate,
+                currentBSON: time.valueOf(),
+                deliveryBSON: delayedTimeStamp.valueOf(),
             })
 
         }, 1000);
@@ -61,11 +66,9 @@ class Playbook extends Component {
 
     getMessages = () => {
         API.getMCCCrew((this.state.userLocation), (this.state.userId)).then((res) => {
-
             this.setState({
                 chat: res.data
             })
-
         })
 
     }
@@ -73,6 +76,7 @@ class Playbook extends Component {
     getTime = (time) => {
 
         let timestamp = time.slice(11,)
+        timestamp = timestamp.slice(0, 8)
 
         return timestamp
     }
@@ -99,6 +103,39 @@ class Playbook extends Component {
         })
     }
 
+    handleSubmitMessage = event => {
+        if (this.state.subject && this.state.messageBody) {
+            let locationBool;
+            if (this.state.userLocation === "mars") {
+                locationBool = true;
+            } else {
+                locationBool = false;
+            }
+            let newMesssage = {
+                groupChat: "mcc-crew-chat",
+                message: {
+                    subject: this.state.subject,
+                    messageBody: this.state.messageBody
+                },
+                urgent: false,
+                priority: false,
+                sender: this.state.userId,
+                location: locationBool,
+                sentTime: this.state.currentBSON,
+                deliveryTime: this.state.deliveryBSON,
+            }
+
+            API.newMCCCrew(newMesssage);
+
+            this.setState({
+                subject: "",
+                messageBody: "",
+            })
+            this.getMessages();
+        }
+
+
+    }
 
     // Renderings
     renderMessages = () => {
@@ -133,30 +170,37 @@ class Playbook extends Component {
         return (
             <Grid
                 container
-                direction="row"
+                direction="column"
                 justify="flex-start"
                 alignItems="center"
             >
-                <Box
-                    item="true"
-                    className="timeline splitScreen">
-                    Timeline Here
+                <Grid item container direction="row" className="timeHeader" alignItems="center" justify="center">
+                    <Box className="currentDT" mr={3}>Date: {this.state.currentDate}  Current Time: {this.state.currentTime}</Box>
+                </Grid>
+                <Grid
+                    item container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="center"
+                >
+                    <Box
+                        item="true"
+                        className="timeline splitScreen">
+                        Timeline Here
                 </Box>
-                <Box
-                    item="true"
-                    className="clDiv splitScreen">
+                    <Box
+                        item="true"
+                        className="clDiv splitScreen">
 
-                    <Box className="chatPanelL">
-                        <Box className="currentDT">{this.state.currentDate}</Box>
-                        <Box className="currentDT">{this.state.currentTime}</Box>
-                        <Box className="buttons">ML</Box>
-                        <Box className="buttons current">MCC & Crew</Box>
-                        <Box className="buttons">Crew</Box>
-                        <Box className="buttons task1">Task 1</Box>
-                    </Box>
-                    <Box>
-                        {this.renderMessages()}
-                        {/* <form className="text-center">
+                        <Box className="chatPanelL">
+                            <Box className="buttons">ML</Box>
+                            <Box className="buttons current">MCC & Crew</Box>
+                            <Box className="buttons">Crew</Box>
+                            <Box className="buttons task1">Task 1</Box>
+                        </Box>
+                        <Box>
+                            {this.renderMessages()}
+                            {/* <form className="text-center">
                             <div className="form-group">
                                 <input
                                     type="text"
@@ -170,40 +214,41 @@ class Playbook extends Component {
                             <button className="btn" onClick={this.handleFormSubmit}>Search</button>
                         </form> */}
 
-                        <Box className="ChatBox chatBoxInput">
-                            <Grid
-                                container
-                                direction="row"
-                                justify="space-between"
-                                alignItems="center">
-                                <AttachFileRoundedIcon style={{ width: "20px", height: "20px", marginLeft: "10px", color: "grey" }} />
-                                <form className="form-control">
-                                <input
-                                        type="text"
-                                        className="inputArea"
-                                        name="subject"
-                                        value={this.state.subject}
-                                        onChange={this.handleInputChange}
-                                        placeholder="Subject"
-                                    />
-                                    <input
-                                        type="text"
-                                        className="inputArea"
-                                        name="messageBody"
-                                        value={this.state.messageBody}
-                                        onChange={this.handleInputChange}
-                                        placeholder={`Estimated Time of Arrival: ${this.state.nextDeliveryTime}`}
-                                    />
-                                </form>
-                                <SendRoundedIcon style={{ width: "20px", height: "20px", margin: "0px 5px", color: "grey" }} onClick={this.handleFormSubmit} />
+                            <Box className="ChatBox chatBoxInput">
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justify="space-between"
+                                    alignItems="center">
+                                    <AttachFileRoundedIcon style={{ width: "20px", height: "20px", marginLeft: "10px", color: "grey" }} />
+                                    <form className="form-control">
+                                        <input
+                                            type="text"
+                                            className="inputArea"
+                                            name="subject"
+                                            value={this.state.subject}
+                                            onChange={this.handleInputChange}
+                                            placeholder="Subject"
+                                        />
+                                        <input
+                                            type="text"
+                                            className="inputArea"
+                                            name="messageBody"
+                                            value={this.state.messageBody}
+                                            onChange={this.handleInputChange}
+                                            placeholder={`Estimated Time of Arrival: ${this.state.nextDeliveryTime}`}
+                                        />
+                                    </form>
+                                    <SendRoundedIcon style={{ width: "20px", height: "20px", margin: "0px 5px", color: "grey" }} onClick={this.handleSubmitMessage} />
 
-                            </Grid>
+                                </Grid>
 
+                            </Box>
                         </Box>
+
+
                     </Box>
-
-
-                </Box>
+                </Grid>
             </Grid>
         )
     }
