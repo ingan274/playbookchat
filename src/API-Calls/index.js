@@ -48,8 +48,6 @@ const APICall = {
     getMCCCrew: (location, userID) => axios.get(`/api/mcccrew/${location}/${userID}`),
 
     newMCCCrew: (newMessage) => {
-        newMessage.timeSent = sentTime;
-        newMessage.timeDelivered = deliveredTime;
         axios.post("/api/mcccrew/", newMessage)
             .then(response => {
                 timedUpdates(response)
@@ -69,8 +67,6 @@ const APICall = {
     },
 
     replyMCCCrew: (replyMessage) => {
-        replyMessage.timeSent = sentTime;
-        replyMessage.timeDelivered = deliveredTime;
         axios.post("/api/mcccrew/reply", replyMessage)
             .then(response => {
                 timedUpdates(response)
@@ -81,8 +77,6 @@ const APICall = {
     getCrew: () => axios.get("/api/crew/"),
 
     newCrew: (newMessage) => {
-        newMessage.timeSent = sentTime;
-        newMessage.timeDelivered = deliveredTime;
         axios.post("/api/crew/", newMessage)
             .then(response => {
                 timedUpdates(response)
@@ -102,8 +96,6 @@ const APICall = {
     },
 
     replyCrew: (replyMessage) => {
-        replyMessage.timeSent = sentTime;
-        replyMessage.timeDelivered = deliveredTime;
         axios.post("/api/crew/reply", replyMessage)
             .then(response => {
                 timedUpdates(response)
@@ -116,8 +108,6 @@ const APICall = {
     newDraft: (newMessage) => axios.post("/api/draft/", newMessage),
 
     sendDraft: (sendMessage) => {
-        sendMessage.timeSent = sentTime;
-        sendMessage.timeDelivered = deliveredTime;
         axios.post("/api/draft/send", sendMessage)
             .then(response => {
                 timedUpdates(response)
