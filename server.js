@@ -24,7 +24,7 @@ app.use(express.static("public"));
 // // If its production environment!
 if (process.env.NODE_ENV === 'production') {
     // console.log('YOU ARE IN THE PRODUCTION ENV');
-    app.use('/static', express.static(path.join(__dirname, './build/static')));
+    app.use('/static', express.static(path.join(__dirname, './client/build/static')));
 }
 // // Start the API server
 app.listen(PORT, function () {
