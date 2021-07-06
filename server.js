@@ -10,10 +10,7 @@ const morgan = require('morgan');
 const app = express();
 const PORT = process.env.PORT || 3002;
 
-// // Start the API server
-app.listen(PORT, function () {
-    console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
-});
+
 
 // // Middlewares
 app.use(express.urlencoded({ extended: true }));
@@ -29,3 +26,9 @@ if (process.env.NODE_ENV === 'production') {
     // console.log('YOU ARE IN THE PRODUCTION ENV');
     app.use('/static', express.static(path.join(__dirname, './build/static')));
 }
+// // Start the API server
+app.listen(PORT, function () {
+    console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+});
+
+

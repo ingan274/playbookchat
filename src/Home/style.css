@@ -77,6 +77,13 @@
 }
 
 /* Chat Bubble */
+
+.noMessages {
+    font-size: 10px;
+    padding-top: 10px;
+    text-align: center;
+}
+
 .chatBubble {
     font-size: 13px;
     padding: 10px;

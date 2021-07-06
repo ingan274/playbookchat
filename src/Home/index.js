@@ -39,12 +39,12 @@ class Playbook extends Component {
 
         let delay = dateTime.delay;
         // Get Messages every 2 seconds
-        setInterval(()=> {
+        setInterval(() => {
             this.getMessages();
         }, 2000);
 
 
-    // Update time every second
+        // Update time every second
         setInterval(() => {
 
             let time = moment().utc().format()
@@ -139,31 +139,39 @@ class Playbook extends Component {
 
     // Renderings
     renderMessages = () => {
-        return (
-            <Box className="ChatBox chatMessDiv" item="true">
-                {this.state.chat.map((item, index) => {
+        if (this.state.chat.length > 0) {
+            return (
+                <Box className="ChatBox chatMessDiv" item="true">
+                    {this.state.chat.map((item, index) => {
 
-                    return (
-                        <New
-                            key={index.toString()}
-                            messageID={item._id}
-                            location={item.location}
-                            sending={item.sending}
-                            expresp={item.expected_resp}
-                            messageSubject={item.message.subject}
-                            messageMessageBody={item.message.messageBody}
-                            userName={this.getUserInfo(item.sender).name}
-                            userRole={this.getUserInfo(item.sender).role}
-                            userId={item.sender}
-                            userImageURL={this.getUserInfo(item.sender).imageURL}
-                            timeSent={this.getTime(item.timeSent)}
-                            timeDelivered={this.getTime(item.timeDelivered)}
-                            eta={item.timeDelivered}
-                        />
-                    )
-                })}
-            </Box>
-        )
+                        return (
+                            <New
+                                key={index.toString()}
+                                messageID={item._id}
+                                location={item.location}
+                                sending={item.sending}
+                                expresp={item.expected_resp}
+                                messageSubject={item.message.subject}
+                                messageMessageBody={item.message.messageBody}
+                                userName={this.getUserInfo(item.sender).name}
+                                userRole={this.getUserInfo(item.sender).role}
+                                userId={item.sender}
+                                userImageURL={this.getUserInfo(item.sender).imageURL}
+                                timeSent={this.getTime(item.timeSent)}
+                                timeDelivered={this.getTime(item.timeDelivered)}
+                                eta={item.timeDelivered}
+                            />
+                        )
+                    })}
+                </Box>
+            )
+        } else {
+            return (
+                <Box className="ChatBox chatMessDiv" item="true">
+                    <Box className="noMessages">No Messages so far. Compose a message below.</Box>
+                </Box>
+            )
+        }
     }
 
     render = () => {

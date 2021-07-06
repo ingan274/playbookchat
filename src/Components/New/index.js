@@ -8,7 +8,18 @@ import YourSideMess from "../YoursideMessage"
 class New extends Component {
 
     render = () => {
+        let userObj = JSON.parse(localStorage.getItem("User"));
+        let clientLocation = userObj.location
+        let messageLocation;
+        
         if (this.props.location) {
+            messageLocation = 'mars'
+        } else {
+            messageLocation = 'earth'
+        }
+
+
+        if (clientLocation ===  messageLocation) {
 
             if (this.props.sending) {
                 return (

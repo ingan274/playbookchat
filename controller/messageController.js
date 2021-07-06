@@ -1,10 +1,26 @@
 const { ObjectID } = require("bson");
-// const express = require("express");
-const collections = require("./model");
+// const db = require("../server");
+const mongoConnect = require('../connect');
 
-const mcccrew = collections.mcccrew;
-const crew = collections.crew;
-const drafts = collections.drafts;
+let mcccrew;
+let crew;
+let drafts;
+// // Connect to MongoDB
+// Connecting to Local Mongo URI
+// const MONGO_URI = 'mongodb://localhost:27017';
+// Updated Mongo URI for Atlas
+const MONGO_URI = "mongodb+srv://mhcinasa2021:Nasa2021Mhci@playbook.iamit.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// mongodb+srv://mhcinasa2021:<password>@playbook.iamit.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+const dbs = async () => {
+    let dbconnected = await mongoConnect.connection(MONGO_URI)
+
+    mcccrew = dbconnected.mgdbmcccrew
+    crew = dbconnected.mgdbcrew
+    drafts = dbconnected.mgdbdrafts
+
+}
+
+dbs()
 
 
 const organizingMessages = (myTimeMessages) => {
@@ -64,12 +80,18 @@ module.exports = {
             // console.log(crewMessages)
 
             // organizingMessages(myTimeMessages, otherTimeMessages);
-            let organizedMessages = organizingMessages(allMessages);
 
-            organizedMesObj = organizedFullObjectMessages(organizedMessages, allMessages)
+            if (allMessages.length > 0) {
+                let organizedMessages = organizingMessages(allMessages);
 
-            // Sending MCC-Crew Chat from Crew Perspective
-            res.send(organizedMesObj);
+                organizedMesObj = organizedFullObjectMessages(organizedMessages, allMessages)
+
+                // Sending MCC-Crew Chat from Crew Perspective
+                res.send(organizedMesObj);
+            } else {
+                res.send([]);
+            }
+
 
         } else if (location === "earth") {
             // MCC Perspective
@@ -83,14 +105,17 @@ module.exports = {
 
             let allMessages = userSendingMesage.concat(deliveredMessages)
 
-            // organizingMessages(myTimeMessages, otherTimeMessages);
-            let organizedMessages = organizingMessages(allMessages);
+            if (allMessages.length > 0) {
+                let organizedMessages = organizingMessages(allMessages);
 
-            organizedMesObj = organizedFullObjectMessages(organizedMessages, allMessages)
+                organizedMesObj = organizedFullObjectMessages(organizedMessages, allMessages)
 
+                // Sending MCC-Crew MCC from Crew Perspective
+                res.send(organizedMesObj);
+            } else {
+                res.send([]);
+            }
 
-            // Sending MCC-Crew Chat from MCC Perspective
-            res.send(organizedMesObj);
         }
 
 
@@ -346,7 +371,6 @@ module.exports = {
                 res.send(404)
             });
     },
-
 
     // reply Message in MCC Crew
     replyMessageMCCCrew: async (req, res) => {

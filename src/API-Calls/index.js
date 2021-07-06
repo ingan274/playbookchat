@@ -7,10 +7,10 @@ const secondDelay = delay.timerDelay*2
 
 // Timed Updates
 
-const updateToSent = message => axios.put("/api/timed", message)
-const updateRespAvail = (message) => axios.put("/api/timedtoEAR", message)
-// const updateToSent = message => axios.put("http://localhost:3002/api/timed", message)
-// const updateRespAvail = (message) => axios.put("http://localhost:3002/api/timed/toert", message)
+// const updateToSent = message => axios.put("/api/timed", message)
+// const updateRespAvail = (message) => axios.put("/api/timedtoEAR", message)
+const updateToSent = message => axios.put("http://localhost:3002/api/timed", message)
+const updateRespAvail = (message) => axios.put("http://localhost:3002/api/timed/toert", message)
 
 const timedUpdates = (response) => {
 
@@ -134,95 +134,95 @@ const APICall = {
     deleteReminder: (reminder) => axios.put("/api/reminder/remove", reminder),
 }
 
-// const APICall = {
-//     // MCC Crew Chat
-//     getMCCCrew: (location, userID) => axios.get(`http://localhost:3002/api/mcccrew/${location}/${userID}`),
+const APICallLocal = {
+    // MCC Crew Chat
+    getMCCCrew: (location, userID) => axios.get(`http://localhost:3002/api/mcccrew/${location}/${userID}`),
 
-//     newMCCCrew: (newMessage) => {
-//         axios.post("http://localhost:3002/api/mcccrew/", newMessage)
-//             .then(response => {
-//                 timedUpdates(response)
-//             })
-//     },
+    newMCCCrew: (newMessage) => {
+        axios.post("http://localhost:3002/api/mcccrew/", newMessage)
+            .then(response => {
+                timedUpdates(response)
+            })
+    },
 
-//     reactMCCCrew: (update) => {
-//         let cycle = 1;
-//         let reaction = setInterval(function () {
-//             if (cycle === 0) {
-//                 clearInterval(reaction);
-//                 return;
-//             }
-//             axios.put("http://localhost:3002/api/mcccrew/", update)
-//             cycle = - 1;
-//         }, timerDelay);
-//     },
+    reactMCCCrew: (update) => {
+        let cycle = 1;
+        let reaction = setInterval(function () {
+            if (cycle === 0) {
+                clearInterval(reaction);
+                return;
+            }
+            axios.put("http://localhost:3002/api/mcccrew/", update)
+            cycle = - 1;
+        }, timerDelay);
+    },
 
-//     replyMCCCrew: (replyMessage) => {
-//         axios.post("http://localhost:3002/api/mcccrew/reply", replyMessage)
-//             .then(response => {
-//                 timedUpdates(response)
-//             })
-//     },
+    replyMCCCrew: (replyMessage) => {
+        axios.post("http://localhost:3002/api/mcccrew/reply", replyMessage)
+            .then(response => {
+                timedUpdates(response)
+            })
+    },
 
-//     // Crew Chat
-//     getCrew: () => axios.get("http://localhost:3002/api/crew/"),
+    // Crew Chat
+    getCrew: () => axios.get("http://localhost:3002/api/crew/"),
 
-//     newCrew: (newMessage) => {
-//         axios.post("/api/crew/", newMessage)
-//             .then(response => {
-//                 timedUpdates(response)
-//             })
-//     },
+    newCrew: (newMessage) => {
+        axios.post("/api/crew/", newMessage)
+            .then(response => {
+                timedUpdates(response)
+            })
+    },
 
-//     reactCrew: (update) => {
-//         let cycle = 1;
-//         let reaction = setInterval(function () {
-//             if (cycle === 0) {
-//                 clearInterval(reaction);
-//                 return;
-//             }
-//             axios.put("http://localhost:3002/api/crew/", update)
-//             cycle = - 1;
-//         }, timerDelay);
-//     },
+    reactCrew: (update) => {
+        let cycle = 1;
+        let reaction = setInterval(function () {
+            if (cycle === 0) {
+                clearInterval(reaction);
+                return;
+            }
+            axios.put("http://localhost:3002/api/crew/", update)
+            cycle = - 1;
+        }, timerDelay);
+    },
 
-//     replyCrew: (replyMessage) => {
-//         axios.post("http://localhost:3002/api/crew/reply", replyMessage)
-//             .then(response => {
-//                 timedUpdates(response)
-//             })
-//     },
+    replyCrew: (replyMessage) => {
+        axios.post("http://localhost:3002/api/crew/reply", replyMessage)
+            .then(response => {
+                timedUpdates(response)
+            })
+    },
 
-//     // Drafts
-//     getDrafts: (userID) => axios.get(`http://localhost:3002/api/mcccrew/${userID}`),
+    // Drafts
+    getDrafts: (userID) => axios.get(`http://localhost:3002/api/mcccrew/${userID}`),
 
-//     newDraft: (newMessage) => axios.post("http://localhost:3002/api/draft/", newMessage),
+    newDraft: (newMessage) => axios.post("http://localhost:3002/api/draft/", newMessage),
 
-//     sendDraft: (sendMessage) => {
-//         axios.post("http://localhost:3002/api/draft/send", sendMessage)
-//             .then(response => {
-//                 timedUpdates(response)
-//             })
-//     },
+    sendDraft: (sendMessage) => {
+        axios.post("http://localhost:3002/api/draft/send", sendMessage)
+            .then(response => {
+                timedUpdates(response)
+            })
+    },
 
-//     editDraft: (update) => axios.put("http://localhost:3002/api/draft/", update),
+    editDraft: (update) => axios.put("http://localhost:3002/api/draft/", update),
 
-//     deleteDraft: (deleteMessage) => axios.delete("/api/draft/", deleteMessage),
+    deleteDraft: (deleteMessage) => axios.delete("/api/draft/", deleteMessage),
 
-//     // Thread
-//     getThread: (parentThreadID, groupChat, location) => axios.get(`/api/mcccrew/${parentThreadID}/${groupChat}/${location}`),
+    // Thread
+    getThread: (parentThreadID, groupChat, location) => axios.get(`/api/mcccrew/${parentThreadID}/${groupChat}/${location}`),
 
-//     // Pinned
-//     getPinned: (userID, location) => axios.get(`/api/mcccrew/${userID}/${location}`),
+    // Pinned
+    getPinned: (userID, location) => axios.get(`/api/mcccrew/${userID}/${location}`),
 
-//     addPin: (pin) => axios.put("/api/pin/", pin),
+    addPin: (pin) => axios.put("/api/pin/", pin),
 
-//     deletePin: (pin) => axios.put("/api/pin/remove", pin),
+    deletePin: (pin) => axios.put("/api/pin/remove", pin),
 
-//     // Reminder
-//     addReminder: (reminder) => axios.put("/api/reminder/", reminder),
+    // Reminder
+    addReminder: (reminder) => axios.put("/api/reminder/", reminder),
 
-//     deleteReminder: (reminder) => axios.put("/api/reminder/remove", reminder),
-// }
+    deleteReminder: (reminder) => axios.put("/api/reminder/remove", reminder),
+}
 
-export default APICall;
+export default APICallLocal;
