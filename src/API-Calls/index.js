@@ -225,4 +225,4 @@ const APICallLocal = {
     deleteReminder: (reminder) => axios.put("/api/reminder/remove", reminder),
 }
 
-export default APICallLocal;
+export default APICall;

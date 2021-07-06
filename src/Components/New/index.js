@@ -25,7 +25,7 @@ class New extends Component {
                 return (
                     <YourSideMess
                         opacity="50%"
-                        key={this.props.key}
+                        key={this.props.messageID}
                         messageID={this.props.messageID}
                         sending={this.props.sending}
                         expresp={this.props.expresp}
@@ -45,7 +45,7 @@ class New extends Component {
                 return (
                     <YourSideMess
                         opacity="100%"
-                        key={this.props.key}
+                        key={this.props.messageID}
                         messageID={this.props.messageID}
                         sending={this.props.sending}
                         expresp={this.props.expresp}
