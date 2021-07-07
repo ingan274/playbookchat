@@ -2,7 +2,6 @@
   "name": "playbookchat",
   "version": "0.1.0",
   "private": true,
-  "main": "server.js",
   "dependencies": {
     "axios": "^0.21.1",
     "express": "^4.17.1",

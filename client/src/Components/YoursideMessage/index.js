@@ -7,7 +7,15 @@ import moment from "moment";
 
 class YourSide extends Component {
     sendingText = () => {
-        return (this.props.sending ? "ETA" : "Delivered");
+        // return (this.props.sending ? "ETA" : "Estimated Deliverey");
+
+        if (this.props.sending && !this.props.expresp) {
+            return "ETA"
+        } else if (!this.props.sending && !this.props.expresp) {
+            return "Estimated Delivery"
+        } else if (!this.props.sending && this.props.expresp) {
+            return "Delivery"
+        }
     };
 
     messageStatus = () => {
