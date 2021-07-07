@@ -1,11 +1,9 @@
 // const router = require("./router");
-require('dotenv').config();
 const path = require('path');
 const express = require("express");
 const router = require("./router/index");
 const cors = require('cors');
 const morgan = require('morgan');
-
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -19,7 +17,6 @@ app.use(cors());
 app.use(morgan('combined'));
 // // Add routes - this connects and activates API
 app.use(router);
-app.use(express.static("public"));
 
 // // If its production environment!
 if (process.env.NODE_ENV === 'production') {

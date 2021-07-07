@@ -1,11 +1,12 @@
 const { ObjectID } = require("bson");
 // const db = require("../server");
 const mongoConnect = require('../connect');
+// const mongoConnect = require('../server');
 
 let mcccrew;
 let crew;
 let drafts;
-// // Connect to MongoDB
+// Connect to MongoDB
 // Connecting to Local Mongo URI
 // const MONGO_URI = 'mongodb://localhost:27017';
 // Updated Mongo URI for Atlas
@@ -13,6 +14,7 @@ const MONGO_URI = "mongodb+srv://mhcinasa2021:Nasa2021Mhci@playbook.iamit.mongod
 // mongodb+srv://mhcinasa2021:<password>@playbook.iamit.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 const dbs = async () => {
     let dbconnected = await mongoConnect.connection(MONGO_URI)
+    // console.log(dbconnected)
 
     mcccrew = dbconnected.mgdbmcccrew
     crew = dbconnected.mgdbcrew
