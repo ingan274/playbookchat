@@ -8,8 +8,7 @@
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "mongodb": "^3.6.9",
-    "morgan": "^1.10.0",
-    "nodemon": "^2.0.7"
+    "morgan": "^1.10.0"
   },
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
@@ -25,6 +24,6 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^4.1.2",
-    "nodemon": "^1.18.7"
+    "nodemon": "^2.0.9"
   }
 }
