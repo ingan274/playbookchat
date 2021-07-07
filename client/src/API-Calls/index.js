@@ -7,10 +7,10 @@ const secondDelay = delay.timerDelay*2
 
 // Timed Updates
 
-// const updateToSent = message => axios.put("/api/timed", message)
-// const updateRespAvail = (message) => axios.put("/api/timedtoEAR", message)
-const updateToSent = message => axios.put("http://localhost:3002/api/timed", message)
-const updateRespAvail = (message) => axios.put("http://localhost:3002/api/timed/toert", message)
+const updateToSent = message => axios.put("/api/timed", message)
+const updateRespAvail = (message) => axios.put("/api/timedtoEAR", message)
+// const updateToSent = message => axios.put("http://localhost:3002/api/timed", message)
+// const updateRespAvail = (message) => axios.put("http://localhost:3002/api/timed/toert", message)
 
 const timedUpdates = (response) => {
 
