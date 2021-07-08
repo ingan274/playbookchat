@@ -47,7 +47,6 @@ const timedUpdates = (response) => {
 
 
 const APICall = {
-    getImage: (path) => axios.get(`${path}`),
     // MCC Crew Chat
     getMCCCrew: (location, userID) => axios.get(`/api/mcccrew/${location}/${userID}`),
 

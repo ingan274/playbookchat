@@ -10,9 +10,14 @@ import moment from "moment";
 
 let imageData;
 
+let url = new URL(window.location.href)
+let hostname = url.hostname
+console.log(hostname)
+
 class Playbook extends Component {
     constructor(props) {
         super(props);
+        
 
         let userObj = JSON.parse(localStorage.getItem("User"));
         let profileArray = JSON.parse(localStorage.getItem("Profiles"));
@@ -185,6 +190,7 @@ class Playbook extends Component {
                     {this.state.chat.map((item, index) => {
                         // console.log(item)
                         if (item.attachment) {
+                            // console.log(`${hostname}/${item.attachment.imageData}`)
                             return (
                                 <New
                                     key={index.toString()}
@@ -202,7 +208,7 @@ class Playbook extends Component {
                                     timeDelivered={this.getTime(item.timeDelivered)}
                                     eta={item.timeDelivered}
                                     attachment={item.attachment.attachment}
-                                    attachmentSrc={item.attachment.imageData}
+                                    attachmentSrc={`/${item.attachment.imageData}`}
                                 />
                             )
                         } else {

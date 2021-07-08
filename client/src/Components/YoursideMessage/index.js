@@ -3,6 +3,7 @@ import "./style.css";
 import { Grid, Box, Avatar } from '@material-ui/core';
 import MessageStatus from "../mesageStatusIcons"
 import moment from "moment";
+// import API from '../../API-Calls'
 
 
 class YourSide extends Component {
@@ -77,7 +78,7 @@ class YourSide extends Component {
 
     addPhoto = () => {
         if (this.props.attachmentSrc) {
-            return <img src={`${this.props.attachmentSrc}`} alt="upload" className="messageImage" />
+            return <img src={this.props.attachmentSrc} alt="upload" className="messageImage" />
         }
     }
 

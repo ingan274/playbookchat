@@ -15,7 +15,7 @@ app.use(express.json());
 // app.use(morgan('combined'));
 // // Add routes - this connects and activates API
 app.use(router);
-app.use(express.static(path.join(__dirname, './client/public')));
+// app.use(express.static(path.join(__dirname, './client/public')));
 
 // // If its production environment!
 if (process.env.NODE_ENV === 'production') {
