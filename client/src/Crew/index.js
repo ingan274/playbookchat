@@ -1,12 +1,14 @@
 import "./style.css";
 import React, { Component } from "react";
 import { Grid, Box } from '@material-ui/core';
-import dateTime from "../API-Calls/chatDelay"
 import API from "../API-Calls";
-import New from "../Components/New";
+import New from "../Components/NewCrew";
 import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import moment from "moment";
+import {
+    Link,
+} from "react-router-dom";
 
 let imageData;
 
@@ -17,7 +19,7 @@ console.log(hostname)
 class Playbook extends Component {
     constructor(props) {
         super(props);
-        
+
 
         let userObj = JSON.parse(localStorage.getItem("User"));
         let profileArray = JSON.parse(localStorage.getItem("Profiles"));
@@ -35,7 +37,6 @@ class Playbook extends Component {
             nextDeliveryTime: "",
             currentTime: "",
             currentDate: "",
-            deliveryBSON: "",
             currentBSON: "",
 
             uploadedImage: "",
@@ -45,8 +46,6 @@ class Playbook extends Component {
     // getting data functions
     componentDidMount = async () => {
         this.getMessages();
-
-        let delay = dateTime.delay;
         // Get Messages every 2 seconds
         setInterval(() => {
             this.getMessages();
@@ -60,21 +59,17 @@ class Playbook extends Component {
             let nowTimestamp = (this.getTime(time))
             let nowDate = time.slice(0, 10)
 
-            let delayedTimeStamp = moment().add(delay).utc().format()
-            let deliveryTime = (this.getTime(delayedTimeStamp))
             this.setState({
-                nextDeliveryTime: deliveryTime,
                 currentTime: nowTimestamp,
                 currentDate: nowDate,
-                currentBSON: time.valueOf(),
-                deliveryBSON: delayedTimeStamp.valueOf(),
+                currentBSON: time.valueOf()
             })
 
         }, 1000);
     }
 
     getMessages = () => {
-        API.getMCCCrew((this.state.userLocation), (this.state.userId)).then((res) => {
+        API.getCrew(this.state.userId).then((res) => {
             this.setState({
                 chat: res.data
             })
@@ -97,7 +92,7 @@ class Playbook extends Component {
                 return {
                     name: user.name,
                     imageURL: user.imageURL,
-                    role: user.role
+                    role: user.roles
                 }
             }
         }
@@ -115,27 +110,17 @@ class Playbook extends Component {
     handleSubmitMessage = event => {
         let newMesssage;
         if (this.state.messageBody && this.state.uploadedImage === "") {
-            let locationBool;
-            if (this.state.userLocation === "mars") {
-                locationBool = true;
-            } else {
-                locationBool = false;
-            }
+
             newMesssage = {
-                groupChat: "mcc-crew-chat",
                 message: {
                     subject: this.state.subject,
                     messageBody: this.state.messageBody
                 },
-                urgent: false,
-                priority: false,
                 sender: this.state.userId,
-                location: locationBool,
-                sentTime: this.state.currentBSON,
-                deliveryTime: this.state.deliveryBSON,
+                deliveryTime: this.state.currentBSON,
             }
 
-            API.newMCCCrew(newMesssage);
+            API.newCrew(newMesssage);
 
             this.setState({
                 subject: "",
@@ -143,12 +128,6 @@ class Playbook extends Component {
             })
             this.getMessages();
         } else if (this.state.uploadedImage !== "") {
-            let locationBool;
-            if (this.state.userLocation === "mars") {
-                locationBool = true;
-            } else {
-                locationBool = false;
-            }
 
             let message = {
                 // subject: this.state.subject,
@@ -158,18 +137,13 @@ class Playbook extends Component {
             newMesssage = new FormData();
 
             // This turns all booleans into strings!!
-            newMesssage.append("groupChat", "mcc-crew-chat")
             newMesssage.append("message", message)
-            newMesssage.append("urgent", false)
-            newMesssage.append("priority", false)
             newMesssage.append("sender", this.state.userId)
-            newMesssage.append("location", locationBool)
-            newMesssage.append("sentTime", this.state.currentBSON)
-            newMesssage.append("deliveryTime", this.state.deliveryBSON)
+            newMesssage.append("deliveryTime", this.state.currentBSON)
             newMesssage.append("imageData", imageData)
             newMesssage.append("imageName", "image" + Date.now())
 
-            API.newMCCCrewPhoto(newMesssage);
+            API.newCrewPhoto(newMesssage);
             this.setState({
                 subject: "",
                 messageBody: "",
@@ -203,10 +177,9 @@ class Playbook extends Component {
                                     userName={this.getUserInfo(item.sender).name}
                                     userRole={this.getUserInfo(item.sender).role}
                                     userId={item.sender}
-                                    userImageURL={this.getUserInfo(item.sender).imageURL}
-                                    timeSent={this.getTime(item.timeSent)}
+                                    timeSent={this.getTime(item.timeDelivered)}
                                     timeDelivered={this.getTime(item.timeDelivered)}
-                                    eta={item.timeDelivered}
+                                    userImageURL={this.getUserInfo(item.sender).imageURL}
                                     attachment={item.attachment.attachment}
                                     attachmentSrc={`/${item.attachment.imageData}`}
                                 />
@@ -223,11 +196,10 @@ class Playbook extends Component {
                                     messageMessageBody={item.message.messageBody}
                                     userName={this.getUserInfo(item.sender).name}
                                     userRole={this.getUserInfo(item.sender).role}
+                                    timeSent={this.getTime(item.timeDelivered)}
+                                    timeDelivered={this.getTime(item.timeDelivered)}
                                     userId={item.sender}
                                     userImageURL={this.getUserInfo(item.sender).imageURL}
-                                    timeSent={this.getTime(item.timeSent)}
-                                    timeDelivered={this.getTime(item.timeDelivered)}
-                                    eta={item.timeDelivered}
                                 />
                             )
                         }
@@ -291,8 +263,12 @@ class Playbook extends Component {
 
                         <Box className="chatPanelL">
                             <Box className="buttons">ML</Box>
-                            <Box className="buttons current">MCC & Crew</Box>
-                            <Box className="buttons">Crew</Box>
+                            <Link to="/playbookmcccrew">
+                                <Box className="buttons">MCC & Crew</Box>
+                            </Link>
+                            <Link to="/playbookcrew">
+                                <Box className="buttons current">Crew</Box>
+                            </Link>
                             <Box className="buttons task1">Task 1</Box>
                         </Box>
                         <Box>
@@ -351,10 +327,10 @@ class Playbook extends Component {
                                                 name="messageBody"
                                                 value={this.state.messageBody}
                                                 onChange={this.handleInputChange}
-                                                placeholder={`Estimated Time of Arrival: ${this.state.nextDeliveryTime}`}
+                                                placeholder="Text Message"
                                             />
                                         </Box>
-                                        <SendRoundedIcon style={{ width: "20px", height: "20px", margin: "0px 5px", color: "grey" }} onClick={this.handleSubmitMessage} />
+                                        <SendRoundedIcon style={{ width: "20px", height: "20px", padding: "0px 5px", color: "grey" }} onClick={this.handleSubmitMessage} />
                                     </Grid>
                                 </form>
                             </Box>

@@ -1,5 +1,7 @@
 import './App.css';
-import Home from "./Home";
+import MCCCrew from "./MCCCrew";
+import MCC from "./MCCView";
+import Crew from "./Crew";
 import UserSelect from "./User Selection";
 import {
   BrowserRouter as Router,
@@ -15,10 +17,15 @@ function App() {
         <Route exact path="/">
           <UserSelect />
         </Route>
-        <Route exact path="/playbook">
-          <Home />
+        <Route exact path="/playbookmcccrew">
+          <MCCCrew />
         </Route>
-
+        <Route exact path="/playbookcrew">
+          <Crew />
+        </Route>
+        <Route exact path="/playbookmcc">
+          <MCC />
+        </Route>
       </Switch>
     </Router>
 

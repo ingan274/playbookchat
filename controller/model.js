@@ -159,7 +159,7 @@ module.exports = {
                 validator: {
                     $jsonSchema: {
                         bsonType: "object",
-                        required: ["groupChat", "message", "priority", "urgent", "sending", "expected_resp", "sender", "timeSent", "timeDelivered", "location"],
+                        required: ["groupChat", "message", "expected_resp", "sender", "timeDelivered"],
                         properties: {
                             groupChat: {
                                 bsonType: "string",

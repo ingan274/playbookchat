@@ -70,20 +70,39 @@ class Playbook extends Component {
         return (
             <Grid item container direction="row" spacing={2} justify="center" alignItems="center">
                 {this.state.profiles.map((item, index) => {
-                    return (
-                        <Link to="/playbook" className="userLink" key={index.toString()} >
-                            <Grid
-                                className="userSelectDiv"
-                                container item
-                                direction="column"
-                                justify="center"
-                                alignItems="center">
-                                <Box item="true" className="userContainer" id={index.toString()} m={3} p={3} onClick={this.setUserSelected} style={{background:`url(${item.imageURL})`, backgroundSize: "cover"}}></Box>
-                                <Box item="true" className="nameText">{item.name}</Box>
-                                <Box item="true" className="roleText">{item.role}</Box>
-                            </Grid>
-                        </Link>
-                    )
+
+                    if (item.id === "mcc") {
+                        return (
+                            <Link to="/playbookmcc" className="userLink" key={index.toString()} >
+                                <Grid
+                                    className="userSelectDiv"
+                                    container item
+                                    direction="column"
+                                    justify="center"
+                                    alignItems="center">
+                                    <Box item="true" className="userContainer" id={index.toString()} m={3} p={3} onClick={this.setUserSelected} style={{ background: `url(${item.imageURL})`, backgroundSize: "cover" }}></Box>
+                                    <Box item="true" className="nameText">{item.name}</Box>
+                                    <Box item="true" className="roleText">{item.role}</Box>
+                                </Grid>
+                            </Link>
+                        )
+                    } else {
+                        return (
+                            <Link to="/playbookmcccrew" className="userLink" key={index.toString()} >
+                                <Grid
+                                    className="userSelectDiv"
+                                    container item
+                                    direction="column"
+                                    justify="center"
+                                    alignItems="center">
+                                    <Box item="true" className="userContainer" id={index.toString()} m={3} p={3} onClick={this.setUserSelected} style={{ background: `url(${item.imageURL})`, backgroundSize: "cover" }}></Box>
+                                    <Box item="true" className="nameText">{item.name}</Box>
+                                    <Box item="true" className="roleText">{item.role}</Box>
+                                </Grid>
+                            </Link>
+                        )
+                    }
+
                 })}
             </Grid>
         )
@@ -102,7 +121,7 @@ class Playbook extends Component {
     };
 
 
-d
+    d
     render = () => {
         return (
             this.profileButtons()

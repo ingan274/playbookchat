@@ -93,6 +93,10 @@ const APICall = {
             })
     },
 
+    newCrewPhoto: (newMessage) => {
+        axios.post("/api/crew/photo",  newMessage)
+    },
+
     reactCrew: (update) => {
         let cycle = 1;
         let reaction = setInterval(function () {

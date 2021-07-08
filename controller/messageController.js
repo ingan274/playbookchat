@@ -125,11 +125,15 @@ module.exports = {
     chatCrew: async (req, res) => {
         // Crew Sent Messages
         let crewMessages = await crew.find()
-            .sort({ timeSent: 1 })
+            .sort({ timeDelivered: 1 })
             .toArray();
 
-        res.send(crewMessages);
-        return
+        if (crewMessages.length > 0) {
+            // Sending MCC-Crew Chat from Crew Perspective
+            res.send(crewMessages);
+        } else {
+            res.send([]);
+        }
     },
 
     // Find all messages for where Pinned = true to the user
@@ -322,7 +326,7 @@ module.exports = {
         } else {
             location = false
         }
-        
+
         let message = {
             groupChat: "mcc-crew-chat",
             message: req.body.message,
@@ -366,17 +370,11 @@ module.exports = {
         let message = {
             groupChat: "crew-chat",
             message: req.body.message,
-            priority: req.body.priority,
-            urgent: req.body.urgent,
             parent: {
                 hasParent: false
             },
-            sending: true,
-            expected_resp: false,
-            sender: req.body.userID,
-            timeSent: req.body.time,
-            timeDelivered: req.body.timeDelay,
-            location: req.body.location
+            sender: req.body.sender,
+            timeDelivered: req.body.deliveryTime,
         }
 
 
@@ -392,6 +390,58 @@ module.exports = {
                 res.send(404)
             });
     },
+
+    newMessageCrewPhoto: async (req, res) => {
+        // console.log("initial path")
+        // console.log(req.file.path)
+        // console.log("Object")
+        let priority;
+        let urgent;
+
+        if (req.body.priority === "true") {
+            priority = true
+        } else {
+            priority = false
+        }
+
+        if (req.body.urgent === "true") {
+            urgent = true
+        } else {
+            urgent = false
+        }
+
+        let message = {
+            groupChat: "crew-chat",
+            message: req.body.message,
+            parent: {
+                hasParent: false,
+            },
+            sender: req.body.sender,
+            timeDelivered: req.body.deliveryTime,
+            attachment: {
+                attachment: true,
+                imageData: req.file.path,
+                imageName: req.body.imageName
+            }
+        }
+
+        if (req.body.reminder) {
+            message.reminder = req.body.reminder
+        }
+
+        // console.log(message)
+        await mcccrew.insertOne(message)
+            .then(result => {
+                console.log(result.ops[0])
+                res.send(result.ops[0])
+                console.log("Chat has been submitted to Crew Chat")
+            })
+            .catch((status, err) => {
+                console.log(err)
+                res.sendStatus(status)
+            });
+    },
+
 
     // Create Draft Message
     saveToDrafts: async (req, res) => {
@@ -550,7 +600,7 @@ module.exports = {
         const messageID = req.body.messageID;
         const groupChat = req.body.groupChat;
 
-        console.log( "update to sent", messageID)
+        console.log("update to sent", messageID)
         console.log(groupChat)
 
         let changeToEAR = {
