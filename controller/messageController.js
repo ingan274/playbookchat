@@ -1,7 +1,5 @@
 const { ObjectID } = require("bson");
-// const db = require("../server");
 const mongoConnect = require('../connect');
-// const mongoConnect = require('../server');
 
 let mcccrew;
 let crew;
@@ -21,7 +19,6 @@ const dbs = async () => {
     drafts = dbconnected.mgdbdrafts
 
 }
-
 dbs()
 
 
@@ -79,7 +76,7 @@ module.exports = {
                 .toArray();
 
             let allMessages = userSendingMesage.concat(deliveredMessages)
-            // console.log(crewMessages)
+            // console.log(allMessages)
 
             // organizingMessages(myTimeMessages, otherTimeMessages);
 
@@ -185,7 +182,7 @@ module.exports = {
 
     },
 
-    // Find all messages for for that parrent organize by as received
+    // Find all messages for that parrent organize by as received
     selectedThreadReceived: async (req, res) => {
         const parentThreadID = req.params.parentThreadID;
         // const parentThreadID = "60ce55e2fdea900b35a0d07e";
@@ -288,10 +285,70 @@ module.exports = {
             message.reminder = req.body.reminder
         }
 
-        if (req.body.attachment) {
-            message.attachment = req.body.attachment
+        await mcccrew.insertOne(message)
+            .then(result => {
+                console.log(result.ops[0])
+                res.send(result.ops[0])
+                console.log("Chat has been submitted to MCC Crew Chat")
+            })
+            .catch((status, err) => {
+                console.log(err)
+                res.sendStatus(status)
+            });
+    },
+
+    newMessageMCCCrewPhoto: async (req, res) => {
+        // console.log("initial path")
+        // console.log(req.file.path)
+        // console.log("Object")
+        let priority;
+        let urgent;
+        let location;
+
+        if (req.body.priority === "true") {
+            priority = true
+        } else {
+            priority = false
         }
 
+        if (req.body.urgent === "true") {
+            urgent = true
+        } else {
+            urgent = false
+        }
+
+        if (req.body.location === "true") {
+            location = true
+        } else {
+            location = false
+        }
+        
+        let message = {
+            groupChat: "mcc-crew-chat",
+            message: req.body.message,
+            priority: priority,
+            urgent: urgent,
+            parent: {
+                hasParent: false,
+            },
+            sending: true,
+            expected_resp: false,
+            sender: req.body.sender,
+            timeSent: req.body.sentTime,
+            timeDelivered: req.body.deliveryTime,
+            location: location,
+            attachment: {
+                attachment: true,
+                imageData: req.file.path,
+                imageName: req.body.imageName
+            }
+        }
+
+        if (req.body.reminder) {
+            message.reminder = req.body.reminder
+        }
+
+        // console.log(message)
         await mcccrew.insertOne(message)
             .then(result => {
                 console.log(result.ops[0])
@@ -325,10 +382,6 @@ module.exports = {
 
         if (req.body.reminder) {
             message.reminder = req.body.reminder
-        }
-
-        if (req.body.attachment) {
-            message.attachment = req.body.attachment
         }
 
         await crew.insertOne(message)
@@ -463,6 +516,10 @@ module.exports = {
         const messageID = req.body.messageID;
         const groupChat = req.body.groupChat;
 
+
+        console.log("update to sent", messageID)
+        console.log(groupChat)
+
         let changeToSent = {
             $set: {
                 sending: false
@@ -471,18 +528,18 @@ module.exports = {
         if (groupChat === "mcc-crew-chat") {
             await mcccrew.updateOne({ _id: ObjectID(messageID) }, changeToSent)
                 .then(console.log("MCC Crew Message", messageID, " (Message): has beeen SENT"))
-                .then(res.send(200))
+                .then(res.sendStatus(200))
                 .catch(err => {
                     console.log(err)
-                    res.send(404)
+                    res.sendStatus(404)
                 })
         } else if (groupChat === "crew-chat") {
             await crew.updateOne({ _id: ObjectID(messageID) }, changeToSent)
                 .then(console.log("Crew Message", messageID, " (Message): has beeen SENT"))
-                .then(res.send(200))
+                .then(res.sendStatus(200))
                 .catch(err => {
                     console.log(err)
-                    res.send(404)
+                    res.sendStatus(404)
                 })
         }
 
@@ -492,6 +549,9 @@ module.exports = {
     updateToPossibleReply: async (req, res) => {
         const messageID = req.body.messageID;
         const groupChat = req.body.groupChat;
+
+        console.log( "update to sent", messageID)
+        console.log(groupChat)
 
         let changeToEAR = {
             $set: {

@@ -17,6 +17,7 @@ router.use("/api/timed", timedUpdatesRoutes);
 router.use("/api/reminder", reminderRoutes);
 router.use("/api/pin", pinnedRoutes);
 router.use("/api/thread", threadRoute);
+router.use('/uploads', express.static('uploads'));
 
 // If no API routes are hit, send the React app
 router.use(function (req, res) {

@@ -7,11 +7,17 @@ import YourSideMess from "../YoursideMessage"
 
 class New extends Component {
 
+    addPhoto = () => {
+        if (this.props.attachment) {
+            return <img src={`../../..${this.props.attachmentSrc}`} alt="upload" className="messageImage" />
+        }
+    }
+
     render = () => {
         let userObj = JSON.parse(localStorage.getItem("User"));
         let clientLocation = userObj.location
         let messageLocation;
-        
+
         if (this.props.location) {
             messageLocation = 'mars'
         } else {
@@ -19,48 +25,92 @@ class New extends Component {
         }
 
 
-        if (clientLocation ===  messageLocation) {
+        if (clientLocation === messageLocation) {
 
             if (this.props.sending) {
-                return (
-                    <YourSideMess
-                        opacity="50%"
-                        key={this.props.messageID}
-                        messageID={this.props.messageID}
-                        sending={this.props.sending}
-                        expresp={this.props.expresp}
-                        messageSubject={this.props.messageSubject}
-                        messageMessageBody={this.props.messageMessageBody}
-                        userName={this.props.userName}
-                        userRole={this.props.userRole}
-                        userId={this.props.userId}
-                        userImageURL={this.props.userImageURL}
-                        timeSent={this.props.timeSent}
-                        timeDelivered={this.props.timeDelivered}
-                        clientUser={this.props.clientUser}
-                        eta={this.props.eta}
-                    />
-                )
+                if (this.props.attachment) {
+                    return (
+                        <YourSideMess
+                            opacity="50%"
+                            key={this.props.messageID}
+                            messageID={this.props.messageID}
+                            sending={this.props.sending}
+                            expresp={this.props.expresp}
+                            messageSubject={this.props.messageSubject}
+                            messageMessageBody={this.props.messageMessageBody}
+                            userName={this.props.userName}
+                            userRole={this.props.userRole}
+                            userId={this.props.userId}
+                            userImageURL={this.props.userImageURL}
+                            timeSent={this.props.timeSent}
+                            timeDelivered={this.props.timeDelivered}
+                            clientUser={this.props.clientUser}
+                            eta={this.props.eta}
+                            attachmentSrc={this.props.attachmentSrc}
+                        />)
+                } else {
+                    return (
+                        <YourSideMess
+                            opacity="50%"
+                            key={this.props.messageID}
+                            messageID={this.props.messageID}
+                            sending={this.props.sending}
+                            expresp={this.props.expresp}
+                            messageSubject={this.props.messageSubject}
+                            messageMessageBody={this.props.messageMessageBody}
+                            userName={this.props.userName}
+                            userRole={this.props.userRole}
+                            userId={this.props.userId}
+                            userImageURL={this.props.userImageURL}
+                            timeSent={this.props.timeSent}
+                            timeDelivered={this.props.timeDelivered}
+                            clientUser={this.props.clientUser}
+                            eta={this.props.eta}
+                        />
+                    )
+                }
             } else {
-                return (
-                    <YourSideMess
-                        opacity="100%"
-                        key={this.props.messageID}
-                        messageID={this.props.messageID}
-                        sending={this.props.sending}
-                        expresp={this.props.expresp}
-                        messageSubject={this.props.messageSubject}
-                        messageMessageBody={this.props.messageMessageBody}
-                        userName={this.props.userName}
-                        userRole={this.props.userRole}
-                        userId={this.props.userId}
-                        userImageURL={this.props.userImageURL}
-                        timeSent={this.props.timeSent}
-                        timeDelivered={this.props.timeDelivered}
-                        clientUser={this.props.clientUser}
-                        eta={this.props.eta}
-                    />
-                )
+                if (this.props.attachment) {
+                    return (
+                        <YourSideMess
+                            opacity="100%"
+                            key={this.props.messageID}
+                            messageID={this.props.messageID}
+                            sending={this.props.sending}
+                            expresp={this.props.expresp}
+                            messageSubject={this.props.messageSubject}
+                            messageMessageBody={this.props.messageMessageBody}
+                            userName={this.props.userName}
+                            userRole={this.props.userRole}
+                            userId={this.props.userId}
+                            userImageURL={this.props.userImageURL}
+                            timeSent={this.props.timeSent}
+                            timeDelivered={this.props.timeDelivered}
+                            clientUser={this.props.clientUser}
+                            eta={this.props.eta}
+                            attachmentSrc={this.props.attachmentSrc}
+                        />)
+                } else {
+                    return (
+                        <YourSideMess
+                            opacity="100%"
+                            key={this.props.messageID}
+                            messageID={this.props.messageID}
+                            sending={this.props.sending}
+                            expresp={this.props.expresp}
+                            messageSubject={this.props.messageSubject}
+                            messageMessageBody={this.props.messageMessageBody}
+                            userName={this.props.userName}
+                            userRole={this.props.userRole}
+                            userId={this.props.userId}
+                            userImageURL={this.props.userImageURL}
+                            timeSent={this.props.timeSent}
+                            timeDelivered={this.props.timeDelivered}
+                            clientUser={this.props.clientUser}
+                            eta={this.props.eta}
+                        />
+                    )
+                }
             }
 
         } else {
@@ -86,6 +136,7 @@ class New extends Component {
                                 >
                                     <Box className="messageSubject">{this.props.messageSubject}</Box>
                                     <Box className="messageText">{this.props.messageMessageBody}</Box>
+                                    {this.addPhoto()}
                                     <Box className="timeDelivered">
                                         Delivered: {this.props.timeDelivered}
                                     </Box>

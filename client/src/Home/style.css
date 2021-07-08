@@ -133,7 +133,7 @@
 
 .form-control {
     margin: 5px;
-    width: 80%;
+    width: 70%;
 }
 
 .chatBoxInput {
@@ -149,4 +149,26 @@
 .inputArea {
     width: 100%;
     margin-bottom: 3px;
+}
+
+.attachment {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.attachment + label {
+    cursor: pointer;
+}
+
+.previewImage {
+    width: 30px;
+}
+
+.previewImageAsset {
+    width: 100%;
+    height: auto;
 }

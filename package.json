@@ -8,6 +8,8 @@
     "moment": "^2.29.1",
     "mongodb": "^3.6.9",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "react-images-uploading": "^3.1.2",
     "webpack-cli": "^4.7.2"
   },
   "scripts": {

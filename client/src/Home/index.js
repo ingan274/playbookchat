@@ -8,6 +8,8 @@ import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import moment from "moment";
 
+let imageData;
+
 class Playbook extends Component {
     constructor(props) {
         super(props);
@@ -23,13 +25,15 @@ class Playbook extends Component {
             userImageURL: userObj.imageURL,
             profiles: profileArray,
             chat: [],
-            subject: "",
+            // subject: "",
             messageBody: "",
             nextDeliveryTime: "",
             currentTime: "",
             currentDate: "",
             deliveryBSON: "",
             currentBSON: "",
+
+            uploadedImage: "",
         }
     }
 
@@ -41,7 +45,7 @@ class Playbook extends Component {
         // Get Messages every 2 seconds
         setInterval(() => {
             this.getMessages();
-        }, 2000);
+        }, 20000);
 
 
         // Update time every second
@@ -104,14 +108,15 @@ class Playbook extends Component {
     }
 
     handleSubmitMessage = event => {
-        if (this.state.subject && this.state.messageBody) {
+        let newMesssage;
+        if (this.state.messageBody && this.state.uploadedImage === "") {
             let locationBool;
             if (this.state.userLocation === "mars") {
                 locationBool = true;
             } else {
                 locationBool = false;
             }
-            let newMesssage = {
+            newMesssage = {
                 groupChat: "mcc-crew-chat",
                 message: {
                     subject: this.state.subject,
@@ -129,9 +134,44 @@ class Playbook extends Component {
 
             this.setState({
                 subject: "",
-                messageBody: "",
+                messageBody: ""
             })
             this.getMessages();
+        } else if (this.state.uploadedImage !== "") {
+            let locationBool;
+            if (this.state.userLocation === "mars") {
+                locationBool = true;
+            } else {
+                locationBool = false;
+            }
+
+            let message = {
+                // subject: this.state.subject,
+                messageBody: this.state.messageBody
+            }
+
+            newMesssage = new FormData();
+
+            // This turns all booleans into strings!!
+            newMesssage.append("groupChat", "mcc-crew-chat")
+            newMesssage.append("message", message)
+            newMesssage.append("urgent", false)
+            newMesssage.append("priority", false)
+            newMesssage.append("sender", this.state.userId)
+            newMesssage.append("location", locationBool)
+            newMesssage.append("sentTime", this.state.currentBSON)
+            newMesssage.append("deliveryTime", this.state.deliveryBSON)
+            newMesssage.append("imageData", imageData)
+            newMesssage.append("imageName", "image" + Date.now())
+
+            API.newMCCCrewPhoto(newMesssage);
+            this.setState({
+                subject: "",
+                messageBody: "",
+                uploadedImage: ""
+            })
+            this.getMessages();
+
         }
 
 
@@ -143,25 +183,50 @@ class Playbook extends Component {
             return (
                 <Box className="ChatBox chatMessDiv" item="true">
                     {this.state.chat.map((item, index) => {
+                        // console.log(item)
+                        if (item.attachment) {
+                            return (
+                                <New
+                                    key={index.toString()}
+                                    messageID={item._id}
+                                    location={item.location}
+                                    sending={item.sending}
+                                    expresp={item.expected_resp}
+                                    messageSubject={item.message.subject}
+                                    messageMessageBody={item.message.messageBody}
+                                    userName={this.getUserInfo(item.sender).name}
+                                    userRole={this.getUserInfo(item.sender).role}
+                                    userId={item.sender}
+                                    userImageURL={this.getUserInfo(item.sender).imageURL}
+                                    timeSent={this.getTime(item.timeSent)}
+                                    timeDelivered={this.getTime(item.timeDelivered)}
+                                    eta={item.timeDelivered}
+                                    attachment={item.attachment.attachment}
+                                    attachmentSrc={item.attachment.imageData}
+                                />
+                            )
+                        } else {
+                            return (
+                                <New
+                                    key={index.toString()}
+                                    messageID={item._id}
+                                    location={item.location}
+                                    sending={item.sending}
+                                    expresp={item.expected_resp}
+                                    messageSubject={item.message.subject}
+                                    messageMessageBody={item.message.messageBody}
+                                    userName={this.getUserInfo(item.sender).name}
+                                    userRole={this.getUserInfo(item.sender).role}
+                                    userId={item.sender}
+                                    userImageURL={this.getUserInfo(item.sender).imageURL}
+                                    timeSent={this.getTime(item.timeSent)}
+                                    timeDelivered={this.getTime(item.timeDelivered)}
+                                    eta={item.timeDelivered}
+                                />
+                            )
+                        }
 
-                        return (
-                            <New
-                                key={index.toString()}
-                                messageID={item._id}
-                                location={item.location}
-                                sending={item.sending}
-                                expresp={item.expected_resp}
-                                messageSubject={item.message.subject}
-                                messageMessageBody={item.message.messageBody}
-                                userName={this.getUserInfo(item.sender).name}
-                                userRole={this.getUserInfo(item.sender).role}
-                                userId={item.sender}
-                                userImageURL={this.getUserInfo(item.sender).imageURL}
-                                timeSent={this.getTime(item.timeSent)}
-                                timeDelivered={this.getTime(item.timeDelivered)}
-                                eta={item.timeDelivered}
-                            />
-                        )
+
                     })}
                 </Box>
             )
@@ -174,7 +239,25 @@ class Playbook extends Component {
         }
     }
 
+    uploadImage = (event) => {
+        // stores a readable instance of 
+        // the image being uploaded using multer
+        this.setState({
+            uploadedImage: URL.createObjectURL(event.target.files[0])
+        });
+        imageData = event.target.files[0]
+
+    }
+
     render = () => {
+        let previewImageStyle;
+        if (this.state.uploadedImage === "") {
+            previewImageStyle = { display: 'none' }
+        } else {
+            previewImageStyle = { display: 'block' }
+        }
+
+
         return (
             <Grid
                 container
@@ -195,7 +278,7 @@ class Playbook extends Component {
                         item="true"
                         className="timeline splitScreen">
                         Timeline Here
-                </Box>
+                    </Box>
                     <Box
                         item="true"
                         className="clDiv splitScreen">
@@ -223,34 +306,51 @@ class Playbook extends Component {
                         </form> */}
 
                             <Box className="ChatBox chatBoxInput">
-                                <Grid
-                                    container
-                                    direction="row"
-                                    justify="space-between"
-                                    alignItems="center">
-                                    <AttachFileRoundedIcon style={{ width: "20px", height: "20px", marginLeft: "10px", color: "grey" }} />
-                                    <form className="form-control">
-                                        <input
-                                            type="text"
-                                            className="inputArea"
-                                            name="subject"
-                                            value={this.state.subject}
-                                            onChange={this.handleInputChange}
-                                            placeholder="Subject"
-                                        />
-                                        <input
-                                            type="text"
-                                            className="inputArea"
-                                            name="messageBody"
-                                            value={this.state.messageBody}
-                                            onChange={this.handleInputChange}
-                                            placeholder={`Estimated Time of Arrival: ${this.state.nextDeliveryTime}`}
-                                        />
-                                    </form>
-                                    <SendRoundedIcon style={{ width: "20px", height: "20px", margin: "0px 5px", color: "grey" }} onClick={this.handleSubmitMessage} />
+                                <form encType="multipart/form-data">
+                                    <Grid
+                                        container item
+                                        direction="row"
+                                        justify="space-between"
+                                        alignItems="center">
+                                        <Box item="true">
+                                            <label for="imageUpload">
+                                                <AttachFileRoundedIcon style={{ width: "20px", height: "20px", marginLeft: "10px", color: "grey" }} />
+                                            </label>
+                                            <input
+                                                className="attachment"
+                                                type="file"
+                                                id="imageUpload" name="imageUpload"
+                                                accept="image/png, image/jpeg"
+                                                onChange={this.uploadImage}
+                                            />
+                                        </Box>
 
-                                </Grid>
+                                        <Box item="true" className="previewImage" style={previewImageStyle}>
+                                            <img src={this.state.uploadedImage} alt="upload" className="previewImageAsset" />
+                                        </Box>
+                                        <Box item="true" className="form-control">
 
+                                            {/* <input
+                                                type="text"
+                                                className="inputArea"
+                                                name="subject"
+                                                value={this.state.subject}
+                                                onChange={this.handleInputChange}
+                                                placeholder="Subject"
+
+                                            /> */}
+                                            <input
+                                                type="text"
+                                                className="inputArea"
+                                                name="messageBody"
+                                                value={this.state.messageBody}
+                                                onChange={this.handleInputChange}
+                                                placeholder={`Estimated Time of Arrival: ${this.state.nextDeliveryTime}`}
+                                            />
+                                        </Box>
+                                        <SendRoundedIcon style={{ width: "20px", height: "20px", margin: "0px 5px", color: "grey" }} onClick={this.handleSubmitMessage} />
+                                    </Grid>
+                                </form>
                             </Box>
                         </Box>
 

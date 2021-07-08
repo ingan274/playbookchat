@@ -33,7 +33,6 @@ module.exports = {
                             },
                             message: {
                                 bsonType: "object",
-                                required: ["subject"],
                                 properties: {
                                     subject: {
                                         bsonType: "string",
@@ -137,26 +136,18 @@ module.exports = {
                             attachment: {
                                 bsonType: "object",
                                 properties: {
-                                    attachType: {
-                                        enum: ["voice", "video", "image", "document"],
-                                        description: "has to be one of the capabilities for attachement"
+                                    attachment: {
+                                        bsonType: "bool",
+                                        description: "has to an attachment"
                                     },
-                                    imageArray: {
-                                        bsonType: "array",
-                                        description: "array to support many image links"
-                                    },
-                                    videoArray: {
-                                        bsonType: "array",
-                                        description: "array to support many video links"
-                                    },
-                                    documentArray: {
-                                        bsonType: "array",
-                                        description: "array to support many document links"
-                                    },
-                                    voiceLink: {
+                                    imageName: {
                                         bsonType: "string",
-                                        description: "link to voice media"
+                                        description: "attachmentName"
                                     },
+                                    imageData: {
+                                         bsonType: "bool",
+                                        description: "array to support many image links"
+                                    }
                                 }
                             },
                         }
@@ -177,7 +168,6 @@ module.exports = {
                             },
                             message: {
                                 bsonType: "object",
-                                required: ["subject"],
                                 properties: {
                                     subject: {
                                         bsonType: "string",
@@ -281,26 +271,18 @@ module.exports = {
                             attachment: {
                                 bsonType: "object",
                                 properties: {
-                                    attachType: {
-                                        enum: ["voice", "video", "image", "document"],
-                                        description: "has to be one of the capabilities for attachement"
+                                    attachment: {
+                                        bsonType: "bool",
+                                        description: "has to an attachment"
                                     },
-                                    imageArray: {
-                                        bsonType: "array",
-                                        description: "array to support many image links"
-                                    },
-                                    videoArray: {
-                                        bsonType: "array",
-                                        description: "array to support many video links"
-                                    },
-                                    documentArray: {
-                                        bsonType: "array",
-                                        description: "array to support many document links"
-                                    },
-                                    voiceLink: {
+                                    imageName: {
                                         bsonType: "string",
-                                        description: "link to voice media"
+                                        description: "attachmentName"
                                     },
+                                    imageData: {
+                                         bsonType: "bool",
+                                        description: "array to support many image links"
+                                    }
                                 }
                             },
                         }
@@ -321,7 +303,6 @@ module.exports = {
                             },
                             message: {
                                 bsonType: "object",
-                                required: ["subject"],
                                 properties: {
                                     subject: {
                                         bsonType: "string",
@@ -425,26 +406,18 @@ module.exports = {
                             attachment: {
                                 bsonType: "object",
                                 properties: {
-                                    attachType: {
-                                        enum: ["voice", "video", "image", "document"],
-                                        description: "has to be one of the capabilities for attachement"
+                                    attachment: {
+                                        bsonType: "bool",
+                                        description: "has to an attachment"
                                     },
-                                    imageArray: {
-                                        bsonType: "array",
-                                        description: "array to support many image links"
-                                    },
-                                    videoArray: {
-                                        bsonType: "array",
-                                        description: "array to support many video links"
-                                    },
-                                    documentArray: {
-                                        bsonType: "array",
-                                        description: "array to support many document links"
-                                    },
-                                    voiceLink: {
+                                    imageName: {
                                         bsonType: "string",
-                                        description: "link to voice media"
+                                        description: "attachmentName"
                                     },
+                                    imageData: {
+                                         bsonType: "bool",
+                                        description: "array to support many image links"
+                                    }
                                 }
                             },
                         }

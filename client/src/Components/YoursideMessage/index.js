@@ -75,6 +75,12 @@ class YourSide extends Component {
         }
     }
 
+    addPhoto = () => {
+        if (this.props.attachmentSrc) {
+            return <img src={`${this.props.attachmentSrc}`} alt="upload" className="messageImage" />
+        }
+    }
+
     render = () => {
         return (
             <Box className="Message indivMessage otherCrew" style={{ opacity: `${this.props.opacity}` }}>
@@ -116,6 +122,7 @@ class YourSide extends Component {
                             >
                                 <Box className="messageSubject">{this.props.messageSubject}</Box>
                                 <Box className="messageText">{this.props.messageMessageBody}</Box>
+                                {this.addPhoto()}
                                 <Box>
 
                                     {this.messageStatus()}
