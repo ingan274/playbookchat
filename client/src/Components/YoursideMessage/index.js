@@ -70,9 +70,9 @@ class YourSide extends Component {
         let userID = thisUser.id
 
         if (userID === this.props.userId) {
-            return "rgb(71, 112, 235)"
+            return "rgba(71, 112, 235, .8)"
         } else {
-            return "rgb(112, 71, 235)"
+            return "rgba(112, 71, 235, .8)"
         }
     }
 

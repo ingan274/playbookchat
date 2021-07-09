@@ -1,0 +1,80 @@
+@media only screen 
+and (min-device-width : 400px) 
+and (max-device-width : 1024px)
+ { 
+
+.timeline.splitScreen {
+     display: none;
+}
+
+.clDiv.splitScreen {
+    width: 100%;
+    height: 97vh;
+    margin: 0px 0px;
+}
+
+.ChatBox.chatBoxInput {
+    width: 92vw;
+    margin: 0px 0px 0px 6vw;
+}
+
+.timeHeader {
+    position: fixed;
+    background-color: white;
+    padding: 3vh 0px;
+}
+
+.ChatBox.chatMessDiv {
+    padding-top: 8vh;
+}
+
+.chatPanelL {
+    z-index: 12;
+}
+
+}
+
+@media only screen 
+and (min-device-width : 375px) 
+and (max-device-width : 400px) {
+
+.timeline.splitScreen {
+    display: none;
+}
+
+.chatPanelL.chatButtons {
+   width: 13vw;
+   height: 100vh;
+   padding-top: 3vh;
+}
+
+.timeHeader {
+    position: fixed;
+    background-color: white;
+    padding: 1vh 0px;
+}
+
+.ChatBox.chatMessDiv {
+    padding-top: 8vh;
+}
+
+.centerSpaceTime {
+    width: 3vw;
+}
+
+.clDiv.splitScreen {
+    width: 100%;
+    height: 97vh;
+    margin: 0px 0px;
+}
+
+.ChatBox.chatMessDiv {
+    margin-left: 13vw;
+}
+
+.ChatBox.chatBoxInput {
+    width: 85vw;
+    margin: 0px 0px 0px 13vw;
+}
+
+}

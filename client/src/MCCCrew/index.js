@@ -20,7 +20,7 @@ console.log(hostname)
 class Playbook extends Component {
     constructor(props) {
         super(props);
-        
+
 
         let userObj = JSON.parse(localStorage.getItem("User"));
         let profileArray = JSON.parse(localStorage.getItem("Profiles"));
@@ -275,7 +275,7 @@ class Playbook extends Component {
                 alignItems="center"
             >
                 <Grid item container direction="row" className="timeHeader" alignItems="center" justify="center">
-                    <Box className="currentDT" mr={3}>Date: {this.state.currentDate} <Box component="span" mr={10} ml={10}> </Box> Current Time: {this.state.currentTime}</Box>
+                    <Box className="currentDT" p={2}>Date: {this.state.currentDate} <Box className="centerSpaceTime" component="span" mr={5}> </Box> Current Time: {this.state.currentTime}</Box>
                 </Grid>
                 <Grid
                     item container
@@ -292,15 +292,15 @@ class Playbook extends Component {
                         item="true"
                         className="clDiv splitScreen">
 
-                        <Box className="chatPanelL">
+                        <Box className="chatPanelL chatButtons">
                             <Box className="buttons">ML</Box>
                             <Link to="/playbookmcccrew">
-                            <Box className="buttons current">MCC & Crew</Box>
+                                <Box className="buttons current">MCC & Crew</Box>
                             </Link>
                             <Link to="/playbookcrew">
-                            <Box className="buttons">Crew</Box>
+                                <Box className="buttons">Crew</Box>
                             </Link>
-                            <Box className="buttons task1">Task 1</Box>
+                            {/* <Box className="buttons task1">Task 1</Box> */}
                         </Box>
                         <Box>
                             {this.renderMessages()}

@@ -244,7 +244,7 @@ class Playbook extends Component {
                 alignItems="center"
             >
                 <Grid item container direction="row" className="timeHeader" alignItems="center" justify="center">
-                    <Box className="currentDT" mr={3}>Date: {this.state.currentDate} <Box component="span" mr={10} ml={10}> </Box> Current Time: {this.state.currentTime}</Box>
+                    <Box className="currentDT" p={2}>Date: {this.state.currentDate} <Box className="centerSpaceTime" component="span" mr={5}> </Box> Current Time: {this.state.currentTime}</Box>
                 </Grid>
                 <Grid
                     item container
@@ -269,7 +269,7 @@ class Playbook extends Component {
                             <Link to="/playbookcrew">
                                 <Box className="buttons current">Crew</Box>
                             </Link>
-                            <Box className="buttons task1">Task 1</Box>
+                            {/* <Box className="buttons task1">Task 1</Box> */}
                         </Box>
                         <Box>
                             {this.renderMessages()}
