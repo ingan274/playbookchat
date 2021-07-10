@@ -15,7 +15,7 @@ class New extends Component {
     render = () => {
         let userObj = JSON.parse(localStorage.getItem("User"));
         let client = userObj.id
-
+        // console.log(this.props.messageMessageBody)
 
 
         if (client === this.props.userId) {
@@ -38,7 +38,7 @@ class New extends Component {
                         clientUser={this.props.clientUser}
                         eta=""
                         attachmentSrc={this.props.attachmentSrc}
-                        groupChat = "crew-chats"
+                        groupChat="crew-chats"
                     />)
             } else {
                 return (
@@ -58,7 +58,7 @@ class New extends Component {
                         timeDelivered={this.props.timeDelivered}
                         clientUser={this.props.clientUser}
                         eta=""
-                        groupChat = "crew-chats"
+                        groupChat="crew-chats"
                     />
                 )
             }
@@ -69,15 +69,10 @@ class New extends Component {
                         direction="row"
                         justify="flex-end"
                         alignItems="center">
-
-                        <Box item="true">
+                        <Box item="true" >
                             <Grid item container direction="column" alignItems="flex-start">
-                                <Grid item container direction="row" justify="space-between" alignItems="flex-end">
-                                    <Box style={{ position: "relative" }}>
-                                        <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "25px", height: "25px", position: "absolute", bottom: "100%", left: "100%" }} />
-                                    </Box>
-                                    <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
-                                </Grid>
+                                <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
+
                                 <Box item="true"
                                     className="chatBubble otherChatBbl"
                                     justify="center"
@@ -87,10 +82,13 @@ class New extends Component {
                                     <Box className="messageText">{this.props.messageMessageBody}</Box>
                                     {this.addPhoto()}
                                     <Box className="timeDelivered">
-                                        Delivered: {this.props.timeDelivered}
+                                        {this.props.timeDelivered}
                                     </Box>
                                 </Box>
                             </Grid>
+                        </Box>
+                        <Box item="true" style={{margin: "0px 5px 0px 10px " }}>
+                            <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "45px", height: "45px" }} />
                         </Box>
                     </Grid>
                 </Box>

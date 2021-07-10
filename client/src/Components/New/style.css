@@ -10,3 +10,8 @@
 .messageImage {
     width: 100%;
 }
+
+.timeDetails {
+    font-size: 10px;
+    text-align: center;
+}

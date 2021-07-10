@@ -65,35 +65,29 @@ class YourSide extends Component {
                     direction="row"
                     justify="flex-start"
                     alignItems="center">
-
-                    <Box item="true">
+                         <Box item="true" style={{margin: "0px 10px 0px 5px " }}>
+                        <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "45px", height: "45px" }} />
+                    </Box>
+                    <Box item="true" >
                         <Grid item container direction="column" alignItems="flex-start">
-                            <Grid item container direction="row" justify="space-between" alignItems="flex-end">
-                                <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
-
-                                <Box style={{ position: "relative" }}>
-                                    <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "25px", height: "25px", position: "absolute", bottom: "100%", right: "100%" }} />
-                                </Box>
-                            </Grid>
+                            <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 
                             <Box item="true"
-                                className="chatBubble"
+                                className="chatBubble otherChatBbl"
                                 justify="center"
                                 alignItems="flex-start"
-                                style={{ backgroundColor: `${this.messageColor()}` }}
+                                style={{backgroundColor: `${this.messageColor()}` }}
                             >
                                 <Box className="messageSubject">{this.props.messageSubject}</Box>
                                 <Box className="messageText">{this.props.messageMessageBody}</Box>
                                 {this.addPhoto()}
-                                <Box>
-
-                                    {this.messageStatus()}
-                                    {this.sendingandDeliveryRender()}
+                                <Box className="timeDelivered crewDeliveryChatText">
+                                    {this.props.timeDelivered}
                                 </Box>
-
                             </Box>
                         </Grid>
                     </Box>
+                   
                 </Grid>
             </Box>
         )

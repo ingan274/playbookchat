@@ -329,7 +329,10 @@ module.exports = {
 
         let message = {
             groupChat: "mcc-crew-chat",
-            message: req.body.message,
+            message: {
+                subject: req.body.messageSubject,
+                messageBody: req.body.messageBody,
+            },
             priority: priority,
             urgent: urgent,
             parent: {
@@ -395,24 +398,13 @@ module.exports = {
         // console.log("initial path")
         // console.log(req.file.path)
         // console.log("Object")
-        let priority;
-        let urgent;
-
-        if (req.body.priority === "true") {
-            priority = true
-        } else {
-            priority = false
-        }
-
-        if (req.body.urgent === "true") {
-            urgent = true
-        } else {
-            urgent = false
-        }
 
         let message = {
             groupChat: "crew-chat",
-            message: req.body.message,
+            message: {
+                subject: req.body.messageSubject,
+                messageBody: req.body.messageBody,
+            },
             parent: {
                 hasParent: false,
             },
@@ -430,7 +422,7 @@ module.exports = {
         }
 
         // console.log(message)
-        await mcccrew.insertOne(message)
+        await crew.insertOne(message)
             .then(result => {
                 console.log(result.ops[0])
                 res.send(result.ops[0])

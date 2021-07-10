@@ -1,0 +1,178 @@
+.timeHeader {
+    width: 100vw;
+    height: 3vh;
+    z-index: 8;
+}
+.splitScreen {
+    width: 50vw;
+    height: 97vh;
+}
+
+.clDiv {
+    margin-left: 50vw;
+    position: relative;
+}
+
+/* Timline Side */
+.timeline {
+    background-color: grey;
+    text-align: center;
+    position: fixed;
+   
+}
+
+/* Chat Side */
+.chatPanelL {
+    width: 4vw;
+    background-color: rgba(202, 202, 202, .5);
+    position: fixed;
+    padding-top: 3vh;
+    height: 100vh;
+}
+
+.currentDT {
+    font-size: 12px;
+    position: fixed;
+}
+
+.timeHeader {
+    position: fixed;
+    background-color: white;
+}
+
+.buttons {
+    width: 45px;
+    height: 45px;
+    border-radius: 5px;
+    background-color: white;
+    margin: 7px auto;
+    text-align: center;
+    font-size: 12px;
+}
+
+.task1 {
+    border: 3px solid pink ;
+}
+
+.current {
+    background-color: rgba(44, 56, 138);
+    color: white;
+}
+
+.ChatBox {
+    margin-left: 6vw;
+    margin-right: 2%
+}
+
+.chatMessDiv {
+    padding-bottom: 80px;
+}
+
+.otherMessage {
+    margin-right: 46.7%;
+}
+
+.Message {
+    margin-left: 46.7%;
+}
+
+.indivMessage {
+    margin-top: 15px;
+}
+
+/* Chat Bubble */
+
+.noMessages {
+    font-size: 10px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.chatBubble {
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 3px;
+}
+
+.timeDelivered {
+    color: gray;
+    font-size: 10px;
+    padding-top: 10px;
+}
+
+.messageSubject {
+    font-weight: 600;
+}
+
+/* User Details */
+
+.userRole {
+    color: gray;
+}
+
+.userNameRole {
+    font-size: 10px;
+}
+/* Message Details */
+.messageDetails {
+    position: absolute;
+    font-size: 10px;
+    padding: 5px;
+}
+
+.otherDetails {
+    left: 100%;
+}
+
+.youDetails {
+    right: 100%;
+}
+
+.timeDetails {
+    margin: 5px 0px;
+}
+
+/* Form Information */
+
+.form-control {
+    margin: 5px;
+    width: 70%;
+}
+
+.chatBoxInput {
+    background-color: white;
+    padding: 5px;
+    position: fixed;
+    z-index: 10;
+    bottom: 0px;
+    width: 43vw;
+    margin-left: 6vw;
+}
+
+.inputArea {
+    width: 100%;
+    margin-bottom: 3px;
+}
+
+.attachment {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.attachment + label {
+    cursor: pointer;
+}
+
+.previewImage {
+    width: 30px;
+}
+
+.previewImageAsset {
+    width: 100%;
+    height: auto;
+}

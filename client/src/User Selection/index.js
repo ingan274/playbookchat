@@ -70,10 +70,9 @@ class Playbook extends Component {
         return (
             <Grid item container direction="row" spacing={2} justify="center" alignItems="center">
                 {this.state.profiles.map((item, index) => {
-
-                    if (item.id === "mcc") {
+                    if (item.id === "crew1") {
                         return (
-                            <Link to="/playbookmcc" className="userLink" key={index.toString()} >
+                            <Link to="/playbookivview" className="userLink" key={index.toString()} >
                                 <Grid
                                     className="userSelectDiv"
                                     container item

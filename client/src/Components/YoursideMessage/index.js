@@ -45,6 +45,15 @@ class YourSide extends Component {
 
     sendingandDeliveryRender = () => {
 
+        return (
+            <Box component="span" className="timeDelivered crewDeliveryChatText">
+                {this.sendingText()}: {this.props.timeDelivered}
+            </Box>
+        )
+    }
+
+    sendingandDeliveryRenderTL = () => {
+
         let currentTime = Date.now()
 
         let deliveryTime = new Date(this.props.eta)
@@ -52,14 +61,17 @@ class YourSide extends Component {
 
         if (currentTime < deliveryTime) {
             return (
-                <Box component="span" className="timeDelivered crewDeliveryChatText">
-                    Time Remaining: {this.countdown()}
+                <Box component="span" item="true" className="timeDetails deliveryTime">
+                    <Box>Time Remaining:</Box>
+                    <Box>{this.countdown()}</Box>
                 </Box>
             )
         } else {
             return (
-                <Box component="span" className="timeDelivered crewDeliveryChatText">
-                    {this.sendingText()}: {this.props.timeDelivered}
+                <Box component="span" item="true" className="timeDetails deliveryTime">
+                    <Box>{this.sendingText()}:</Box>
+                    <Box>{this.props.timeDelivered}</Box>
+
                 </Box>
             )
         }
@@ -89,34 +101,23 @@ class YourSide extends Component {
                     direction="row"
                     justify="flex-start"
                     alignItems="center">
-                    <Box item="true"
-                        className="messageDetails youDetails"
-                        justify="flex-start"
-                        alignItems="center"
-                    >
-                        <Box item="true" className="timeDetails">
+                    <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px" }}>
+                        <Box item="true" className="timeDetails sentTime">
                             <Box >Sent:</Box>
                             <Box >{this.props.timeSent}</Box>
                         </Box>
+                        <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "30px", height: "30px", margin: "0px auto" }} />
 
-                        <Box item="true" className="timeDetails">
-                            <Box >{this.sendingText()}</Box>
-                            <Box >{this.props.timeDelivered}</Box>
-                        </Box>
+                        <Box >{this.sendingandDeliveryRenderTL()}</Box>
+
+
                     </Box>
-
                     <Box item="true">
                         <Grid item container direction="column" alignItems="flex-start">
-                            <Grid item container direction="row" justify="space-between" alignItems="flex-end">
-                                <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
-
-                                <Box style={{ position: "relative" }}>
-                                    <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "25px", height: "25px", position: "absolute", bottom: "100%", right: "100%" }} />
-                                </Box>
-                            </Grid>
+                            <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 
                             <Box item="true"
-                                className="chatBubble"
+                                className="chatBubble otherChatBbl"
                                 justify="center"
                                 alignItems="flex-start"
                                 style={{ backgroundColor: `${this.messageColor()}` }}
@@ -124,15 +125,14 @@ class YourSide extends Component {
                                 <Box className="messageSubject">{this.props.messageSubject}</Box>
                                 <Box className="messageText">{this.props.messageMessageBody}</Box>
                                 {this.addPhoto()}
-                                <Box>
 
-                                    {this.messageStatus()}
-                                    {this.sendingandDeliveryRender()}
-                                </Box>
+                                {this.messageStatus()}
+                                {this.sendingandDeliveryRender()}
 
                             </Box>
                         </Grid>
                     </Box>
+
                 </Grid>
             </Box>
         )

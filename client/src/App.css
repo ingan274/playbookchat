@@ -32,10 +32,15 @@ and (max-device-width : 1024px)
     z-index: 12;
 }
 
+.chatPanelL.chatButtons {
+    width: 6vw;
+    padding-top: 3vh;
+ }
+
 }
 
 @media only screen 
-and (min-device-width : 375px) 
+and (min-device-width : 300px) 
 and (max-device-width : 400px) {
 
 .timeline.splitScreen {

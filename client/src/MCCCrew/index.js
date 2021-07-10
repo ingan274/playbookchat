@@ -13,10 +13,6 @@ import {
 
 let imageData;
 
-let url = new URL(window.location.href)
-let hostname = url.hostname
-console.log(hostname)
-
 class Playbook extends Component {
     constructor(props) {
         super(props);
@@ -33,7 +29,7 @@ class Playbook extends Component {
             userImageURL: userObj.imageURL,
             profiles: profileArray,
             chat: [],
-            // subject: "",
+            subject: "",
             messageBody: "",
             nextDeliveryTime: "",
             currentTime: "",
@@ -50,10 +46,21 @@ class Playbook extends Component {
         this.getMessages();
 
         let delay = dateTime.delay;
-        // Get Messages every 2 seconds
+        // Get Messages every 1 seconds
         setInterval(() => {
             this.getMessages();
-        }, 20000);
+        }, 1000);
+
+        // Scroll Down
+        let cycle = 1
+        let scrollDown = setInterval(() => {
+
+            if (cycle === 0) {
+                clearInterval(scrollDown)
+            }
+            this.scrollBottom();
+            cycle --
+        }, 1000);
 
 
         // Update time every second
@@ -74,6 +81,7 @@ class Playbook extends Component {
             })
 
         }, 1000);
+
     }
 
     getMessages = () => {
@@ -107,6 +115,16 @@ class Playbook extends Component {
 
     }
 
+    showCrewChat = () => {
+        if (this.state.userId !== "mcc") {
+            return (
+                <Link to="/playbookcrew">
+                    <Box className="buttons">Crew</Box>
+                </Link>
+            )
+        }
+    }
+
     // input functions
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -116,6 +134,7 @@ class Playbook extends Component {
     }
 
     handleSubmitMessage = event => {
+        event.preventDefault();
         let newMesssage;
         if (this.state.messageBody && this.state.uploadedImage === "") {
             let locationBool;
@@ -153,16 +172,12 @@ class Playbook extends Component {
                 locationBool = false;
             }
 
-            let message = {
-                // subject: this.state.subject,
-                messageBody: this.state.messageBody
-            }
-
             newMesssage = new FormData();
 
             // This turns all booleans into strings!!
             newMesssage.append("groupChat", "mcc-crew-chat")
-            newMesssage.append("message", message)
+            newMesssage.append("messageBody", this.state.messageBody)
+            newMesssage.append("messageSubject", this.state.subject,)
             newMesssage.append("urgent", false)
             newMesssage.append("priority", false)
             newMesssage.append("sender", this.state.userId)
@@ -185,14 +200,19 @@ class Playbook extends Component {
 
     }
 
+    scrollBottom = () => {
+        // Scroll to the bottom
+        window.scrollTo(0,document.body.scrollHeight);
+    }
+
     // Renderings
     renderMessages = () => {
         if (this.state.chat.length > 0) {
             return (
                 <Box className="ChatBox chatMessDiv" item="true">
                     {this.state.chat.map((item, index) => {
-                        // console.log(item)
                         if (item.attachment) {
+                            // console.log(item.message.messageBody)
                             // console.log(`${hostname}/${item.attachment.imageData}`)
                             return (
                                 <New
@@ -239,6 +259,8 @@ class Playbook extends Component {
                     })}
                 </Box>
             )
+
+
         } else {
             return (
                 <Box className="ChatBox chatMessDiv" item="true">
@@ -248,6 +270,7 @@ class Playbook extends Component {
         }
     }
 
+    // upload and preview images
     uploadImage = (event) => {
         // stores a readable instance of 
         // the image being uploaded using multer
@@ -297,26 +320,11 @@ class Playbook extends Component {
                             <Link to="/playbookmcccrew">
                                 <Box className="buttons current">MCC & Crew</Box>
                             </Link>
-                            <Link to="/playbookcrew">
-                                <Box className="buttons">Crew</Box>
-                            </Link>
+                            {this.showCrewChat()}
                             {/* <Box className="buttons task1">Task 1</Box> */}
                         </Box>
                         <Box>
                             {this.renderMessages()}
-                            {/* <form className="text-center">
-                            <div className="form-group">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="topic"
-                                    name="q"
-                                    value={this.state.q}
-                                    onChange={this.handleInputChange}
-                                />
-                            </div>
-                            <button className="btn" onClick={this.handleFormSubmit}>Search</button>
-                        </form> */}
 
                             <Box className="ChatBox chatBoxInput">
                                 <form encType="multipart/form-data">
@@ -343,22 +351,22 @@ class Playbook extends Component {
                                         </Box>
                                         <Box item="true" className="form-control">
 
-                                            {/* <input
+                                            <input
                                                 type="text"
                                                 className="inputArea"
                                                 name="subject"
                                                 value={this.state.subject}
                                                 onChange={this.handleInputChange}
-                                                placeholder="Subject"
+                                                placeholder="Subject or Image URL"
 
-                                            /> */}
+                                            />
                                             <input
                                                 type="text"
                                                 className="inputArea"
                                                 name="messageBody"
                                                 value={this.state.messageBody}
                                                 onChange={this.handleInputChange}
-                                                placeholder={`Estimated Time of Arrival: ${this.state.nextDeliveryTime}`}
+                                                placeholder={`Text Message: Estimated Time of Arrival - ${this.state.nextDeliveryTime}`}
                                             />
                                         </Box>
                                         <SendRoundedIcon style={{ width: "20px", height: "20px", padding: "0px 5px", color: "grey" }} onClick={this.handleSubmitMessage} />

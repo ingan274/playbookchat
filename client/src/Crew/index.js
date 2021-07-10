@@ -12,10 +12,6 @@ import {
 
 let imageData;
 
-let url = new URL(window.location.href)
-let hostname = url.hostname
-console.log(hostname)
-
 class Playbook extends Component {
     constructor(props) {
         super(props);
@@ -49,7 +45,19 @@ class Playbook extends Component {
         // Get Messages every 2 seconds
         setInterval(() => {
             this.getMessages();
-        }, 20000);
+        }, 800);
+
+         // Scroll Down
+        let cycle = 1
+        let scrollDown = setInterval(() => {
+
+            if (cycle === 0) {
+                clearInterval(scrollDown)
+            }
+            this.scrollBottom();
+            cycle --
+        }, 1000);
+
 
 
         // Update time every second
@@ -108,6 +116,7 @@ class Playbook extends Component {
     }
 
     handleSubmitMessage = event => {
+        event.preventDefault(); 
         let newMesssage;
         if (this.state.messageBody && this.state.uploadedImage === "") {
 
@@ -129,15 +138,11 @@ class Playbook extends Component {
             this.getMessages();
         } else if (this.state.uploadedImage !== "") {
 
-            let message = {
-                // subject: this.state.subject,
-                messageBody: this.state.messageBody
-            }
-
             newMesssage = new FormData();
 
             // This turns all booleans into strings!!
-            newMesssage.append("message", message)
+            newMesssage.append("messageBody", this.state.messageBody)
+            newMesssage.append("messageSubject", this.state.subject)
             newMesssage.append("sender", this.state.userId)
             newMesssage.append("deliveryTime", this.state.currentBSON)
             newMesssage.append("imageData", imageData)
@@ -154,6 +159,11 @@ class Playbook extends Component {
         }
 
 
+    }
+
+    scrollBottom = () => {
+        // Scroll to the bottom
+        window.scrollTo(0,document.body.scrollHeight);
     }
 
     // Renderings
@@ -217,6 +227,7 @@ class Playbook extends Component {
         }
     }
 
+    // upload and preview images
     uploadImage = (event) => {
         // stores a readable instance of 
         // the image being uploaded using multer
@@ -273,20 +284,6 @@ class Playbook extends Component {
                         </Box>
                         <Box>
                             {this.renderMessages()}
-                            {/* <form className="text-center">
-                            <div className="form-group">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="topic"
-                                    name="q"
-                                    value={this.state.q}
-                                    onChange={this.handleInputChange}
-                                />
-                            </div>
-                            <button className="btn" onClick={this.handleFormSubmit}>Search</button>
-                        </form> */}
-
                             <Box className="ChatBox chatBoxInput">
                                 <form encType="multipart/form-data">
                                     <Grid
