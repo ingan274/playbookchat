@@ -7,6 +7,14 @@ import moment from "moment";
 
 
 class YourSide extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isSentShown: false
+        }
+    }
+
     sendingText = () => {
         // return (this.props.sending ? "ETA" : "Estimated Deliverey");
 
@@ -94,6 +102,33 @@ class YourSide extends Component {
         }
     }
 
+    setSentTime = (show) => {
+
+        this.setState({
+            isSentShown: show
+        })
+
+    }
+
+    renderSentTime = () => {
+        if (this.state.isSentShown) {
+            return (
+                <Box item="true" className="timeDetails sentTime">
+                    <Box >Sent:</Box>
+                    <Box >{this.props.timeSent}</Box>
+                </Box>
+            )
+
+        } else {
+            return (
+                <Box item="true" className="timeDetails sentTime" style={{ display: "hidden" }}>
+                    <Box >Sent:</Box>
+                    <Box >{this.props.timeSent}</Box>
+                </Box>
+            )
+        }
+    }
+
     render = () => {
         return (
             <Box className="Message indivMessage otherCrew" style={{ opacity: `${this.props.opacity}` }}>
@@ -101,11 +136,8 @@ class YourSide extends Component {
                     direction="row"
                     justify="flex-start"
                     alignItems="center">
-                    <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px" }}>
-                        <Box item="true" className="timeDetails sentTime">
-                            <Box >Sent:</Box>
-                            <Box >{this.props.timeSent}</Box>
-                        </Box>
+                    <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px" }} onMouseEnter={this.setSentTime(true)} onMouseLeave={this.setSentTime(false)}>
+                        {this.renderSentTime()}
                         <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "30px", height: "30px", margin: "0px auto" }} />
 
                         <Box >{this.sendingandDeliveryRenderTL()}</Box>
