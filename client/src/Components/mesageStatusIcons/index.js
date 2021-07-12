@@ -12,7 +12,7 @@ class YouReply extends Component {
             color: this.props.sent,
             width: "17px",
             height: "17px",
-            left: "8px"
+            left: "-5px"
 
         }
 
@@ -24,7 +24,7 @@ class YouReply extends Component {
         }
 
         return (
-            <Box component="span" className="messageStatusDiv" >
+            <Box component="span" className="messageStatusDiv" style={{position: "relative"}}>
                 <CheckRoundedIcon className="checkSent" style={colorSent} />
                 <CheckRoundedIcon className="checkERT" style={colorERT} />
             </Box>

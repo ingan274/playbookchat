@@ -1,14 +1,14 @@
 import "./style.css";
 import React, { Component } from "react";
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, Button, IconButton, TextField, InputAdornment } from '@material-ui/core';
+import { PhotoCamera, SendRounded, TextFields } from '@material-ui/icons';
+import LinkIcon from '@material-ui/icons/Link';
 import dateTime from "../API-Calls/chatDelay"
 import API from "../API-Calls";
 import New from "../Components/New";
-import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
-import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import moment from "moment";
 import {
-    Link,
+    Link
 } from "react-router-dom";
 
 let imageData;
@@ -38,6 +38,7 @@ class Playbook extends Component {
             currentBSON: "",
 
             uploadedImage: "",
+            subjectLine: true,
         }
     }
 
@@ -59,7 +60,7 @@ class Playbook extends Component {
                 clearInterval(scrollDown)
             }
             this.scrollBottom();
-            cycle --
+            cycle--
         }, 1000);
 
 
@@ -134,7 +135,6 @@ class Playbook extends Component {
     }
 
     handleSubmitMessage = event => {
-        event.preventDefault();
         let newMesssage;
         if (this.state.messageBody && this.state.uploadedImage === "") {
             let locationBool;
@@ -195,18 +195,141 @@ class Playbook extends Component {
             })
             this.getMessages();
 
+        } else if (this.state.subjectLine === false) {
+
+            let locationBool;
+            if (this.state.userLocation === "mars") {
+                locationBool = true;
+            } else {
+                locationBool = false;
+            }
+
+            newMesssage = new FormData();
+            // console.log(this.state.subject)
+            let path = new URL(this.state.subject).pathname
+            path = path.substring(1)
+            // console.log(path)
+
+
+            // This turns all booleans into strings!!
+            newMesssage.append("groupChat", "mcc-crew-chat")
+            newMesssage.append("messageBody", this.state.mccmessageBody)
+            newMesssage.append("messageSubject", "")
+            newMesssage.append("subjectLine", this.state.subjectLine)
+            newMesssage.append("imagePath", path)
+            newMesssage.append("urgent", false)
+            newMesssage.append("priority", false)
+            newMesssage.append("sender", this.state.userId)
+            newMesssage.append("location", locationBool)
+            newMesssage.append("sentTime", this.state.currentBSON)
+            newMesssage.append("deliveryTime", this.state.deliveryBSON)
+
+
+            console.log(path)
+            API.newMCCCrewPhoto(newMesssage);
+            this.setState({
+                mccsubject: "",
+                mccmessageBody: "",
+            })
+            this.getMessages();
         }
 
 
     }
 
+    subjectImageStateChange = (button) => {
+        if (button === "subject") {
+            this.setState({
+                subjectLine: true,
+            })
+        } else {
+            this.setState({
+                subjectLine: false
+            })
+        }
+    }
+
+    subjectTypeRendering = () => {
+        if (this.state.subjectLine) {
+            return (
+                <TextField className="inputArea subjectURLInput"
+                    autoFocus
+                    variant="filled"
+                    name="subject"
+                    value={this.state.subject}
+                    id="filled-basic"
+                    onChange={this.handleInputChange}
+                    onKeyDown={this.keyPress}
+                    onKeyPress={(ev) => {
+                        console.log(`Pressed keyCode ${ev.key}`);
+                        if (ev.key === 'Enter') {
+                            ev.preventDefault();
+                            this.handleSubmitMessage()
+                        }
+                    }}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <TextFields />
+                            </InputAdornment>
+                        ),
+                        style: {
+                            fontSize: '12px',
+                        },
+                    }}
+                    inputLabelProps={{
+                        style: {
+                            fontSize: '12px',
+                        },
+                    }}
+                />
+            )
+        } else {
+            return (
+
+                <TextField className="inputArea subjectURLInput"
+                    autoFocus
+                    variant="filled"
+                    size="small"
+                    name="subject"
+                    value={this.state.subject}
+                    id="filled-basic"
+                    onChange={this.handleInputChange}
+                    onKeyDown={this.keyPress}
+                    onKeyPress={(ev) => {
+                        console.log(`Pressed keyCode ${ev.key}`);
+                        if (ev.key === 'Enter') {
+                            ev.preventDefault();
+                            this.handleSubmitMessage()
+                        }
+                    }}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <LinkIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+            )
+        }
+    }
+
     scrollBottom = () => {
         // Scroll to the bottom
-        window.scrollTo(0,document.body.scrollHeight);
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    keyPress = (ev) => {
+        if (ev.keyCode == 13) {
+            ev.preventDefault();
+            this.handleSubmitMessage()
+        }
     }
 
     // Renderings
     renderMessages = () => {
+
         if (this.state.chat.length > 0) {
             return (
                 <Box className="ChatBox chatMessDiv" item="true">
@@ -289,6 +412,17 @@ class Playbook extends Component {
             previewImageStyle = { display: 'block' }
         }
 
+        let subjectBtnColor;
+        let imageBtnColor;
+
+        if (this.state.subjectLine) {
+            imageBtnColor = ""
+            subjectBtnColor = "primary"
+        } else {
+            imageBtnColor = "primary"
+            subjectBtnColor = ""
+        }
+
 
         return (
             <Grid
@@ -314,19 +448,18 @@ class Playbook extends Component {
                     <Box
                         item="true"
                         className="clDiv splitScreen">
-
-                        <Box className="chatPanelL chatButtons">
+                        <Box className="chatPanelL">
                             <Box className="buttons">ML</Box>
                             <Link to="/playbookmcccrew">
                                 <Box className="buttons current">MCC & Crew</Box>
                             </Link>
                             {this.showCrewChat()}
-                            {/* <Box className="buttons task1">Task 1</Box> */}
                         </Box>
                         <Box>
                             {this.renderMessages()}
 
-                            <Box className="ChatBox chatBoxInput">
+                            <Box className="ChatBox chatBoxInput mccinputarea">
+
                                 <form encType="multipart/form-data">
                                     <Grid
                                         container item
@@ -334,48 +467,61 @@ class Playbook extends Component {
                                         justify="space-between"
                                         alignItems="center">
                                         <Box item="true">
-                                            <label for="imageUpload">
-                                                <AttachFileRoundedIcon style={{ width: "20px", height: "20px", marginLeft: "10px", color: "grey" }} />
+                                            <input accept="image/*" className="attachment" id="imageUploadMCC" type="file" onChange={this.uploadImagemcc} />
+                                            <label htmlFor="imageUploadMCC">
+                                                <IconButton aria-label="upload picture" component="span">
+                                                    <PhotoCamera />
+                                                </IconButton>
                                             </label>
-                                            <input
-                                                className="attachment"
-                                                type="file"
-                                                id="imageUpload" name="imageUpload"
-                                                accept="image/png, image/jpeg"
-                                                onChange={this.uploadImage}
-                                            />
                                         </Box>
 
                                         <Box item="true" className="previewImage" style={previewImageStyle}>
                                             <img src={this.state.uploadedImage} alt="upload" className="previewImageAsset" />
                                         </Box>
                                         <Box item="true" className="form-control">
-
-                                            <input
-                                                type="text"
-                                                className="inputArea"
-                                                name="subject"
-                                                value={this.state.subject}
-                                                onChange={this.handleInputChange}
-                                                placeholder="Subject or Image URL"
-
-                                            />
-                                            <input
-                                                type="text"
-                                                className="inputArea"
+                                            <Grid container direction="row" alignItems="center" justify="flex-start" className="radiobuttonSubmission">
+                                                <Button m={1} size="small" onClick={() => this.setState({ subjectLine: true })} color={subjectBtnColor}>Subject Line</Button>
+                                                <Button m={1} size="small" onClick={() => this.setState({ subjectLine: false })} color={imageBtnColor}>Image Link</Button>
+                                            </Grid>
+                                            {this.subjectTypeRendering()}
+                                            <TextField className="inputArea"
+                                                autoFocus
+                                                variant="filled"
+                                                size="small"
                                                 name="messageBody"
                                                 value={this.state.messageBody}
+                                                label={`Message (ETA - ${this.state.nextDeliveryTime})`}
                                                 onChange={this.handleInputChange}
-                                                placeholder={`Text Message: Estimated Time of Arrival - ${this.state.nextDeliveryTime}`}
+                                                onKeyPress={(ev) => {
+                                                    console.log(`Pressed keyCode ${ev.key}`);
+                                                    if (ev.key === 'Enter') {
+                                                        ev.preventDefault();
+                                                        this.handleSubmitMessage()
+                                                    }
+                                                }}
+                                                multiline
+                                                inputProps={{
+                                                    style: {
+                                                        fontSize: '12px',
+                                                    },
+                                                }}
+                                                inputLabelProps={{
+                                                    style: {
+                                                        fontSize: '12px',
+                                                    },
+                                                }}
+                                                onKeyDown={this.keyPress}
                                             />
+
                                         </Box>
-                                        <SendRoundedIcon style={{ width: "20px", height: "20px", padding: "0px 5px", color: "grey" }} onClick={this.handleSubmitMessage} />
+
+                                        <IconButton type="submit" aria-label="Send" component="span" onClick={this.handleSubmitMessage} >
+                                            <SendRounded />
+                                        </IconButton>
                                     </Grid>
                                 </form>
                             </Box>
                         </Box>
-
-
                     </Box>
                 </Grid>
             </Grid>

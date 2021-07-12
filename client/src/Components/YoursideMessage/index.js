@@ -98,36 +98,39 @@ class YourSide extends Component {
 
     addPhoto = () => {
         if (this.props.attachmentSrc) {
-            return <img src={this.props.attachmentSrc} alt="upload" className="messageImage" />
-        }
-    }
 
-    setSentTime = (show) => {
-
-        this.setState({
-            isSentShown: show
-        })
-
-    }
-
-    renderSentTime = () => {
-        if (this.state.isSentShown) {
             return (
-                <Box item="true" className="timeDetails sentTime">
-                    <Box >Sent:</Box>
-                    <Box >{this.props.timeSent}</Box>
-                </Box>
-            )
-
-        } else {
-            return (
-                <Box item="true" className="timeDetails sentTime" style={{ display: "hidden" }}>
-                    <Box >Sent:</Box>
-                    <Box >{this.props.timeSent}</Box>
-                </Box>
+                <Box><img src={this.props.attachmentSrc} alt="upload" className="messageImage" /></Box>
             )
         }
     }
+
+    // setSentTime = (show) => {
+
+    //     this.setState({
+    //         isSentShown: show
+    //     })
+
+    // }
+
+    // renderSentTime = () => {
+    //     if (this.state.isSentShown) {
+    //         return (
+    //             <Box item="true" className="timeDetails sentTime">
+    //                 <Box >Sent:</Box>
+    //                 <Box >{this.props.timeSent}</Box>
+    //             </Box>
+    //         )
+
+    //     } else {
+    //         return (
+    //             <Box item="true" className="timeDetails sentTime" style={{ display: "hidden" }}>
+    //                 <Box >Sent:</Box>
+    //                 <Box >{this.props.timeSent}</Box>
+    //             </Box>
+    //         )
+    //     }
+    // }
 
     render = () => {
         return (
@@ -136,13 +139,16 @@ class YourSide extends Component {
                     direction="row"
                     justify="flex-start"
                     alignItems="center">
-                    <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px" }} onMouseEnter={this.setSentTime(true)} onMouseLeave={this.setSentTime(false)}>
-                        {this.renderSentTime()}
+                    {/* <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px" }} onMouseEnter={this.setSentTime(true)} onMouseLeave={this.setSentTime(false)}> */}
+                    <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px", width: "2.5vw" }}>
+                        {/* {this.renderSentTime()} */}
+                        <Box item="true" className="timeDetails sentTime">
+                            <Box >Sent:</Box>
+                            <Box >{this.props.timeSent}</Box>
+                        </Box>
                         <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "30px", height: "30px", margin: "0px auto" }} />
 
                         <Box >{this.sendingandDeliveryRenderTL()}</Box>
-
-
                     </Box>
                     <Box item="true">
                         <Grid item container direction="column" alignItems="flex-start">
@@ -166,7 +172,7 @@ class YourSide extends Component {
                     </Box>
 
                 </Grid>
-            </Box>
+            </Box >
         )
     }
 }

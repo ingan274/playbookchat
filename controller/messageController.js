@@ -326,30 +326,57 @@ module.exports = {
         } else {
             location = false
         }
-
-        let message = {
-            groupChat: "mcc-crew-chat",
-            message: {
-                subject: req.body.messageSubject,
-                messageBody: req.body.messageBody,
-            },
-            priority: priority,
-            urgent: urgent,
-            parent: {
-                hasParent: false,
-            },
-            sending: true,
-            expected_resp: false,
-            sender: req.body.sender,
-            timeSent: req.body.sentTime,
-            timeDelivered: req.body.deliveryTime,
-            location: location,
-            attachment: {
-                attachment: true,
-                imageData: req.file.path,
-                imageName: req.body.imageName
+        let message
+        if (req.body.subjectLine === "false") {
+            message = {
+                groupChat: "mcc-crew-chat",
+                message: {
+                    subject: "",
+                    messageBody: req.body.messageBody,
+                },
+                priority: priority,
+                urgent: urgent,
+                parent: {
+                    hasParent: false,
+                },
+                sending: true,
+                expected_resp: false,
+                sender: req.body.sender,
+                timeSent: req.body.sentTime,
+                timeDelivered: req.body.deliveryTime,
+                location: location,
+                attachment: {
+                    attachment: true,
+                    imageData: req.body.imagePath
+                }
+            }
+        } else {
+            message = {
+                groupChat: "mcc-crew-chat",
+                message: {
+                    subject: req.body.messageSubject,
+                    messageBody: req.body.messageBody,
+                },
+                priority: priority,
+                urgent: urgent,
+                parent: {
+                    hasParent: false,
+                },
+                sending: true,
+                expected_resp: false,
+                sender: req.body.sender,
+                timeSent: req.body.sentTime,
+                timeDelivered: req.body.deliveryTime,
+                location: location,
+                attachment: {
+                    attachment: true,
+                    imageData: req.file.path,
+                    imageName: req.body.imageName
+                }
             }
         }
+
+
 
         if (req.body.reminder) {
             message.reminder = req.body.reminder

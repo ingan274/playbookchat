@@ -1,13 +1,13 @@
 import "./style.css";
 import React, { Component } from "react";
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, IconButton, TextField } from '@material-ui/core';
+import { PhotoCamera, SendRounded } from '@material-ui/icons';
+import LinkIcon from '@material-ui/icons/Link';
 import API from "../API-Calls";
 import New from "../Components/NewCrew";
-import AttachFileRoundedIcon from '@material-ui/icons/AttachFileRounded';
-import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import moment from "moment";
 import {
-    Link,
+    Link
 } from "react-router-dom";
 
 let imageData;
@@ -47,7 +47,7 @@ class Playbook extends Component {
             this.getMessages();
         }, 800);
 
-         // Scroll Down
+        // Scroll Down
         let cycle = 1
         let scrollDown = setInterval(() => {
 
@@ -55,7 +55,7 @@ class Playbook extends Component {
                 clearInterval(scrollDown)
             }
             this.scrollBottom();
-            cycle --
+            cycle--
         }, 1000);
 
 
@@ -116,7 +116,7 @@ class Playbook extends Component {
     }
 
     handleSubmitMessage = event => {
-        event.preventDefault(); 
+        event.preventDefault();
         let newMesssage;
         if (this.state.messageBody && this.state.uploadedImage === "") {
 
@@ -163,7 +163,7 @@ class Playbook extends Component {
 
     scrollBottom = () => {
         // Scroll to the bottom
-        window.scrollTo(0,document.body.scrollHeight);
+        window.scrollTo(0, document.body.scrollHeight);
     }
 
     // Renderings
@@ -292,42 +292,42 @@ class Playbook extends Component {
                                         justify="space-between"
                                         alignItems="center">
                                         <Box item="true">
-                                            <label for="imageUpload">
-                                                <AttachFileRoundedIcon style={{ width: "20px", height: "20px", marginLeft: "10px", color: "grey" }} />
+                                            <input accept="image/*" className="attachment" id="imageUploadMCC" type="file" onChange={this.uploadImagemcc} />
+                                            <label htmlFor="imageUploadMCC">
+                                                <IconButton aria-label="upload picture" component="span">
+                                                    <PhotoCamera />
+                                                </IconButton>
                                             </label>
-                                            <input
-                                                className="attachment"
-                                                type="file"
-                                                id="imageUpload" name="imageUpload"
-                                                accept="image/png, image/jpeg"
-                                                onChange={this.uploadImage}
-                                            />
                                         </Box>
 
                                         <Box item="true" className="previewImage" style={previewImageStyle}>
                                             <img src={this.state.uploadedImage} alt="upload" className="previewImageAsset" />
                                         </Box>
                                         <Box item="true" className="form-control">
-
-                                            {/* <input
-                                                type="text"
-                                                className="inputArea"
-                                                name="subject"
-                                                value={this.state.subject}
-                                                onChange={this.handleInputChange}
-                                                placeholder="Subject"
-
-                                            /> */}
-                                            <input
-                                                type="text"
-                                                className="inputArea"
+                                            <TextField className="inputArea"
+                                                variant="filled"
+                                                size="small"
                                                 name="messageBody"
                                                 value={this.state.messageBody}
+                                                label={`Message`}
                                                 onChange={this.handleInputChange}
-                                                placeholder="Text Message"
-                                            />
+                                                multiline
+                                                inputProps={{
+                                                    style: {
+                                                        fontSize: '12px',
+                                                    },
+                                                }}
+                                                inputLabelProps={{
+                                                    style: {
+                                                        fontSize: '12px',
+                                                    },
+                                                }} />
+
                                         </Box>
-                                        <SendRoundedIcon style={{ width: "20px", height: "20px", padding: "0px 5px", color: "grey" }} onClick={this.handleSubmitMessage} />
+
+                                        <IconButton type="submit" aria-label="Send" component="span" onClick={this.handleSubmitMessage} >
+                                            <SendRounded />
+                                        </IconButton>
                                     </Grid>
                                 </form>
                             </Box>
