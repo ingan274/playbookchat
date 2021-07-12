@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import "./style.css";
-import { Grid, Box, Avatar } from '@material-ui/core';
+import { Grid, Box, Avatar, IconButton } from '@material-ui/core';
 import MessageStatus from "../mesageStatusIcons"
+import PriorityHighOutlinedIcon from '@material-ui/icons/PriorityHighOutlined';
+import SpeakerNotesOffOutlinedIcon from '@material-ui/icons/SpeakerNotesOffOutlined';
+import LowPriorityOutlinedIcon from '@material-ui/icons/LowPriorityOutlined';
 import moment from "moment";
 // import API from '../../API-Calls'
 
@@ -14,6 +17,13 @@ class YourSide extends Component {
             isSentShown: false
         }
     }
+
+    priorityIcon = () => {
+        if (this.props.priority) {
+            return <PriorityHighOutlinedIcon fontSize="small" />
+        }
+    }
+
 
     sendingText = () => {
         // return (this.props.sending ? "ETA" : "Estimated Deliverey");
@@ -31,14 +41,14 @@ class YourSide extends Component {
         if (this.props.sending && !this.props.expresp) {
             // Sending
             return (
-                <MessageStatus sent="rgba(245, 245, 245, .8)" ert="rgba(245, 245, 245, .8)" />
+                <MessageStatus sent="rgba(225, 225, 225, .3)" ert="rgba(255, 255, 255, .3)" />
             )
         } else if (!this.props.sending && this.props.expresp) {
             // send, and response if avail
-            return <MessageStatus sent="rgba(112 , 210 , 122)" ert="rgba(112 , 210 , 122)" />
+            return <MessageStatus sent="rgba(255, 255, 255, .9)" ert="rgba(1255, 255, 255, .9)" />
         } else {
             // sent, but time hasnt been reached for response
-            return <MessageStatus sent="rgba(112 , 210 , 122)" ert="rgba(245, 245, 245, .8)" />
+            return <MessageStatus sent="rgba(255, 255, 255, .9)" ert="rgba(255, 255, 255, .3)" />
         }
 
     }
@@ -89,58 +99,133 @@ class YourSide extends Component {
         let thisUser = JSON.parse(localStorage.getItem("User"));
         let userID = thisUser.id
 
-        if (userID === this.props.userId) {
-            return "rgba(71, 112, 235, .8)"
+        if (userID === this.props.userId && this.props.sending) {
+            return "rgba(71, 112, 235, .5)"
+        } else if (userID === this.props.userId && !this.props.sending) {
+            if (this.props.obsolete) {
+                return "rgba(149, 149, 149, 0.70)"
+            } else {
+                if (this.props.priority) {
+                    return "rgb(190, 53, 53, .7)"
+                } else {
+                    return "rgba(71, 112, 235, .9)"
+                }
+            }
         } else {
-            return "rgba(112, 71, 235, .8)"
+            if (this.props.obsolete) {
+                return "rgba(149, 149, 149, 0.70)"
+            } else {
+                return "rgba(112, 71, 235, .9)"
+            }
+
+        }
+    }
+
+    textColor = () => {
+        if (this.props.obsolete) {
+            return "rgba(225, 225, 225, 0.80)"
+        } else {
+            return "white"
+        }
+    }
+
+    prioritySubject = () => {
+        if (this.props.priority) {
+            return "14px"
+        }
+    }
+
+    priorityClass = () => {
+        if (this.props.priority) {
+            return "priorityMessage"
+        }
+    }
+
+    priorityBody = () => {
+        if (this.props.priority) {
+            return "600"
+        } else {
+            return "400"
         }
     }
 
     addPhoto = () => {
         if (this.props.attachmentSrc) {
-
             return (
                 <Box><img src={this.props.attachmentSrc} alt="upload" className="messageImage" /></Box>
             )
         }
     }
 
-    // setSentTime = (show) => {
+    priorityPress = () => {
+        if (this.props.priorityPress) {
+            return "red"
+        } else {
+            return 
+        }
+    }
 
-    //     this.setState({
-    //         isSentShown: show
-    //     })
+    obsoletePressed = () => {
+        if (this.props.obsoletePress && !this.props.priority) {
+            if (this.props.obsolete) {
 
-    // }
+                let obsoleteMessage = `${this.props.obsoleteUser} marked as irrelevent at ${this.props.obsoleteTime}`
+                return (
+                    <Box className="obsoleteText">
+                        {obsoleteMessage}
+                    </Box>
+                )
+            } else {
+                let obsoleteMessage = "Marked as irrelevent. Update is being sent."
+                return (
+                    <Box className="obsoleteText">
+                        {obsoleteMessage}
+                    </Box>
+                )
+            }
 
-    // renderSentTime = () => {
-    //     if (this.state.isSentShown) {
-    //         return (
-    //             <Box item="true" className="timeDetails sentTime">
-    //                 <Box >Sent:</Box>
-    //                 <Box >{this.props.timeSent}</Box>
-    //             </Box>
-    //         )
 
-    //     } else {
-    //         return (
-    //             <Box item="true" className="timeDetails sentTime" style={{ display: "hidden" }}>
-    //                 <Box >Sent:</Box>
-    //                 <Box >{this.props.timeSent}</Box>
-    //             </Box>
-    //         )
-    //     }
-    // }
+        } else if (this.props.priority) {
+            return (
+                <IconButton
+                    size="small"
+                    onClick={this.props.removePriority}
+                    className="messageButton"
+                >
+                    <LowPriorityOutlinedIcon />
+                </IconButton>)
+
+        } else {
+            return (
+                <Box>
+                    <IconButton
+                        size="small"
+                        onClick={this.props.markObsolete}
+                        className="messageButton"
+                    >
+                        <SpeakerNotesOffOutlinedIcon />
+                    </IconButton>
+                    <IconButton
+                        size="small"
+                        onClick={this.props.addPriority}
+                        className="messageButton"
+                    >
+                        <PriorityHighOutlinedIcon style={{color: `${this.priorityPress}`}}/>
+                    </IconButton>
+                </Box>
+            )
+        }
+    }
 
     render = () => {
         return (
-            <Box className="Message indivMessage otherCrew" style={{ opacity: `${this.props.opacity}` }}>
+            <Box className="Message indivMessage otherCrew">
                 <Grid container
                     direction="row"
                     justify="flex-start"
                     alignItems="center">
                     {/* <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px" }} onMouseEnter={this.setSentTime(true)} onMouseLeave={this.setSentTime(false)}> */}
-                    <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{ margin: "0px 10px 0px 0px"}}>
+                    <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{ margin: "0px 10px 0px 0px" }}>
                         {/* {this.renderSentTime()} */}
                         <Box item="true" className="timeDetails sentTime">
                             <Box >Sent:</Box>
@@ -152,16 +237,16 @@ class YourSide extends Component {
                     </Box>
                     <Box item="true">
                         <Grid item container direction="column" alignItems="flex-start">
-                            <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
+                            <Box item="true" className="userNameRole">{this.props.userName} <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 
                             <Box item="true"
-                                className="chatBubble"
+                                className={`chatBubble ${this.priorityClass()}`}
                                 justify="center"
                                 alignItems="flex-start"
                                 style={{ backgroundColor: `${this.messageColor()}` }}
                             >
-                                <Box className="messageSubject">{this.props.messageSubject}</Box>
-                                <Box className="messageText">{this.props.messageMessageBody}</Box>
+                                <Box className="messageSubject" style={{ color: `${this.textColor()}`, fontSize: `${this.prioritySubject()}` }}><Grid container direction="row" alignItem="center"><Box item="true">{this.priorityIcon()}</Box> <Box item="true">{this.props.messageSubject}</Box></Grid></Box>
+                                <Box className="messageText" style={{ color: `${this.textColor()}`, fontWeight: `${this.priorityBody()}` }}>{this.props.messageMessageBody}</Box>
                                 {this.addPhoto()}
 
                                 {this.messageStatus()}
@@ -169,6 +254,7 @@ class YourSide extends Component {
 
                             </Box>
                         </Grid>
+                        {this.obsoletePressed()}
                     </Box>
 
                 </Grid>

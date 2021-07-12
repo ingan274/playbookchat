@@ -2,7 +2,6 @@ import "./style.css";
 import React, { Component } from "react";
 import { Grid, Box, IconButton, TextField } from '@material-ui/core';
 import { PhotoCamera, SendRounded } from '@material-ui/icons';
-import LinkIcon from '@material-ui/icons/Link';
 import API from "../API-Calls";
 import New from "../Components/NewCrew";
 import moment from "moment";

@@ -104,7 +104,6 @@ class Playbook extends Component {
     };
 
 
-    d
     render = () => {
         return (
             this.profileButtons()

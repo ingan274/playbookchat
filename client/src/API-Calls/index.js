@@ -4,12 +4,13 @@ import delay from "./chatDelay";
 // let upload = multer({ dest: '../../uploads/' })
 
 const timerDelay = delay.timerDelay
-const secondDelay = delay.timerDelay*2
+const secondDelay = delay.timerDelay * 2
 
 // Timed Updates
 
-const updateToSent = message => axios.put("/api/timed", message)
-const updateRespAvail = (message) => axios.put("/api/timed/toert", message)
+const updateToSent = message => axios.put("/api/timed", message);
+const updateRespAvail = (message) => axios.put("/api/timed/toert", message);
+
 // const updateToSent = message => axios.put("http://localhost:3002/api/timed", message)
 // const updateRespAvail = (message) => axios.put("http://localhost:3002/api/timed/toert", message)
 
@@ -51,17 +52,51 @@ const APICall = {
     getMCCCrew: (location, userID) => axios.get(`/api/mcccrew/${location}/${userID}`),
 
     newMCCCrew: (newMessage) => {
-        axios.post("/api/mcccrew/",  newMessage)
+        axios.post("/api/mcccrew/", newMessage)
             .then(response => {
                 timedUpdates(response)
             })
     },
 
     newMCCCrewPhoto: (newMessage) => {
-        axios.post("/api/mcccrew/photo",  newMessage)
+        axios.post("/api/mcccrew/photo", newMessage)
             .then(response => {
                 timedUpdates(response)
             })
+    },
+
+    markObsolete: (ignoreMessage) => {
+        let messageID = ignoreMessage.messageID;
+        axios.put("/api/mcccrew/ignorepress", { messageID: messageID })
+
+        let cycle = 1
+        let markObsolete = setInterval(function () {
+            if (cycle === 0) {
+                clearInterval(markObsolete);
+                return;
+            }
+            axios.put("/api/mcccrew/ignore", ignoreMessage)
+            cycle--;
+        }, timerDelay);
+
+
+    },
+
+    handlePriority: (action, message) => {
+
+        axios.put(`/api/mcccrew/priorityPress/${action}`, { messageID: message })
+
+        let cycle = 1
+        let updatePriority = setInterval(function () {
+            if (cycle === 0) {
+                clearInterval(updatePriority);
+                return;
+            }
+            axios.put(`/api/mcccrew/priority/${action}`, { messageID: message })
+            cycle--;
+        }, timerDelay);
+
+
     },
 
     reactMCCCrew: (update) => {
@@ -72,7 +107,7 @@ const APICall = {
                 return;
             }
             axios.put("/api/mcccrew/", update)
-            cycle --;
+            cycle--;
         }, timerDelay);
     },
 
@@ -94,7 +129,7 @@ const APICall = {
     },
 
     newCrewPhoto: (newMessage) => {
-        axios.post("/api/crew/photo",  newMessage)
+        axios.post("/api/crew/photo", newMessage)
     },
 
     reactCrew: (update) => {

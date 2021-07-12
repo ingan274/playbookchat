@@ -276,6 +276,12 @@ module.exports = {
             parent: {
                 hasParent: false,
             },
+            obsoletePressed: false,
+            obsolete: {
+                isObsolete: false,
+                userChange: "",
+                timeChange: ""
+            },
             sending: true,
             expected_resp: false,
             sender: req.body.sender,
@@ -338,6 +344,11 @@ module.exports = {
                 urgent: urgent,
                 parent: {
                     hasParent: false,
+                },
+                obsolete: {
+                    isObsolete: false,
+                    userChange: "",
+                    timeChange: ""
                 },
                 sending: true,
                 expected_resp: false,
@@ -914,6 +925,117 @@ module.exports = {
                     res.send(404)
                 })
         }
+    },
+
+    // Mark Obsolete
+    mccObsolete: async (req, res) => {
+        const messageReactingTo = req.body.messageID;
+        const userChange = req.body.userUpdated;
+        const timeChange = req.body.timeUpdated;
+
+        let ignoreMessage = {
+            $set: {
+                obsolete: {
+                    isObsolete: true,
+                    userChange: userChange,
+                    timeChange: timeChange
+                }
+            }
+        }
+
+        await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, ignoreMessage)
+            .then(console.log("Message", messageReactingTo, "has beeen Ignored"))
+            .then(res.send(200))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
+    },
+
+    mccObsoletePress: async (req, res) => {
+        const messageReactingTo = req.body.messageID;
+        const action = req.params.action
+        let priorityPress;
+
+        if (action === "add") {
+            priorityPress = {
+                $set: {
+                    priority: true
+                }
+            }
+        } else if (action === "remove") {
+            priorityPress = {
+                $set: {
+                    priority: false
+                }
+            }
+        }
+
+
+        await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, priorityPress)
+            .then(console.log("Message", messageReactingTo, "priority has beeen (pressed)"))
+            .then(res.send(200))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
+    },
+
+    // Remove Priority
+    mccPriorityRemove: async (req, res) => {
+        const messageReactingTo = req.body.messageID;
+
+        let priorityUpdate = {
+            $set: {
+                priority: false
+            }
+        }
+
+        await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, priorityUpdate)
+            .then(console.log("Message", messageReactingTo, "is not a priority"))
+            .then(res.send(200))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
+    },
+
+    // Add Priority
+    mccPriorityAdd: async (req, res) => {
+        const messageReactingTo = req.body.messageID;
+
+        let priorityUpdate = {
+            $set: {
+                priority: true
+            }
+        }
+
+        await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, priorityUpdate)
+            .then(console.log("Message", messageReactingTo, "if now a priority"))
+            .then(res.send(200))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
+    },
+
+    // Press Priority
+    mccPriorityPress: async (req, res) => {
+        const messageReactingTo = req.body.messageID;
+
+        let priorityUpdate = {
+            $set: {
+                priorityPress: true
+            }
+        }
+
+        await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, priorityUpdate)
+            .then(console.log("Message", messageReactingTo, "if now a priority"))
+            .then(res.send(200))
+            .catch(err => {
+                console.log(err)
+                res.send(404)
+            })
     },
 
     // Add Message Reminder

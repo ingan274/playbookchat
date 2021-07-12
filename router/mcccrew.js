@@ -39,8 +39,27 @@ router.route("/")
 router.route("/reply")
     .post(controller.replyMessageMCCCrew)
 
+// MCC Crew Chat  (/mcccrew/photo)
 router.route("/photo")
     .post(upload.single('imageData'), controller.newMessageMCCCrewPhoto)
+
+// MCC Crew Chat  (/mcccrew/ignore)
+router.route("/ignore")
+    .put(controller.mccObsolete)
+
+
+// MCC Crew Chat  (/mcccrew/ignorepress)
+router.route("/ignorepress")
+    .put(controller.mccObsoletePress)
+
+router.route("/priority/remove")
+    .put(controller.mccPriorityRemove)
+
+router.route("/priority/add")
+    .put(controller.mccPriorityAdd)
+
+    router.route("/prioritypress/:action")
+    .put(controller.mccPriorityPress)
 
 
 module.exports = router;

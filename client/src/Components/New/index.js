@@ -1,17 +1,75 @@
 import React, { Component } from "react";
 import "./style.css";
 import { Grid, Box, Avatar } from '@material-ui/core';
-
+import PriorityHighOutlinedIcon from '@material-ui/icons/PriorityHighOutlined';
 import YourSideMess from "../YoursideMessage"
 
 
 class New extends Component {
 
-    // make function to render image if subject has a url ...
+    priorityIcon = () => {
+        if (this.props.priority) {
+            return <PriorityHighOutlinedIcon color="action"/>
+        }
+    }
 
     addPhoto = () => {
         if (this.props.attachment) {
             return <img src={this.props.attachmentSrc} alt="upload" className="messageImage" />
+        }
+    }
+
+
+    handleObsolete = (messageID) => {
+        this.props.markObsolete(messageID)
+    }
+
+    handlePriorityAdd = (messageID) => {
+        this.props.priorityAdd("add", messageID)
+    }
+
+    handlePriorityRemove = (messageID) => {
+        this.props.priorityRemove("remove", messageID)
+    }
+
+    messageColor = () => {
+        if (this.props.obsolete) {
+            return "rgba(149, 149, 149, 0.70)"
+        } else {
+            if (this.props.priority) {
+                return "rgb(190, 53, 53, .7)"
+            } else {
+                return "rgba(149, 149, 149, 1)"
+            }
+            
+        }
+    }
+
+    textColor = () => {
+        if (this.props.obsolete) {
+            return "rgba(225, 225, 225, 0.850)"
+        } else {
+            return "white"
+        }
+    }
+
+    prioritySubject = () => {
+        if (this.props.priority) {
+            return "14px"
+        }
+    }
+
+    priorityClass = () => {
+        if (this.props.priority) {
+            return "priorityMessage"
+        }
+    }
+
+    priorityBody = () => {
+        if (this.props.priority) {
+            return "600"
+        } else {
+            return "400"
         }
     }
 
@@ -28,94 +86,70 @@ class New extends Component {
 
 
         if (clientLocation === messageLocation) {
+            if (this.props.attachment) {
+                return (
+                    <YourSideMess
+                        key={this.props.messageID}
+                        messageID={this.props.messageID}
+                        sending={this.props.sending}
+                        expresp={this.props.expresp}
+                        messageSubject={this.props.messageSubject}
+                        messageMessageBody={this.props.messageMessageBody}
+                        userName={this.props.userName}
+                        userRole={this.props.userRole}
+                        userId={this.props.userId}
+                        userImageURL={this.props.userImageURL}
+                        timeSent={this.props.timeSent}
+                        timeDelivered={this.props.timeDelivered}
+                        clientUser={this.props.clientUser}
+                        eta={this.props.eta}
+                        attachmentSrc={this.props.attachmentSrc}
 
-            if (this.props.sending) {
-                if (this.props.attachment) {
-                    return (
-                        <YourSideMess
-                            opacity="50%"
-                            key={this.props.messageID}
-                            messageID={this.props.messageID}
-                            sending={this.props.sending}
-                            expresp={this.props.expresp}
-                            messageSubject={this.props.messageSubject}
-                            messageMessageBody={this.props.messageMessageBody}
-                            userName={this.props.userName}
-                            userRole={this.props.userRole}
-                            userId={this.props.userId}
-                            userImageURL={this.props.userImageURL}
-                            timeSent={this.props.timeSent}
-                            timeDelivered={this.props.timeDelivered}
-                            clientUser={this.props.clientUser}
-                            eta={this.props.eta}
-                            attachmentSrc={this.props.attachmentSrc}
-                        />)
-                } else {
-                    return (
-                        <YourSideMess
-                            opacity="50%"
-                            key={this.props.messageID}
-                            messageID={this.props.messageID}
-                            sending={this.props.sending}
-                            expresp={this.props.expresp}
-                            messageSubject={this.props.messageSubject}
-                            messageMessageBody={this.props.messageMessageBody}
-                            userName={this.props.userName}
-                            userRole={this.props.userRole}
-                            userId={this.props.userId}
-                            userImageURL={this.props.userImageURL}
-                            timeSent={this.props.timeSent}
-                            timeDelivered={this.props.timeDelivered}
-                            clientUser={this.props.clientUser}
-                            eta={this.props.eta}
-                        />
-                    )
-                }
+                        markObsolete={(messageID) => this.handleObsolete(messageID)}
+                        obsolete={this.props.obsolete}
+                        obsoleteUser={this.props.obsoleteUser}
+                        obsoleteTime={this.props.obsoleteTime}
+                        obsoletePress={this.props.obsoletePress}
+
+                        priority={this.props.priority}
+                        priorityPress={this.props.priorityPress}
+                        removePriority={(messageID) => this.handlePriorityRemove(messageID)}
+                        addPriority={(messageID) => this.handlePriorityAdd(messageID)}
+                    />)
             } else {
-                if (this.props.attachment) {
-                    return (
-                        <YourSideMess
-                            opacity="100%"
-                            key={this.props.messageID}
-                            messageID={this.props.messageID}
-                            sending={this.props.sending}
-                            expresp={this.props.expresp}
-                            messageSubject={this.props.messageSubject}
-                            messageMessageBody={this.props.messageMessageBody}
-                            userName={this.props.userName}
-                            userRole={this.props.userRole}
-                            userId={this.props.userId}
-                            userImageURL={this.props.userImageURL}
-                            timeSent={this.props.timeSent}
-                            timeDelivered={this.props.timeDelivered}
-                            clientUser={this.props.clientUser}
-                            eta={this.props.eta}
-                            attachmentSrc={this.props.attachmentSrc}
-                        />)
-                } else {
-                    return (
-                        <YourSideMess
-                            opacity="100%"
-                            key={this.props.messageID}
-                            messageID={this.props.messageID}
-                            sending={this.props.sending}
-                            expresp={this.props.expresp}
-                            messageSubject={this.props.messageSubject}
-                            messageMessageBody={this.props.messageMessageBody}
-                            userName={this.props.userName}
-                            userRole={this.props.userRole}
-                            userId={this.props.userId}
-                            userImageURL={this.props.userImageURL}
-                            timeSent={this.props.timeSent}
-                            timeDelivered={this.props.timeDelivered}
-                            clientUser={this.props.clientUser}
-                            eta={this.props.eta}
-                        />
-                    )
-                }
+                return (
+                    <YourSideMess
+                        key={this.props.messageID}
+                        messageID={this.props.messageID}
+                        sending={this.props.sending}
+                        expresp={this.props.expresp}
+                        messageSubject={this.props.messageSubject}
+                        messageMessageBody={this.props.messageMessageBody}
+                        userName={this.props.userName}
+                        userRole={this.props.userRole}
+                        userId={this.props.userId}
+                        userImageURL={this.props.userImageURL}
+                        timeSent={this.props.timeSent}
+                        timeDelivered={this.props.timeDelivered}
+                        clientUser={this.props.clientUser}
+                        eta={this.props.eta}
+
+                        markObsolete={(messageID) => this.handleObsolete(messageID)}
+                        obsolete={this.props.obsolete}
+                        obsoleteUser={this.props.obsoleteUser}
+                        obsoleteTime={this.props.obsoleteTime}
+                        obsoletePress={this.props.obsoletePress}
+
+                        priority={this.props.priority}
+                        priorityPress={this.props.priorityPress}
+                        removePriority={(messageID) => this.handlePriorityRemove(messageID)}
+                        addPriority={(messageID) => this.handlePriorityAdd(messageID)}
+                    />
+                )
             }
 
         } else {
+
             return (
                 <Box className="otherMessage indivMessage">
                     <Grid container
@@ -128,17 +162,18 @@ class New extends Component {
                                 <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 
                                 <Box item="true"
-                                    className="chatBubble otherChatBbl"
+                                    className={`chatBubble otherChatBbl ${this.priorityClass()}`}
                                     justify="center"
                                     alignItems="flex-start"
+                                    style={{ backgroundColor: `${this.messageColor()}` }}
                                 >
-                                    <Box className="messageSubject">{this.props.messageSubject}</Box>
-                                    <Box className="messageText">{this.props.messageMessageBody}</Box>
+                                    <Box className="messageSubject" style={{ color: `${this.textColor()}`, fontSize: `${this.prioritySubject()}` }}>{this.priorityIcon()} {this.props.messageSubject}</Box>
+                                    <Box className="messageText" style={{ color: `${this.textColor()}`, fontWeight: `${this.priorityBody()}`  }}>{this.props.messageMessageBody}</Box>
                                     {this.addPhoto()}
                                 </Box>
                             </Grid>
                         </Box>
-                        <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{margin: "0px 0px 0px 10px" }}>
+                        <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{ margin: "0px 0px 0px 10px" }}>
                             <Box item="true" className="timeDetails sentTime">
                                 <Box >Sent:</Box>
                                 <Box >{this.props.timeSent}</Box>
@@ -153,6 +188,7 @@ class New extends Component {
                     </Grid>
                 </Box>
             )
+
         }
 
     }

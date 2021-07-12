@@ -1,9 +1,8 @@
 import "./style.css";
 import React, { Component } from "react";
-import { Grid, Box, Button, IconButton, TextField, InputAdornment } from '@material-ui/core';
+import { Grid, Box, Button, IconButton, TextField, InputAdornment, FormControlLabel, Switch } from '@material-ui/core';
 import { PhotoCamera, SendRounded, TextFields } from '@material-ui/icons';
 import LinkIcon from '@material-ui/icons/Link';
-import { withStyles } from "@material-ui/core/styles";
 import dateTime from "../API-Calls/chatDelay"
 import API from "../API-Calls";
 import New from "../Components/New";
@@ -31,6 +30,7 @@ class Playbook extends Component {
             chat: [],
             subject: "",
             messageBody: "",
+            priority: false,
             nextDeliveryTime: "",
             currentTime: "",
             currentDate: "",
@@ -150,7 +150,7 @@ class Playbook extends Component {
                     messageBody: this.state.messageBody
                 },
                 urgent: false,
-                priority: false,
+                priority: this.state.priority,
                 sender: this.state.userId,
                 location: locationBool,
                 sentTime: this.state.currentBSON,
@@ -179,7 +179,7 @@ class Playbook extends Component {
             newMesssage.append("messageBody", this.state.messageBody)
             newMesssage.append("messageSubject", this.state.subject,)
             newMesssage.append("urgent", false)
-            newMesssage.append("priority", false)
+            newMesssage.append("priority", this.state.priority)
             newMesssage.append("sender", this.state.userId)
             newMesssage.append("location", locationBool)
             newMesssage.append("sentTime", this.state.currentBSON)
@@ -261,7 +261,7 @@ class Playbook extends Component {
                     onChange={this.handleInputChange}
                     onKeyDown={this.keyPress}
                     onKeyPress={(ev) => {
-                        console.log(`Pressed keyCode ${ev.key}`);
+                        // console.log(`Pressed keyCode ${ev.key}`);
                         if (ev.key === 'Enter') {
                             ev.preventDefault();
                             this.handleSubmitMessage()
@@ -291,7 +291,7 @@ class Playbook extends Component {
                     onChange={this.handleInputChange}
                     onKeyDown={this.keyPress}
                     onKeyPress={(ev) => {
-                        console.log(`Pressed keyCode ${ev.key}`);
+                        // console.log(`Pressed keyCode ${ev.key}`);
                         if (ev.key === 'Enter') {
                             ev.preventDefault();
                             this.handleSubmitMessage()
@@ -321,6 +321,38 @@ class Playbook extends Component {
         }
     }
 
+    markObsolete = (messageid, event) => {
+        let messageID = messageid
+        // console.log(messageID)
+        const userUpdated = this.state.userName;
+        const timeUpdated = this.state.currentTime;
+
+        let udpateObject = {
+            messageID: messageID,
+            userUpdated: userUpdated,
+            timeUpdated: timeUpdated
+        }
+
+        API.markObsolete(udpateObject)
+    }
+
+    handlePriorityUpdate = (action, messageid, event) => {
+        let messageID = messageid
+
+        let udpateObject = {
+            messageID: messageID
+        }
+
+        API.handlePriority(action, udpateObject)
+    }
+
+    handlePriority = (event) => {
+        const { name, checked } = event.target;
+        this.setState({
+            [name]: checked
+        })
+    };
+
     // Renderings
     renderMessages = () => {
 
@@ -349,6 +381,15 @@ class Playbook extends Component {
                                     eta={item.timeDelivered}
                                     attachment={item.attachment.attachment}
                                     attachmentSrc={`/${item.attachment.imageData}`}
+                                    markObsolete={(ev) => this.markObsolete(item._id, ev)}
+                                    obsoletePress={item.obsoletePressed}
+                                    obsolete={item.obsolete.isObsolete}
+                                    obsoleteUser={item.obsolete.userChange}
+                                    obsoleteTime={item.obsolete.timeChange}
+                                    priority={item.priority}
+                                    priorityPress={item.priorityPress}
+                                    priorityAdd={(ev) => this.handlePriority("add", item._id, ev)}
+                                    priorityRemove={(ev) => this.handlePriority("remove", item._id, ev)}
                                 />
                             )
                         } else {
@@ -368,6 +409,15 @@ class Playbook extends Component {
                                     timeSent={this.getTime(item.timeSent)}
                                     timeDelivered={this.getTime(item.timeDelivered)}
                                     eta={item.timeDelivered}
+                                    markObsolete={(ev) => this.markObsolete(item._id, ev)}
+                                    obsolete={item.obsolete.isObsolete}
+                                    obsoletePress={item.obsoletePressed}
+                                    obsoleteUser={item.obsolete.userChange}
+                                    obsoleteTime={item.obsolete.timeChange}
+                                    priority={item.priority}
+                                    priorityPress={item.priorityPress}
+                                    priorityAdd={(ev) => this.handlePriorityUpdate("add", item._id, ev)}
+                                    priorityRemove={(ev) => this.handlePriorityUpdate("remove", item._id, ev)}
                                 />
                             )
                         }
@@ -473,9 +523,26 @@ class Playbook extends Component {
                                             </Box>
                                         </Box>
                                         <Box item="true" className="form-control">
-                                            <Grid container direction="row" alignItems="center" justify="flex-start" className="radiobuttonSubmission">
-                                                <Button m={1} size="small" onClick={() => this.setState({ subjectLine: true })} color={subjectBtnColor}>Subject Line</Button>
-                                                <Button m={1} size="small" onClick={() => this.setState({ subjectLine: false })} color={imageBtnColor}>Image Link</Button>
+                                            <Grid container direction="row" alignItems="center" justify="space-between" className="radiobuttonSubmission">
+                                                <Box>
+                                                    <Button m={1} size="small" onClick={() => this.setState({ subjectLine: true })} color={subjectBtnColor}>Subject Line</Button>
+                                                    <Button m={1} size="small" onClick={() => this.setState({ subjectLine: false })} color={imageBtnColor}>Image Link</Button>
+                                                </Box>
+                                                <Box mb={1} item="true">
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Switch
+                                                                size="small"
+                                                                checked={this.state.priority}
+                                                                onChange={this.handlePriority}
+                                                                name="priority"
+                                                                color="primary"
+                                                            />
+                                                        }
+                                                        label="Priority Message"
+
+                                                    />
+                                                </Box>
                                             </Grid>
                                             {this.subjectTypeRendering()}
                                             <TextField className="inputArea"
@@ -486,7 +553,6 @@ class Playbook extends Component {
                                                 label={`Message (ETA - ${this.state.nextDeliveryTime})`}
                                                 onChange={this.handleInputChange}
                                                 onKeyPress={(ev) => {
-                                                    console.log(`Pressed keyCode ${ev.key}`);
                                                     if (ev.key === 'Enter') {
                                                         ev.preventDefault();
                                                         this.handleSubmitMessage()

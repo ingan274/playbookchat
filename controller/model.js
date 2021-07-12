@@ -52,6 +52,28 @@ module.exports = {
                                 enum: ["None", "ETA", "QResponse"],
                                 description: "asking for a request needed"
                             },
+                            obsoletePressed: {
+                                bsonType: "bool",
+                                description: "must be a bool, timer wull update the bottom later"
+                            },
+                            obsolete: {
+                                bsonType: "object",
+                                required: ["isObsolete"],
+                                properties: {
+                                    isObsolete: {
+                                        bsonType: "bool",
+                                        description: "must be a bool and is required"
+                                    },
+                                    userChange: {
+                                        bsonType: "string",
+                                        description: "Person Who Set It"
+                                    },
+                                    timeChange: {
+                                        bsonType: "string",
+                                        description: "Time it was changed"
+                                    }
+                                }
+                            },
                             parent: {
                                 bsonType: "object",
                                 required: ["hasParent"],
