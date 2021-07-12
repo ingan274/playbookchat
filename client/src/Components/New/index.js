@@ -138,7 +138,7 @@ class New extends Component {
                                 </Box>
                             </Grid>
                         </Box>
-                        <Box item="true" direction="column" alignItems="center" justify="center" style={{margin: "0px 0px 0px 10px" }}>
+                        <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{margin: "0px 0px 0px 10px" }}>
                             <Box item="true" className="timeDetails sentTime">
                                 <Box >Sent:</Box>
                                 <Box >{this.props.timeSent}</Box>

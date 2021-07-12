@@ -116,7 +116,6 @@ class Playbook extends Component {
     }
 
     handleSubmitMessage = event => {
-        event.preventDefault();
         let newMesssage;
         if (this.state.messageBody && this.state.uploadedImage === "") {
 

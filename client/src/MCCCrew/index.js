@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Grid, Box, Button, IconButton, TextField, InputAdornment } from '@material-ui/core';
 import { PhotoCamera, SendRounded, TextFields } from '@material-ui/icons';
 import LinkIcon from '@material-ui/icons/Link';
+import { withStyles } from "@material-ui/core/styles";
 import dateTime from "../API-Calls/chatDelay"
 import API from "../API-Calls";
 import New from "../Components/New";
@@ -12,7 +13,6 @@ import {
 } from "react-router-dom";
 
 let imageData;
-
 class Playbook extends Component {
     constructor(props) {
         super(props);
@@ -267,21 +267,15 @@ class Playbook extends Component {
                             this.handleSubmitMessage()
                         }
                     }}
+
                     InputProps={{
                         startAdornment: (
-                            <InputAdornment position="start">
+                            <InputAdornment className="inputIcon" position="start">
                                 <TextFields />
                             </InputAdornment>
                         ),
-                        style: {
-                            fontSize: '12px',
-                        },
                     }}
-                    inputLabelProps={{
-                        style: {
-                            fontSize: '12px',
-                        },
-                    }}
+
                 />
             )
         } else {
@@ -305,7 +299,7 @@ class Playbook extends Component {
                     }}
                     InputProps={{
                         startAdornment: (
-                            <InputAdornment position="start">
+                            <InputAdornment className="inputIcon" position="start">
                                 <LinkIcon />
                             </InputAdornment>
                         ),
@@ -464,7 +458,7 @@ class Playbook extends Component {
                                     <Grid
                                         container item
                                         direction="row"
-                                        justify="space-between"
+                                        justify="space-around"
                                         alignItems="center">
                                         <Box item="true">
                                             <input accept="image/*" className="attachment" id="imageUploadMCC" type="file" onChange={this.uploadImagemcc} />
@@ -473,10 +467,10 @@ class Playbook extends Component {
                                                     <PhotoCamera />
                                                 </IconButton>
                                             </label>
-                                        </Box>
 
-                                        <Box item="true" className="previewImage" style={previewImageStyle}>
-                                            <img src={this.state.uploadedImage} alt="upload" className="previewImageAsset" />
+                                            <Box item="true" className="previewImage" style={previewImageStyle}>
+                                                <img src={this.state.uploadedImage} alt="upload" className="previewImageAsset" />
+                                            </Box>
                                         </Box>
                                         <Box item="true" className="form-control">
                                             <Grid container direction="row" alignItems="center" justify="flex-start" className="radiobuttonSubmission">
@@ -485,7 +479,6 @@ class Playbook extends Component {
                                             </Grid>
                                             {this.subjectTypeRendering()}
                                             <TextField className="inputArea"
-                                                autoFocus
                                                 variant="filled"
                                                 size="small"
                                                 name="messageBody"

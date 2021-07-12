@@ -140,7 +140,7 @@ class YourSide extends Component {
                     justify="flex-start"
                     alignItems="center">
                     {/* <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px" }} onMouseEnter={this.setSentTime(true)} onMouseLeave={this.setSentTime(false)}> */}
-                    <Box item="true" direction="column" alignItems="center" justify="center" style={{ margin: "0px 10px 0px 0px", width: "2.5vw" }}>
+                    <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{ margin: "0px 10px 0px 0px"}}>
                         {/* {this.renderSentTime()} */}
                         <Box item="true" className="timeDetails sentTime">
                             <Box >Sent:</Box>
@@ -155,7 +155,7 @@ class YourSide extends Component {
                             <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 
                             <Box item="true"
-                                className="chatBubble otherChatBbl"
+                                className="chatBubble"
                                 justify="center"
                                 alignItems="flex-start"
                                 style={{ backgroundColor: `${this.messageColor()}` }}
