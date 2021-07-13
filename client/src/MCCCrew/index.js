@@ -211,11 +211,15 @@ class Playbook extends Component {
             let path = new URL(this.state.subject).pathname
             path = path.substring(1)
             // console.log(path)
+            if (this.state.messageBody.length > 0) {
+                newMesssage.append("messageBody", this.state.mccmessageBody)
+            } else {
+                newMesssage.append("messageBody", "")
+            }
 
 
             // This turns all booleans into strings!!
             newMesssage.append("groupChat", "mcc-crew-chat")
-            newMesssage.append("messageBody", this.state.mccmessageBody)
             newMesssage.append("messageSubject", "")
             newMesssage.append("subjectLine", this.state.subjectLine)
             newMesssage.append("imagePath", path)
