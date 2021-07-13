@@ -272,6 +272,7 @@ module.exports = {
             groupChat: "mcc-crew-chat",
             message: req.body.message,
             priority: req.body.priority,
+            priorityPressed: req.body.priorityPressed,
             urgent: req.body.urgent,
             parent: {
                 hasParent: false,
@@ -312,6 +313,7 @@ module.exports = {
         // console.log(req.file.path)
         // console.log("Object")
         let priority;
+        let priorityPressed;
         let urgent;
         let location;
 
@@ -319,6 +321,13 @@ module.exports = {
             priority = true
         } else {
             priority = false
+        }
+
+
+        if (req.body.priorityPressed === "true") {
+            priorityPressed = true
+        } else {
+            priorityPressed = false
         }
 
         if (req.body.urgent === "true") {
@@ -341,10 +350,12 @@ module.exports = {
                     messageBody: req.body.messageBody,
                 },
                 priority: priority,
+                priorityPressed: priorityPressed,
                 urgent: urgent,
                 parent: {
                     hasParent: false,
                 },
+                obsoletePressed: false,
                 obsolete: {
                     isObsolete: false,
                     userChange: "",
@@ -369,7 +380,14 @@ module.exports = {
                     messageBody: req.body.messageBody,
                 },
                 priority: priority,
+                priorityPressed: priorityPressed,
                 urgent: urgent,
+                obsoletePressed: false,
+                obsolete: {
+                    isObsolete: false,
+                    userChange: "",
+                    timeChange: ""
+                },
                 parent: {
                     hasParent: false,
                 },
@@ -954,26 +972,15 @@ module.exports = {
 
     mccObsoletePress: async (req, res) => {
         const messageReactingTo = req.body.messageID;
-        const action = req.params.action
-        let priorityPress;
 
-        if (action === "add") {
-            priorityPress = {
-                $set: {
-                    priority: true
-                }
-            }
-        } else if (action === "remove") {
-            priorityPress = {
-                $set: {
-                    priority: false
-                }
+        let obsoletePress = {
+            $set: {
+                obsoletePressed: true
             }
         }
 
-
-        await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, priorityPress)
-            .then(console.log("Message", messageReactingTo, "priority has beeen (pressed)"))
+        await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, obsoletePress)
+            .then(console.log("Message", messageReactingTo, "obsolete (pressed)"))
             .then(res.send(200))
             .catch(err => {
                 console.log(err)
@@ -983,7 +990,7 @@ module.exports = {
 
     // Remove Priority
     mccPriorityRemove: async (req, res) => {
-        const messageReactingTo = req.body.messageID;
+        const messageReactingTo = req.body.messageID.messageID;
 
         let priorityUpdate = {
             $set: {
@@ -1002,7 +1009,7 @@ module.exports = {
 
     // Add Priority
     mccPriorityAdd: async (req, res) => {
-        const messageReactingTo = req.body.messageID;
+        const messageReactingTo = req.body.messageID.messageID;
 
         let priorityUpdate = {
             $set: {
@@ -1011,7 +1018,7 @@ module.exports = {
         }
 
         await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, priorityUpdate)
-            .then(console.log("Message", messageReactingTo, "if now a priority"))
+            .then(console.log("Message", messageReactingTo, "is now a priority"))
             .then(res.send(200))
             .catch(err => {
                 console.log(err)
@@ -1021,16 +1028,27 @@ module.exports = {
 
     // Press Priority
     mccPriorityPress: async (req, res) => {
-        const messageReactingTo = req.body.messageID;
+        const messageReactingTo = req.body.messageID.messageID;
+        const action = req.params.action;
+        let priorityUpdate
 
-        let priorityUpdate = {
-            $set: {
-                priorityPress: true
+        // console.log(messageReactingTo, typeof messageReactingTo)
+        if (action === "add") {
+            priorityUpdate = {
+                $set: {
+                    priorityPressed: true
+                }
+            }
+        } else if (action === "remove") {
+            priorityUpdate = {
+                $set: {
+                    priorityPressed: false
+                }
             }
         }
 
         await mcccrew.updateOne({ _id: ObjectID(messageReactingTo) }, priorityUpdate)
-            .then(console.log("Message", messageReactingTo, "if now a priority"))
+            .then(console.log("Message", messageReactingTo, "priority was pressed", action))
             .then(res.send(200))
             .catch(err => {
                 console.log(err)

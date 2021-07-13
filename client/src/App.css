@@ -60,9 +60,9 @@
 }
 
 .ChatBox {
-    padding-top: 15px;
+    padding-top: 3vh;
     margin-left: 6vw;
-    margin-right: 2%
+    margin-right: .8vw;
 }
 
 .chatMessDiv {
@@ -99,9 +99,12 @@
     font-size: 13px;
     padding: 10px;
     border-radius: 5px;
-    margin: 3px;
-    max-width: 17.8vw;
+    margin: 3px 0px;
     color: white;
+}
+
+.messageArea {
+    max-width: 19vw;
 }
 
 .timeDelivered {

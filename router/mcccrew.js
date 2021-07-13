@@ -58,7 +58,7 @@ router.route("/priority/remove")
 router.route("/priority/add")
     .put(controller.mccPriorityAdd)
 
-    router.route("/prioritypress/:action")
+router.route("/prioritypress/:action")
     .put(controller.mccPriorityPress)
 
 

@@ -15,7 +15,6 @@ and (max-device-width : 1025px) {
     max-width: 36vw;
 }
 
-
 .chatPanelL {
     z-index: 10;
     width: 6vw;

@@ -151,6 +151,7 @@ class Playbook extends Component {
                 },
                 urgent: false,
                 priority: this.state.priority,
+                priorityPressed: this.state.priority,
                 sender: this.state.userId,
                 location: locationBool,
                 sentTime: this.state.currentBSON,
@@ -180,6 +181,7 @@ class Playbook extends Component {
             newMesssage.append("messageSubject", this.state.subject,)
             newMesssage.append("urgent", false)
             newMesssage.append("priority", this.state.priority)
+            newMesssage.append("priorityPressed", this.state.priority)
             newMesssage.append("sender", this.state.userId)
             newMesssage.append("location", locationBool)
             newMesssage.append("sentTime", this.state.currentBSON)
@@ -336,15 +338,15 @@ class Playbook extends Component {
         API.markObsolete(udpateObject)
     }
 
-    handlePriorityUpdate = (action, messageid, event) => {
-        let messageID = messageid
-
-        let udpateObject = {
-            messageID: messageID
-        }
-
-        API.handlePriority(action, udpateObject)
+    handlePriorityUpdateAdd = (messageid, event) => {
+        API.handlePriority("add", {messageID: messageid})
     }
+
+
+    handlePriorityUpdateRemove = (messageid, event) => {
+        API.handlePriority("remove", {messageID: messageid})
+    }
+
 
     handlePriority = (event) => {
         const { name, checked } = event.target;
@@ -387,9 +389,9 @@ class Playbook extends Component {
                                     obsoleteUser={item.obsolete.userChange}
                                     obsoleteTime={item.obsolete.timeChange}
                                     priority={item.priority}
-                                    priorityPress={item.priorityPress}
-                                    priorityAdd={(ev) => this.handlePriority("add", item._id, ev)}
-                                    priorityRemove={(ev) => this.handlePriority("remove", item._id, ev)}
+                                    priorityPress={item.priorityPressed}
+                                    priorityAdd={(ev) => this.handlePriorityUpdateAdd(item._id, ev)}
+                                    priorityRemove={(ev) => this.handlePriorityUpdateRemove(item._id, ev)}
                                 />
                             )
                         } else {
@@ -415,9 +417,9 @@ class Playbook extends Component {
                                     obsoleteUser={item.obsolete.userChange}
                                     obsoleteTime={item.obsolete.timeChange}
                                     priority={item.priority}
-                                    priorityPress={item.priorityPress}
-                                    priorityAdd={(ev) => this.handlePriorityUpdate("add", item._id, ev)}
-                                    priorityRemove={(ev) => this.handlePriorityUpdate("remove", item._id, ev)}
+                                    priorityPress={item.priorityPressed}
+                                    priorityAdd={(ev) => this.handlePriorityUpdateAdd(item._id, ev)}
+                                    priorityRemove={(ev) => this.handlePriorityUpdateRemove(item._id, ev)}
                                 />
                             )
                         }
@@ -511,7 +513,7 @@ class Playbook extends Component {
                                         justify="space-around"
                                         alignItems="center">
                                         <Box item="true">
-                                            <input accept="image/*" className="attachment" id="imageUploadMCC" type="file" onChange={this.uploadImagemcc} />
+                                            <input accept="image/*" className="attachment" id="imageUploadMCC" type="file" onChange={this.uploadImage} />
                                             <label htmlFor="imageUploadMCC">
                                                 <IconButton aria-label="upload picture" component="span">
                                                     <PhotoCamera />

@@ -157,7 +157,7 @@ class New extends Component {
                         justify="flex-end"
                         alignItems="center">
 
-                        <Box item="true">
+                        <Box className="messageArea" item="true">
                             <Grid item container direction="column" alignItems="flex-start">
                                 <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 

@@ -84,7 +84,7 @@ const APICall = {
 
     handlePriority: (action, message) => {
 
-        axios.put(`/api/mcccrew/priorityPress/${action}`, { messageID: message })
+        axios.put(`/api/mcccrew/prioritypress/${action}`, { messageID: message })
 
         let cycle = 1
         let updatePriority = setInterval(function () {

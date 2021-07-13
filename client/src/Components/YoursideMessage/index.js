@@ -100,7 +100,12 @@ class YourSide extends Component {
         let userID = thisUser.id
 
         if (userID === this.props.userId && this.props.sending) {
-            return "rgba(71, 112, 235, .5)"
+            if (this.props.priority) {
+                return "rgb(190, 53, 53, .5)"
+            } else {
+                return "rgba(71, 112, 235, .5)"
+
+            }
         } else if (userID === this.props.userId && !this.props.sending) {
             if (this.props.obsolete) {
                 return "rgba(149, 149, 149, 0.70)"
@@ -115,9 +120,14 @@ class YourSide extends Component {
             if (this.props.obsolete) {
                 return "rgba(149, 149, 149, 0.70)"
             } else {
-                return "rgba(112, 71, 235, .9)"
-            }
+                if (this.props.priority) {
+                    return "rgb(190, 53, 53, .7)"
+                } else {
+                    return "rgba(112, 71, 235, .9)"
 
+                }
+
+            }
         }
     }
 
@@ -136,7 +146,7 @@ class YourSide extends Component {
     }
 
     priorityClass = () => {
-        if (this.props.priority) {
+        if (this.props.priority && !this.props.sending) {
             return "priorityMessage"
         }
     }
@@ -157,35 +167,9 @@ class YourSide extends Component {
         }
     }
 
-    priorityPress = () => {
-        if (this.props.priorityPress) {
-            return "red"
-        } else {
-            return 
-        }
-    }
-
-    obsoletePressed = () => {
-        if (this.props.obsoletePress && !this.props.priority) {
-            if (this.props.obsolete) {
-
-                let obsoleteMessage = `${this.props.obsoleteUser} marked as irrelevent at ${this.props.obsoleteTime}`
-                return (
-                    <Box className="obsoleteText">
-                        {obsoleteMessage}
-                    </Box>
-                )
-            } else {
-                let obsoleteMessage = "Marked as irrelevent. Update is being sent."
-                return (
-                    <Box className="obsoleteText">
-                        {obsoleteMessage}
-                    </Box>
-                )
-            }
-
-
-        } else if (this.props.priority) {
+    iconsRender = () => {
+        // if priority and P-pressed
+        if (this.props.priority && this.props.priorityPress) {
             return (
                 <IconButton
                     size="small"
@@ -193,8 +177,51 @@ class YourSide extends Component {
                     className="messageButton"
                 >
                     <LowPriorityOutlinedIcon />
-                </IconButton>)
+                </IconButton>
+            )
+        } else if (this.props.priority && !this.props.priorityPress) {
+            // if priority and P-not-pressed
+            return (
+                <Box className="obsoleteText">
+                    <IconButton
+                        size="small"
+                        className="messageButton"
+                    >
+                        <PriorityHighOutlinedIcon />
+                    </IconButton>
 
+                    Sending Update
+                </Box >
+            )
+        } else if (!this.props.priority && this.props.priorityPress) {
+            // if not Priority and P-pressed
+            return (
+                <Box className="obsoleteText">
+                    <IconButton
+                        size="small"
+                        className="messageButton"
+                    >
+                        <PriorityHighOutlinedIcon color="secondary" />
+                    </IconButton>
+                    Sending Update
+                </Box>
+            )
+        } else if (this.props.obsoletePress && !this.props.obsolete) {
+            // if not Obsolete and O-pressed
+            let obsoleteMessage = "Marked as irrelevent. Update is being sent."
+            return (
+                <Box className="obsoleteText">
+                    {obsoleteMessage}
+                </Box>
+            )
+        } else if (this.props.obsoletePress && this.props.obsolete) {
+            // if Obsolete and O-pressed
+            let obsoleteMessage = `${this.props.obsoleteUser} marked as irrelevent at ${this.props.obsoleteTime}`
+            return (
+                <Box className="obsoleteText">
+                    {obsoleteMessage}
+                </Box>
+            )
         } else {
             return (
                 <Box>
@@ -210,11 +237,13 @@ class YourSide extends Component {
                         onClick={this.props.addPriority}
                         className="messageButton"
                     >
-                        <PriorityHighOutlinedIcon style={{color: `${this.priorityPress}`}}/>
+                        <PriorityHighOutlinedIcon />
                     </IconButton>
                 </Box>
             )
         }
+
+
     }
 
     render = () => {
@@ -235,7 +264,7 @@ class YourSide extends Component {
 
                         <Box >{this.sendingandDeliveryRenderTL()}</Box>
                     </Box>
-                    <Box item="true">
+                    <Box className="messageArea" item="true">
                         <Grid item container direction="column" alignItems="flex-start">
                             <Box item="true" className="userNameRole">{this.props.userName} <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 
@@ -254,7 +283,7 @@ class YourSide extends Component {
 
                             </Box>
                         </Grid>
-                        {this.obsoletePressed()}
+                        {this.iconsRender()}
                     </Box>
 
                 </Grid>
