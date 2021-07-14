@@ -138,8 +138,13 @@ class Playbook extends Component {
 
             newMesssage = new FormData();
 
+            if (this.state.messageBody.length > 0) {
+                newMesssage.append("messageBody", this.state.messageBody)
+            } else {
+                newMesssage.append("messageBody", "")
+            }
+
             // This turns all booleans into strings!!
-            newMesssage.append("messageBody", this.state.messageBody)
             newMesssage.append("messageSubject", this.state.subject)
             newMesssage.append("sender", this.state.userId)
             newMesssage.append("deliveryTime", this.state.currentBSON)
@@ -290,7 +295,7 @@ class Playbook extends Component {
                                         justify="space-between"
                                         alignItems="center">
                                         <Box item="true">
-                                            <input accept="image/*" className="attachment" id="imageUploadMCC" type="file" onChange={this.uploadImagemcc} />
+                                            <input accept="image/*" className="attachment" id="imageUploadMCC" type="file" onChange={this.uploadImage} />
                                             <label htmlFor="imageUploadMCC">
                                                 <IconButton aria-label="upload picture" component="span">
                                                     <PhotoCamera />

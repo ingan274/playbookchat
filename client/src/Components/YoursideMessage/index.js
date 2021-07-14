@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import "./style.css";
 import { Grid, Box, Avatar, IconButton } from '@material-ui/core';
 import MessageStatus from "../mesageStatusIcons"
-import PriorityHighOutlinedIcon from '@material-ui/icons/PriorityHighOutlined';
+import PriorityHighOutlinedIcon from '@material-ui/icons/Error';
 import SpeakerNotesOffOutlinedIcon from '@material-ui/icons/SpeakerNotesOffOutlined';
-import LowPriorityOutlinedIcon from '@material-ui/icons/LowPriorityOutlined';
+import LowPriorityOutlinedIcon from '@material-ui/icons/ErrorOutline';
 import moment from "moment";
 // import API from '../../API-Calls'
 

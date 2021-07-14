@@ -212,7 +212,7 @@ class Playbook extends Component {
             path = path.substring(1)
             // console.log(path)
             if (this.state.messageBody.length > 0) {
-                newMesssage.append("messageBody", this.state.mccmessageBody)
+                newMesssage.append("messageBody", this.state.messageBody)
             } else {
                 newMesssage.append("messageBody", "")
             }
@@ -552,6 +552,7 @@ class Playbook extends Component {
                                             </Grid>
                                             {this.subjectTypeRendering()}
                                             <TextField className="inputArea"
+                                            autoFocus
                                                 variant="filled"
                                                 size="small"
                                                 name="messageBody"

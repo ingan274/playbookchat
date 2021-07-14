@@ -68,7 +68,7 @@ class YourSide extends Component {
                          <Box item="true" style={{margin: "0px 10px 0px 5px " }}>
                         <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "45px", height: "45px" }} />
                     </Box>
-                    <Box item="true" >
+                    <Box className="messageArea" item="true" >
                         <Grid item container direction="column" alignItems="flex-start">
                             <Box item="true" className="userNameRole">{this.props.userName}   <Box component="span" item="true" className="userRole">{this.props.userRole}</Box></Box>
 

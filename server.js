@@ -29,7 +29,7 @@ app.listen(PORT, function () {
 
 
 // RUN THIS IN NGROK
-// ngrok http 3000 -host-header="localhost:3000"
+// ./ngrok http 3000 -host-header="localhost:3000"
 // ngrok http --host-header=rewrite 3000
 
 
