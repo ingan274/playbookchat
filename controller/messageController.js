@@ -66,12 +66,12 @@ module.exports = {
         let organizedMesObj;
         if (location === "mars") {
             // Crew Perspective
-            let deliveredMessages = await mcccrew.find({ sending: false })
+            let deliveredMessages = await mcccrew.find({ location: false, sending: false })
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
             // User sending messages
-            let userSendingMesage = await mcccrew.find({ location: true, sending: true, sender: userID })
+            let userSendingMesage = await mcccrew.find({ location: true })
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
@@ -94,11 +94,11 @@ module.exports = {
 
         } else if (location === "earth") {
             // MCC Perspective
-            let deliveredMessages = await mcccrew.find({ sending: false })
+            let deliveredMessages = await mcccrew.find({ location: true, sending: false })
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
-            let userSendingMesage = await mcccrew.find({ location: false, sending: true })
+            let userSendingMesage = await mcccrew.find({ location: false})
                 .sort({ timeDelivered: 1 })
                 .toArray();
 

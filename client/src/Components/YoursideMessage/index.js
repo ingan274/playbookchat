@@ -116,7 +116,7 @@ class YourSide extends Component {
                     return "rgba(71, 112, 235, .9)"
                 }
             }
-        } else {
+        } else if (userID !== this.props.userId && !this.props.sending) {
             if (this.props.obsolete) {
                 return "rgba(149, 149, 149, 0.70)"
             } else {
@@ -127,6 +127,12 @@ class YourSide extends Component {
 
                 }
 
+            }
+        } else if (userID !== this.props.userId && this.props.sending) {
+            if (this.props.priority) {
+                return "rgb(190, 53, 53, .5)"
+            } else {
+                return "rgba(112, 71, 235, .5)"
             }
         }
     }
