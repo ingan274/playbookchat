@@ -1,32 +1,36 @@
 import React, { Component } from "react";
 import "./style.css";
 import { Box } from '@material-ui/core';
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 
 
 class YouReply extends Component {
 
     render = () => {
         let colorSent = {
-            position: "absolute",
             color: this.props.sent,
             width: "17px",
             height: "17px",
-            left: "-5px"
+            transform: "rotate(180deg)",
+            margin: "3px 2px -3px 0px"
 
         }
 
         let colorERT = {
-            marginBottom: "-5px",
+            position: "absolute",
             color: this.props.ert,
             width: "17px",
             height: "17px",
+            top: "5px",
+            right: "1px"
+
+            
         }
 
         return (
             <Box component="span" className="messageStatusDiv" style={{position: "relative"}}>
-                <CheckRoundedIcon className="checkSent" style={colorSent} />
-                <CheckRoundedIcon className="checkERT" style={colorERT} />
+                <ArrowRightAltIcon className="checkSent" style={colorSent} />
+                <ArrowRightAltIcon className="checkERT" style={colorERT} />
             </Box>
 
         )
