@@ -1,7 +1,7 @@
 const { ObjectID } = require("bson");
 const mongoConnect = require('../connect');
-const fs = require('fs');
 const sharp = require('sharp');
+const path = require('path');
 
 let mcccrew;
 let crew;
@@ -100,7 +100,7 @@ module.exports = {
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
-            let userSendingMesage = await mcccrew.find({ location: false})
+            let userSendingMesage = await mcccrew.find({ location: false })
                 .sort({ timeDelivered: 1 })
                 .toArray();
 
@@ -343,67 +343,42 @@ module.exports = {
         } else {
             location = false
         }
-        let message
-        if (req.body.subjectLine === "false") {
-            message = {
-                groupChat: "mcc-crew-chat",
-                message: {
-                    subject: "",
-                    messageBody: req.body.messageBody,
-                },
-                priority: priority,
-                priorityPressed: priorityPressed,
-                urgent: urgent,
-                parent: {
-                    hasParent: false,
-                },
-                obsoletePressed: false,
-                obsolete: {
-                    isObsolete: false,
-                    userChange: "",
-                    timeChange: ""
-                },
-                sending: true,
-                expected_resp: false,
-                sender: req.body.sender,
-                timeSent: req.body.sentTime,
-                timeDelivered: req.body.deliveryTime,
-                location: location,
-                attachment: {
-                    attachment: true,
-                    imageData: req.body.imagePath
-                }
-            }
-        } else {
-            message = {
-                groupChat: "mcc-crew-chat",
-                message: {
-                    subject: req.body.messageSubject,
-                    messageBody: req.body.messageBody,
-                },
-                priority: priority,
-                priorityPressed: priorityPressed,
-                urgent: urgent,
-                obsoletePressed: false,
-                obsolete: {
-                    isObsolete: false,
-                    userChange: "",
-                    timeChange: ""
-                },
-                parent: {
-                    hasParent: false,
-                },
-                sending: true,
-                expected_resp: false,
-                sender: req.body.sender,
-                timeSent: req.body.sentTime,
-                timeDelivered: req.body.deliveryTime,
-                location: location,
-                attachment: {
-                    attachment: true,
-                    imageData: req.file.path,
-                    imageName: req.body.imageName
-                }
+
+        const { originalname: image } = req.file;
+        let filePath = `uploads/${image}`;
+
+        await sharp(req.file.buffer)
+            .resize({ width: 1200 })
+            .withMetadata()
+            .toFile(filePath)
+
+        let message = {
+            groupChat: "mcc-crew-chat",
+            message: {
+                subject: "",
+                messageBody: req.body.messageBody,
+            },
+            priority: priority,
+            priorityPressed: priorityPressed,
+            urgent: urgent,
+            parent: {
+                hasParent: false,
+            },
+            obsoletePressed: false,
+            obsolete: {
+                isObsolete: false,
+                userChange: "",
+                timeChange: ""
+            },
+            sending: true,
+            expected_resp: false,
+            sender: req.body.sender,
+            timeSent: req.body.sentTime,
+            timeDelivered: req.body.deliveryTime,
+            location: location,
+            attachment: {
+                attachment: true,
+                imageData: filePath
             }
         }
 
@@ -454,20 +429,29 @@ module.exports = {
 
     newMessageCrewPhoto: async (req, res) => {
         // console.log("initial path")
-        // console.log(req.file.path)
+        // console.log(req.file)
+        // console.log(req.file.buffer)
         // console.log("Object")
-        // await sharp(req.file.path)
-        // .jpeg({ quality: 90 })
-        // .toFile(
-        //     path.resolve(req.file.destination,'resized',image)
-        // )
-        // fs.unlinkSync(req.file.path)
+        const { originalname: image } = req.file;
+        let filePath = `uploads/${image}`;
+
+        await sharp(req.file.buffer)
+            .resize({ width: 1200 })
+            .withMetadata()
+            .toFile(filePath)
+
+        let messageBody;
+        if (req.body.messageBody === "") {
+            messageBody = ""
+        } else {
+            messageBody = req.body.messageBody
+        }
 
         let message = {
             groupChat: "crew-chat",
             message: {
-                subject: req.body.messageSubject,
-                messageBody: req.body.messageBody,
+                subject: "",
+                messageBody: messageBody,
             },
             parent: {
                 hasParent: false,
@@ -476,8 +460,7 @@ module.exports = {
             timeDelivered: req.body.deliveryTime,
             attachment: {
                 attachment: true,
-                imageData: req.file.path,
-                imageName: req.body.imageName
+                imageData: filePath
             }
         }
 
@@ -496,6 +479,8 @@ module.exports = {
                 console.log(err)
                 res.sendStatus(status)
             });
+
+
     },
 
 

@@ -3,15 +3,17 @@ const router = express.Router();
 const controller = require("../controller/messageController");
 const multer = require('multer');
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './uploads/');
-        // cb(null, path.join(__dirname, './uploads/'));
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + file.originalname);
-    }
-});
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, './uploads/');
+//         // cb(null, path.join(__dirname, './uploads/'));
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, Date.now() + file.originalname);
+//     }
+// });
+
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
