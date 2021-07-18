@@ -1,7 +1,10 @@
 {
   "name": "playbookchat",
-  "version": "0.1.0",
+  "version": "1.2.0",
   "private": true,
+  "engines": {
+    "node": "^14.17.3"
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "express": "^4.17.1",
@@ -13,8 +16,7 @@
     "webpack-cli": "^4.7.2"
   },
   "scripts": {
-    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:prod": "node server.js",
+    "start": "node server.js",
     "start:dev": "concurrently \"node server.js\" \"npm run client\"",
     "client": "cd client && npm run start",
     "seed": "node scripts/seedDB.js",
