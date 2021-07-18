@@ -20,7 +20,7 @@ app.use(router);
 // // If its production environment!
 if (process.env.NODE_ENV === 'production') {
     // console.log('YOU ARE IN THE PRODUCTION ENV');
-    app.use('/static', express.static(path.join(__dirname, './client/build/static')));
+    // app.use('/static', express.static(path.join(__dirname, './client/build/static')));
     app.use(express.static(path.join(__dirname, '../build')))
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../build'))
