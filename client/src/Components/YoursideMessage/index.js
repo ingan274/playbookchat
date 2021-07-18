@@ -41,14 +41,14 @@ class YourSide extends Component {
         if (this.props.sending && !this.props.expresp) {
             // Sending
             return (
-                <MessageStatus sent="rgba(225, 225, 225, .3)" ert="rgba(255, 255, 255, .3)" />
+                <MessageStatus sent="rgba(225, 225, 225, .3)" ert="rgba(255, 255, 255, .3)" expresp={this.props.expresp}/>
             )
         } else if (!this.props.sending && this.props.expresp) {
-            // send, and response if avail
-            return <MessageStatus sent="rgba(255, 255, 255, .9)" ert="rgba(1255, 255, 255, .9)" />
+            // send, and response is avail
+            return <MessageStatus sent="rgba(255, 255, 255, .9)" ert="rgba(1255, 255, 255, .9)" expresp={this.props.expresp}/>
         } else {
             // sent, but time hasnt been reached for response
-            return <MessageStatus sent="rgba(255, 255, 255, .9)" ert="rgba(255, 255, 255, .3)" />
+            return <MessageStatus sent="rgba(255, 255, 255, .9)" ert="rgba(255, 255, 255, .3)" expresp={this.props.expresp}/>
         }
 
     }
