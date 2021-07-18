@@ -9,7 +9,7 @@ class New extends Component {
 
     priorityIcon = () => {
         if (this.props.priority) {
-            return <PriorityHighOutlinedIcon color="action"/>
+            return <PriorityHighOutlinedIcon color="action" />
         }
     }
 
@@ -41,7 +41,7 @@ class New extends Component {
             } else {
                 return "rgba(149, 149, 149, 1)"
             }
-            
+
         }
     }
 
@@ -150,7 +150,7 @@ class New extends Component {
 
         } else {
 
-            return (
+            return ( 
                 <Box className="otherMessage indivMessage">
                     <Grid container
                         direction="row"
@@ -168,12 +168,12 @@ class New extends Component {
                                     style={{ backgroundColor: `${this.messageColor()}` }}
                                 >
                                     <Box className="messageSubject" style={{ color: `${this.textColor()}`, fontSize: `${this.prioritySubject()}` }}>{this.priorityIcon()} {this.props.messageSubject}</Box>
-                                    <Box className="messageText" style={{ color: `${this.textColor()}`, fontWeight: `${this.priorityBody()}`  }}>{this.props.messageMessageBody}</Box>
+                                    <Box className="messageText" style={{ color: `${this.textColor()}`, fontWeight: `${this.priorityBody()}` }}>{this.props.messageMessageBody}</Box>
                                     {this.addPhoto()}
                                 </Box>
                             </Grid>
                         </Box>
-                        <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{ margin: "0px 0px 0px 10px" }}>
+                        <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails">
                             <Box item="true" className="timeDetails sentTime">
                                 <Box >Sent:</Box>
                                 <Box >{this.props.timeSent}</Box>

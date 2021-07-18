@@ -61,20 +61,21 @@
 
 .ChatBox {
     padding-top: 3vh;
-    margin-left: 6vw;
+    margin-left: 4vw;
     margin-right: .8vw;
 }
 
 .chatMessDiv {
     padding-bottom: 20vh;
+    width: 45.2vw;
 }
 
 .otherMessage {
-    margin-right: 46.7%;
+    margin-right: 20.6vw;
 }
 
 .Message {
-    margin-left: 46.7%;
+    margin-left: 20.6vw;
 }
 
 .indivMessage {
@@ -101,11 +102,10 @@
     border-radius: 5px;
     margin: 3px 0px;
     color: white;
-    width: 100%;
 }
 
 .messageArea {
-    max-width: 15vw;
+    max-width: 17vw;
 }
 
 .timeDelivered {
@@ -143,20 +143,12 @@
     padding: 5px;
 }
 
-.otherDetails {
-    left: 100%;
-}
-
-.youDetails {
-    right: 100%;
-}
-
 .timeDetails {
     margin: 5px 0px;
 }
 
 .centerDetails {
-    width: 3vw;
+    width: 4vw;
 }
 /* Form Information */
 

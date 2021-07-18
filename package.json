@@ -13,16 +13,17 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "react-images-uploading": "^3.1.2",
+    "sharp": "^0.28.3",
     "webpack-cli": "^4.7.2"
   },
   "scripts": {
-    "start":  "node server.js",
+    "start": "node server.js",
     "start:dev": "concurrently \"node server.js\" \"npm run client\"",
     "client": "cd client && npm run start",
     "seed": "node scripts/seedDB.js",
     "install": "cd client && npm install",
     "build": "cd client && npm run build",
-    "heroku-postbuild":  "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "Isabel Ngan",
   "license": "ISC",

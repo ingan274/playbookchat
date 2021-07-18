@@ -65,8 +65,8 @@ class YourSide extends Component {
                     direction="row"
                     justify="flex-start"
                     alignItems="center">
-                         <Box item="true" style={{margin: "0px 10px 0px 5px " }}>
-                        <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "45px", height: "45px" }} />
+                    <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{ margin: "0px 10px 0px 0px" }}>
+                        <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "30px", height: "30px", margin: "0px auto" }} />
                     </Box>
                     <Box className="messageArea" item="true" >
                         <Grid item container direction="column" alignItems="flex-start">
@@ -76,7 +76,7 @@ class YourSide extends Component {
                                 className="chatBubble otherChatBbl"
                                 justify="center"
                                 alignItems="flex-start"
-                                style={{backgroundColor: `${this.messageColor()}` }}
+                                style={{ backgroundColor: `${this.messageColor()}` }}
                             >
                                 <Box className="messageSubject">{this.props.messageSubject}</Box>
                                 <Box className="messageText">{this.props.messageMessageBody}</Box>
@@ -87,7 +87,7 @@ class YourSide extends Component {
                             </Box>
                         </Grid>
                     </Box>
-                   
+
                 </Grid>
             </Box>
         )

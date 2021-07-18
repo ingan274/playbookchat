@@ -77,18 +77,19 @@ class New extends Component {
                                     className="chatBubble otherChatBbl"
                                     justify="center"
                                     alignItems="flex-start"
+                                    style={{ backgroundColor: "rgba(149, 149, 149, 1)" }}
                                 >
                                     <Box className="messageSubject">{this.props.messageSubject}</Box>
                                     <Box className="messageText">{this.props.messageMessageBody}</Box>
                                     {this.addPhoto()}
-                                    <Box className="timeDelivered">
+                                    <Box className="timeDelivered" style={{ color: "white" }}>
                                         {this.props.timeDelivered}
                                     </Box>
                                 </Box>
                             </Grid>
                         </Box>
-                        <Box item="true" style={{ margin: "0px 5px 0px 10px " }}>
-                            <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "45px", height: "45px" }} />
+                        <Box item="true" direction="column" alignItems="center" justify="center" className="centerDetails" style={{ margin: "0px 10px 0px 0px" }}>
+                            <Avatar item="true" alt={`${this.props.userId}`} src={`${this.props.userImageURL}`} className="avatar" style={{ width: "30px", height: "30px", margin: "0px auto" }} />
                         </Box>
                     </Grid>
                 </Box>

@@ -1,5 +1,7 @@
 const { ObjectID } = require("bson");
 const mongoConnect = require('../connect');
+const fs = require('fs');
+const sharp = require('sharp');
 
 let mcccrew;
 let crew;
@@ -454,6 +456,12 @@ module.exports = {
         // console.log("initial path")
         // console.log(req.file.path)
         // console.log("Object")
+        // await sharp(req.file.path)
+        // .jpeg({ quality: 90 })
+        // .toFile(
+        //     path.resolve(req.file.destination,'resized',image)
+        // )
+        // fs.unlinkSync(req.file.path)
 
         let message = {
             groupChat: "crew-chat",
