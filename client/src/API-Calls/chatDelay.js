@@ -1,8 +1,8 @@
 import moment from "moment";
 
 // Delay in Minutes
-const delay = {minutes: 2.5};
-const minuteDelay = 2.5
+const delay = {minutes: 5};
+const minuteDelay = 5
 const timerDelay = minuteDelay * 60 * 1000;
 
 // Sent Time

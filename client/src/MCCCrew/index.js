@@ -136,34 +136,73 @@ class Playbook extends Component {
 
     handleSubmitMessage = event => {
         let newMesssage;
-        if (this.state.messageBody && this.state.uploadedImage === "") {
+        let subjectLine = this.state.subject
+        if (this.state.messageBody && this.state.uploadedImage === "" && this.state.subjectLine) {
             let locationBool;
             if (this.state.userLocation === "mars") {
                 locationBool = true;
             } else {
                 locationBool = false;
             }
-            newMesssage = {
-                groupChat: "mcc-crew-chat",
-                message: {
-                    subject: this.state.subject,
-                    messageBody: this.state.messageBody
-                },
-                urgent: false,
-                priority: this.state.priority,
-                priorityPressed: this.state.priority,
-                sender: this.state.userId,
-                location: locationBool,
-                sentTime: this.state.currentBSON,
-                deliveryTime: this.state.deliveryBSON,
+            console.log(subjectLine.slice(0, 4))
+            if (subjectLine.slice(0, 4) === "http") {
+                newMesssage = new FormData();
+                console.log(this.state.subject)
+                let path = new URL(this.state.subject).pathname
+                path = path.substring(1)
+                // console.log(path)
+                if (this.state.messageBody.length > 0) {
+                    newMesssage.append("messageBody", this.state.messageBody)
+                } else {
+                    newMesssage.append("messageBody", "")
+                }
+
+
+                // This turns all booleans into strings!!
+                newMesssage.append("groupChat", "mcc-crew-chat")
+                newMesssage.append("messageSubject", "")
+                newMesssage.append("subjectLine", this.state.subjectLine)
+                newMesssage.append("imagePath", path)
+                newMesssage.append("urgent", false)
+                newMesssage.append("priority", false)
+                newMesssage.append("sender", this.state.userId)
+                newMesssage.append("location", locationBool)
+                newMesssage.append("sentTime", this.state.currentBSON)
+                newMesssage.append("deliveryTime", this.state.deliveryBSON)
+
+
+                console.log(path)
+                API.newMCCCrewPhoto(newMesssage);
+                this.setState({
+                    subject: "",
+                    messageBody: "",
+                })
+
+            } else {
+
+                newMesssage = {
+                    groupChat: "mcc-crew-chat",
+                    message: {
+                        subject: this.state.subject,
+                        messageBody: this.state.messageBody
+                    },
+                    urgent: false,
+                    priority: this.state.priority,
+                    priorityPressed: this.state.priority,
+                    sender: this.state.userId,
+                    location: locationBool,
+                    sentTime: this.state.currentBSON,
+                    deliveryTime: this.state.deliveryBSON,
+                }
+
+                API.newMCCCrew(newMesssage);
+
+                this.setState({
+                    subject: "",
+                    messageBody: ""
+                })
             }
 
-            API.newMCCCrew(newMesssage);
-
-            this.setState({
-                subject: "",
-                messageBody: ""
-            })
             this.getMessages();
         } else if (this.state.uploadedImage !== "") {
             let locationBool;
@@ -234,8 +273,8 @@ class Playbook extends Component {
             console.log(path)
             API.newMCCCrewPhoto(newMesssage);
             this.setState({
-                mccsubject: "",
-                mccmessageBody: "",
+                subject: "",
+                messageBody: "",
             })
             this.getMessages();
         }
@@ -343,12 +382,12 @@ class Playbook extends Component {
     }
 
     handlePriorityUpdateAdd = (messageid, event) => {
-        API.handlePriority("add", {messageID: messageid})
+        API.handlePriority("add", { messageID: messageid })
     }
 
 
     handlePriorityUpdateRemove = (messageid, event) => {
-        API.handlePriority("remove", {messageID: messageid})
+        API.handlePriority("remove", { messageID: messageid })
     }
 
 
@@ -552,7 +591,7 @@ class Playbook extends Component {
                                             </Grid>
                                             {this.subjectTypeRendering()}
                                             <TextField className="inputArea"
-                                            autoFocus
+                                                autoFocus
                                                 variant="filled"
                                                 size="small"
                                                 name="messageBody"

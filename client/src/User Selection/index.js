@@ -20,7 +20,7 @@ class Playbook extends Component {
         const crew1 = {
             id: "crew1",
             name: "Kell",
-            role: "Astro 1",
+            role: "Helper Astro 1",
             imageURL: "https://scitechdaily.com/images/NASA-Astronaut-Kjell-Lindgren.jpg",
             location: "mars"
         }
@@ -28,7 +28,7 @@ class Playbook extends Component {
         const crew2 = {
             id: "crew2",
             name: "Jessica",
-            role: "Astro 2",
+            role: "Helper Astro 2",
             imageURL: "https://www.browndailyherald.com/wp-content/uploads/2019/04/Ryan_Jessica-Meir_CO_NASA.jpg",
             location: "mars"
         }
