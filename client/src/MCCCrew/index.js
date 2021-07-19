@@ -405,7 +405,85 @@ class Playbook extends Component {
             return (
                 <Box className="ChatBox chatMessDiv" item="true">
                     {this.state.chat.map((item, index) => {
-                        if (item.attachment) {
+                        let nextIndex;
+
+                        if (this.state.chat.length === index + 1) {
+                            nextIndex = index
+                        } else {
+                            nextIndex = index + 1
+                        }
+                        // console.log("this message index", index)
+                        // console.log("Next message", this.state.chat[nextIndex].sending)
+                        // console.log("----------")
+                        if (!item.sending && this.state.chat[nextIndex].sending) {
+
+                            if (item.attachment) {
+                                return (
+                                    <Box className="HLineDiv">
+                                        <New
+                                            key={index.toString()}
+                                            messageID={item._id}
+                                            location={item.location}
+                                            sending={item.sending}
+                                            expresp={item.expected_resp}
+                                            messageSubject={item.message.subject}
+                                            messageMessageBody={item.message.messageBody}
+                                            userName={this.getUserInfo(item.sender).name}
+                                            userRole={this.getUserInfo(item.sender).role}
+                                            userId={item.sender}
+                                            userImageURL={this.getUserInfo(item.sender).imageURL}
+                                            timeSent={this.getTime(item.timeSent)}
+                                            timeDelivered={this.getTime(item.timeDelivered)}
+                                            eta={item.timeDelivered}
+                                            attachment={item.attachment.attachment}
+                                            attachmentSrc={`/${item.attachment.imageData}`}
+                                            markObsolete={(ev) => this.markObsolete(item._id, ev)}
+                                            obsoletePress={item.obsoletePressed}
+                                            obsolete={item.obsolete.isObsolete}
+                                            obsoleteUser={item.obsolete.userChange}
+                                            obsoleteTime={item.obsolete.timeChange}
+                                            priority={item.priority}
+                                            priorityPress={item.priorityPressed}
+                                            priorityAdd={(ev) => this.handlePriorityUpdateAdd(item._id, ev)}
+                                            priorityRemove={(ev) => this.handlePriorityUpdateRemove(item._id, ev)}
+                                        />
+                                        <Box className="hLine"> </Box>
+                                    </Box>
+                                )
+                            } else {
+                                return (
+                                    <Box className="HLineDiv">
+                                        <New
+                                            key={index.toString()}
+                                            messageID={item._id}
+                                            location={item.location}
+                                            sending={item.sending}
+                                            expresp={item.expected_resp}
+                                            messageSubject={item.message.subject}
+                                            messageMessageBody={item.message.messageBody}
+                                            userName={this.getUserInfo(item.sender).name}
+                                            userRole={this.getUserInfo(item.sender).role}
+                                            userId={item.sender}
+                                            userImageURL={this.getUserInfo(item.sender).imageURL}
+                                            timeSent={this.getTime(item.timeSent)}
+                                            timeDelivered={this.getTime(item.timeDelivered)}
+                                            eta={item.timeDelivered}
+                                            markObsolete={(ev) => this.markObsolete(item._id, ev)}
+                                            obsolete={item.obsolete.isObsolete}
+                                            obsoletePress={item.obsoletePressed}
+                                            obsoleteUser={item.obsolete.userChange}
+                                            obsoleteTime={item.obsolete.timeChange}
+                                            priority={item.priority}
+                                            priorityPress={item.priorityPressed}
+                                            priorityAdd={(ev) => this.handlePriorityUpdateAdd(item._id, ev)}
+                                            priorityRemove={(ev) => this.handlePriorityUpdateRemove(item._id, ev)}
+                                        />
+                                        <Box className="hLine"> </Box>
+                                    </Box>
+                                )
+                            }
+
+                        } else if (item.attachment) {
                             // console.log(item.message.messageBody)
                             // console.log(`${hostname}/${item.attachment.imageData}`)
                             return (

@@ -21,6 +21,7 @@
    
 }
 
+
 /* Chat Side */
 .chatPanelL {
     width: 4vw;
@@ -106,6 +107,17 @@
 
 .messageArea {
     max-width: 17vw;
+}
+
+.HLineDiv {
+    position: relative;
+}
+
+.hLine {
+    position: absolute;
+    width: 46vw;
+    height: 8px;
+    background-color: red;
 }
 
 .timeDelivered {
