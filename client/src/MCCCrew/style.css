@@ -7,12 +7,33 @@ and (max-device-width : 1025px) {
      display: none;
 }
 
+.clDiv.splitScreen {
+    width: 100%;
+    height: 100vh;
+    margin: 0px 0px;
+}
+
 .centerDetails {
     width: 6vw;
 }
 
-.chatBubble {
-    max-width: 36vw;
+.otherMessage {
+    margin-right: 44vw;
+}
+
+.Message {
+    margin-left: 44vw;
+}
+
+.chatMessDiv {
+    padding-bottom: 20vh;
+    width: 93vw;
+    margin-left: 6vw;
+}
+
+
+.ChatBox {
+    margin-right: 1vw;
 }
 
 .chatPanelL {
@@ -23,11 +44,10 @@ and (max-device-width : 1025px) {
     left: 0;
 }
 
-.clDiv.splitScreen {
-    width: 100%;
-    height: 100vh;
-    margin: 0px 0px;
+.messageArea {
+    max-width: 40.5vw;
 }
+
 
 .ChatBox.chatBoxInput {
     width: 92vw;
@@ -40,10 +60,6 @@ and (max-device-width : 1025px) {
     padding: 3vh 0px;
 }
 
-.ChatBox.chatMessDiv {
-    padding-top: 8vh;
-}
-
 .buttons {
     width: 4vw;
     height: 4vw;
@@ -53,51 +69,51 @@ and (max-device-width : 1025px) {
 
 @media only screen 
 and (min-device-width : 300px) 
-and (max-device-width : 1000px) {
+and (max-device-width : 400px) {
 
 .timeline.splitScreen {
     display: none;
 }
-
-.chatPanelL {
-   width: 10vw;
-   height: 100vh;
-   padding-top: 3vh;
-   background-color: grey;
-}
-
-.buttons {
-    width: 8vw;
-    height: auto;
-    font-size: 10px;
-    padding: 3px 0px;
-}
-
-.timeHeader {
-    position: fixed;
-    background-color: white;
-    padding: 1vh 0px;
-}
-
-.ChatBox.chatMessDiv {
-    padding-top: 8vh;
-}
-
-.centerSpaceTime {
-    width: 3vw;
-}
-
 .clDiv.splitScreen {
     width: 100%;
     height: 100vh;
     margin: 0px 0px;
 }
 
-.ChatBox.chatMessDiv {
-
-    padding-top: 5vh;
+.chatMessDiv {
+    padding-bottom: 20vh;
+    width: 89.5vw;
     margin-left: 10vw;
-    padding-bottom: 25vh;
+}
+
+.ChatBox {
+    margin-right: .5vw;
+}
+
+
+.centerDetails {
+    width: 12.5vw;
+    font-size: 9px;
+}
+
+.otherMessage {
+    margin-right: 38.25vw;
+}
+
+.Message {
+    margin-left: 38vw;
+}
+
+.chatPanelL {
+    z-index: 10;
+    width: 10vw;
+    padding-top: 5vh;
+    top: 0;
+    left: 0;
+}
+
+.messageArea {
+    max-width: 38.75vw;
 }
 
 .ChatBox.chatBoxInput {
@@ -106,17 +122,14 @@ and (max-device-width : 1000px) {
     margin: 0px;
 }
 
-.centerDetails {
-    width: 11vw;
-}
-
 .timeDetails {
     font-size: 6px;
 }
 
-.chatBubble {
-    max-width: 22vw;
-}
+.buttons {
+    width: 9vw;
+    height: auto;
+ }
 
 
 
