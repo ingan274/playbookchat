@@ -218,6 +218,7 @@ class Playbook extends Component {
             newMesssage.append("groupChat", "mcc-crew-chat")
             newMesssage.append("messageBody", this.state.messageBody)
             newMesssage.append("messageSubject", this.state.subject,)
+            newMesssage.append("subjectLine", this.state.subjectLine)
             newMesssage.append("urgent", false)
             newMesssage.append("priority", this.state.priority)
             newMesssage.append("priorityPressed", this.state.priority)
@@ -270,7 +271,7 @@ class Playbook extends Component {
             newMesssage.append("deliveryTime", this.state.deliveryBSON)
 
 
-            console.log(path)
+            // console.log(path)
             API.newMCCCrewPhoto(newMesssage);
             this.setState({
                 subject: "",

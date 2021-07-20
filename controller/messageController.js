@@ -324,8 +324,6 @@ module.exports = {
         } else {
             priority = false
         }
-
-
         if (req.body.priorityPressed === "true") {
             priorityPressed = true
         } else {
@@ -344,14 +342,20 @@ module.exports = {
             location = false
         }
 
-        const { originalname: image } = req.file;
-        let filePath = `uploads/${image}`;
-
-        await sharp(req.file.buffer)
-            .resize({ width: 1200 })
-            .withMetadata()
-            .toFile(filePath)
-
+        let filePath;
+// console.log(req.body.subjectLine)
+        if (req.body.subjectLine === true) {
+            const { originalname: image } = req.file;
+            filePath = `uploads/${image}`;
+    
+            await sharp(req.file.buffer)
+                .resize({ width: 1200 })
+                .withMetadata()
+                .toFile(filePath)
+        } else {
+            filePath = req.body.imagePath;
+        }
+       
         let message = {
             groupChat: "mcc-crew-chat",
             message: {
