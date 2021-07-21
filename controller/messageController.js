@@ -1,7 +1,7 @@
 const { ObjectID } = require("bson");
 const mongoConnect = require('../connect');
 const sharp = require('sharp');
-const path = require('path');
+// const path = require('path');
 
 let mcccrew;
 let crew;
@@ -344,7 +344,7 @@ module.exports = {
 
         let filePath;
 // console.log(req.body.subjectLine)
-        if (req.body.subjectLine === true) {
+        if (req.body.subjectLine === "true") {
             const { originalname: image } = req.file;
             filePath = `uploads/${image}`;
     
