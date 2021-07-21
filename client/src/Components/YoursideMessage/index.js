@@ -279,8 +279,8 @@ class YourSide extends Component {
                                 alignItems="flex-start"
                                 style={{ backgroundColor: `${this.messageColor()}` }}
                             >
-                                <Box className="messageSubject" style={{ color: `${this.textColor()}`, fontSize: `${this.prioritySubject()}` }}><Grid container direction="row" alignItem="center"><Box item="true">{this.priorityIcon()}</Box> <Box item="true">{this.props.messageSubject}</Box></Grid></Box>
-                                <Box className="messageText" style={{ color: `${this.textColor()}`, fontWeight: `${this.priorityBody()}` }}>{this.props.messageMessageBody}</Box>
+                                <Box className="messageSubject messData" style={{ color: `${this.textColor()}`, fontSize: `${this.prioritySubject()}` }}><Grid container direction="row" alignItem="center"><Box item="true">{this.priorityIcon()}</Box> <Box item="true">{this.props.messageSubject}</Box></Grid></Box>
+                                <Box className="messageText messData" style={{ color: `${this.textColor()}`, fontWeight: `${this.priorityBody()}` }}>{this.props.messageMessageBody}</Box>
                                 {this.addPhoto()}
 
                                 {this.messageStatus()}

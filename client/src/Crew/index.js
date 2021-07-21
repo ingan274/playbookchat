@@ -234,10 +234,12 @@ class Playbook extends Component {
     uploadImage = (event) => {
         // stores a readable instance of 
         // the image being uploaded using multer
-        this.setState({
-            uploadedImage: URL.createObjectURL(event.target.files[0])
-        });
-        imageData = event.target.files[0]
+        if (event.target.files.length !== 0) {
+            this.setState({
+                uploadedImage: URL.createObjectURL(event.target.files[0])
+            });
+            imageData = event.target.files[0]
+        }
 
     }
 
@@ -301,11 +303,12 @@ class Playbook extends Component {
                                                     <PhotoCamera />
                                                 </IconButton>
                                             </label>
+                                            <Box item="true" className="previewImage" style={previewImageStyle}>
+                                                <img src={this.state.uploadedImage} alt="upload" className="previewImageAsset" />
+                                            </Box>
                                         </Box>
 
-                                        <Box item="true" className="previewImage" style={previewImageStyle}>
-                                            <img src={this.state.uploadedImage} alt="upload" className="previewImageAsset" />
-                                        </Box>
+
                                         <Box item="true" className="form-control">
                                             <TextField className="inputArea"
                                                 variant="filled"
@@ -315,6 +318,13 @@ class Playbook extends Component {
                                                 label={`Message`}
                                                 onChange={this.handleInputChange}
                                                 multiline
+                                                onKeyPress={(ev) => {
+                                                    // console.log(`Pressed keyCode ${ev.key}`);
+                                                    if (ev.key === 'Enter') {
+                                                        ev.preventDefault();
+                                                        this.handleSubmitMessage()
+                                                    }
+                                                }}
                                                 inputProps={{
                                                     style: {
                                                         fontSize: '12px',

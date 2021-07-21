@@ -78,8 +78,8 @@ class YourSide extends Component {
                                 alignItems="flex-start"
                                 style={{ backgroundColor: `${this.messageColor()}` }}
                             >
-                                <Box className="messageSubject">{this.props.messageSubject}</Box>
-                                <Box className="messageText">{this.props.messageMessageBody}</Box>
+                                <Box className="messageSubject messData">{this.props.messageSubject}</Box>
+                                <Box className="messageText messData">{this.props.messageMessageBody}</Box>
                                 {this.addPhoto()}
                                 <Box className="timeDelivered crewDeliveryChatText">
                                     {this.props.timeDelivered}

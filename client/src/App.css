@@ -106,7 +106,7 @@
     color: white;
 }
 
-.messageArea {
+.messageArea, .messData {
     max-width: 17vw;
 }
 

@@ -565,11 +565,16 @@ class Playbook extends Component {
     uploadImage = (event) => {
         // stores a readable instance of 
         // the image being uploaded using multer
-        this.setState({
-            uploadedImage: URL.createObjectURL(event.target.files[0])
-        });
-        imageData = event.target.files[0]
-
+        if (event.target.files.length !== 0) {
+            this.setState({
+                uploadedImage: URL.createObjectURL(event.target.files[0])
+            });
+            imageData = event.target.files[0]
+        } else {
+            this.setState({
+                uploadedImage: ""
+            });
+        }
     }
 
     render = () => {
@@ -585,9 +590,9 @@ class Playbook extends Component {
 
         if (this.state.subjectLine) {
             imageBtnColor = ""
-            subjectBtnColor = "primary"
+            subjectBtnColor = "secondary"
         } else {
-            imageBtnColor = "primary"
+            imageBtnColor = "secondary"
             subjectBtnColor = ""
         }
 
@@ -636,7 +641,7 @@ class Playbook extends Component {
                                         alignItems="center">
                                         <Box item="true">
                                             <input accept="image/*" className="attachment" id="imageUploadMCC" type="file" onChange={this.uploadImage} />
-                                            <label htmlFor="imageUploadMCC">
+                                            <label for="imageUploadMCC">
                                                 <IconButton aria-label="upload picture" component="span">
                                                     <PhotoCamera />
                                                 </IconButton>
