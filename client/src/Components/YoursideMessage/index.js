@@ -54,7 +54,7 @@ class YourSide extends Component {
     }
 
     countdown = () => {
-        let currentTime = moment();
+        let currentTime = moment().utc().format();
         let deliveryTime = moment(this.props.eta);
         let remainingMilliSeconds = deliveryTime.diff(currentTime)
         let display = moment(remainingMilliSeconds).format('mm:ss')

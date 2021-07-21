@@ -123,9 +123,6 @@ const APICall = {
 
     newCrew: (newMessage) => {
         axios.post("/api/crew/", newMessage)
-            .then(response => {
-                timedUpdates(response)
-            })
     },
 
     newCrewPhoto: (newMessage) => {
@@ -146,9 +143,6 @@ const APICall = {
 
     replyCrew: (replyMessage) => {
         axios.post("/api/crew/reply", replyMessage)
-            .then(response => {
-                timedUpdates(response)
-            })
     },
 
     // Drafts
