@@ -1,4 +1,4 @@
-// const router = require("./router");
+const router = require("./router");
 const path = require('path');
 const express = require("express");
 const router = require("./router/index");
